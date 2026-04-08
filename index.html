@@ -3,50 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Prévention Mobile</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 420px;
-      margin: auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-job {
-      background: #2563eb;
-      color: white;
-    }
-    .btn-risk {
-      background: #f97316;
-      color: white;
-    }
-    .btn-back {
-      background: #e5e7eb;
-      color: black;
-    }
-  </style>
 </head>
 <body>
 
-  <h1>🛡️ Prévention Mobile</h1>
+<h1>Prévention Mobile</h1>
 
-  <!-- MENU MÉTIERS -->
-  <div id="menu-jobs">
-    <p>Sélectionne ton métier :</p>
-    <button class="btn-job" onclick="showRisks('Technicien maintenance')">Technicien maintenance</button>
-    <button class="btn-job" onclick="showRisks('Commercial itinérant')">Commercial itinérant</button>
-    <button class="btn-job" onclick="showRisks('Boucher')">Boucher</button>
-    <button class="btn-job" onclick="showRisks('Coiffeur / Coiffeuse')">Coiffeur / Coiffeuse</button>
-  </div>
+<button onclick="afficherRisques()">Technicien maintenance</button>
 
-  <!-- MENU RISQUES -->
+<div id="resultat"></div>
+
+<script>
+  function afficherRisques() {
+    document.getElementById("resultat").innerHTML = `
+      <h2>Risques</h2>
+      <ul>
+        <li>Chute de hauteur</li>
+        <li>CMR</li>
+        <li>Électrique</li>
+        <li>TMS</li>
+      </ul>
+    `;
+  }
+</script>
+
+</body>
+</html>
