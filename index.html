@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 400px;
+      max-width: 420px;
       margin: auto;
       padding: 20px;
     }
@@ -20,28 +20,33 @@
       font-size: 16px;
       border-radius: 8px;
       border: none;
+      cursor: pointer;
+    }
+    .btn-job {
       background: #2563eb;
       color: white;
-      cursor: pointer;
+    }
+    .btn-risk {
+      background: #f97316;
+      color: white;
+    }
+    .btn-back {
+      background: #e5e7eb;
+      color: black;
     }
   </style>
 </head>
 <body>
 
   <h1>🛡️ Prévention Mobile</h1>
-  <p>Sélectionne ton métier :</p>
 
-  <button onclick="selectJob('Technicien maintenance')">Technicien maintenance</button>
-  <button onclick="selectJob('Commercial itinérant')">Commercial itinérant</button>
-  <button onclick="selectJob('Boucher')">Boucher</button>
-  <button onclick="selectJob('Coiffeur / Coiffeuse')">Coiffeur / Coiffeuse</button>
+  <div id="menu-jobs">
+    <p>Sélectionne ton métier :</p>
+    <button class="btn-job" onclick="showRisks('Technicien maintenance')">Technicien maintenance</button>
+    <button class="btn-job" onclick="showRisks('Commercial itinérant')">Commercial itinérant</button>
+    <button class="btn-job" onclick="showRisks('Boucher')">Boucher</button>
+    <button class="btn-job" onclick="showRisks('Coiffeur / Coiffeuse')">Coiffeur / Coiffeuse</button>
+  </div>
 
-  <script>
-    function selectJob(job) {
-      alert("Métier sélectionné : " + job);
-    }
-  </script>
+  <div id="menu-risks" style="display:none;"></div>
 
-</body>
-</html>
-``
