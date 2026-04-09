@@ -14,7 +14,7 @@
             background: #f3f4f6;
         }
 
-        /* ---- ÉCRAN D’ACCUEIL ---- */
+        /* ---- ACCUEIL ---- */
         #accueil {
             height: 100vh;
             background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -63,6 +63,10 @@
             border-radius: 10px;
             margin-bottom: 15px;
         }
+
+        h3 {
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 
@@ -74,7 +78,6 @@
     <h1>Prévention Mobile</h1>
     <p>Application officielle RESTEV</p>
 
-    <!-- ✅ BOUTON ENTRER -->
     <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
 
     <button class="btn btn-start" style="margin-top:20px;background:#9333ea;">À propos</button>
@@ -87,6 +90,12 @@
     <h2>Menu principal</h2>
 
     <button class="btn btn-menu" onclick="ouvrirMetiers()">Métiers</button>
+    <button class="btn btn-menu" onclick="alert('Module Risques en préparation')">Risques</button>
+    <button class="btn btn-menu" onclick="alert('Module CMR en préparation')">CMR</button>
+    <button class="btn btn-menu" onclick="alert('Fiches INRS en préparation')">Fiches INRS</button>
+    <button class="btn btn-menu" onclick="alert('Documents PDF en préparation')">Documents PDF</button>
+    <button class="btn btn-menu" onclick="alert('Signalement danger en préparation')">Signaler un danger</button>
+    <button class="btn btn-menu" onclick="alert('Plan de prévention en préparation')">Plan de prévention</button>
 
     <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
@@ -97,9 +106,15 @@
 
     <select id="select-metier">
         <option value=""></option>
-        <option value="maintenance">Technicien maintenance</option>
+
+        <!-- A -->
+        <option value="agent_entretien">Agent d'entretien</option>
+        <option value="agent_logistique">Agent de logistique</option>
+
+        <!-- B -->
         <option value="boucher">Boucher</option>
         <option value="boulanger">Boulanger</option>
+        <option value="maintenance">Technicien maintenance</option>
     </select>
 
     <button class="btn btn-menu" onclick="validerMetier()">VALIDER ✅</button>
@@ -111,53 +126,140 @@
 
 <script>
 
-/* ✅ BASE DES MÉTIERS / RISQUES */
+/* ✅ BASE METIER + RISQUES + INFOS ENRICHIÉES */
 const data = {
 
+    /* ✅ TECHNICIEN MAINTENANCE (COMPLET) */
     maintenance: {
         label: "Technicien maintenance",
         risques: {
+
             "Chute de hauteur": `
-<h3>⬆️ Chute de hauteur</h3>
-• Travail en hauteur<br><br>
-<b>Prévention :</b><br>
-✅ Harnais<br>
-✅ Plateformes sécurisées<br>
-`,
+            <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
+            <b>Situations dangereuses :</b><br>
+            • Intervention sur machine en hauteur<br>
+            • Accès sans garde‑corps<br>
+            • Utilisation d'échelles<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Plateformes sécurisées<br>
+            ✅ Harnais + ligne de vie<br>
+            ✅ Travail en binôme<br><br>
+
+            <b>Documents utiles :</b><br>
+            <a href="https://www.inrs.fr/dms/inrs/CataloguePap       INRS ED 6109 – Maintenance en sécurité</a>
+            `,
+
             "Risque électrique": `
-<h3>⚡ Risque électrique</h3>
-✅ Habilitation électrique<br>
-✅ Vérification d’absence de tension<br>
-`
+            <h3 style='color:#f97316;'>⚡ Risque électrique</h3>
+            <b>Situations :</b><br>
+            • Armoire sous tension<br>
+            • Absence de consignation<br>
+            • Mauvaise VAT<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Habilitation BR / B2V<br>
+            ✅ Procédure LOTO<br>
+            ✅ Outils isolés 1000 V<br><br>
+
+            <b>Documents :</b><br>
+            <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-.pdf
+            `,
+
+            "CMR": `
+            <h3 style='color:#9333ea;'>☣️ CMR</h3>
+            <b>Situations :</b><br>
+            • Dégraissants<br>
+            • Solvants<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Substitution<br>
+            ✅ Ventilation<br>
+            ✅ Masque FFP2<br>
+            ✅ Gants nitrile<br><br>
+
+            <b>Documents :</b><br>
+            <a href="https://www.inrs.fr/dms/inguePapier/ED/TI-ED-984/ed984.pdf
+            INRS ED 984 – CMR</a>
+            `
         }
     },
 
+    /* ✅ BOUCHER (ENRICHI) */
     boucher: {
         label: "Boucher",
         risques: {
+
             "Coupures": `
-<h3>🔪 Coupures</h3>
-✅ Gants anticoupures<br>
-✅ Couteaux affûtés<br>
-`
+            <h3 style='color:#dc2626;'>🔪 Coupures</h3>
+            <b>Situations :</b><br>
+            • Désossage<br>
+            • Lames mal rangées<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Gants anticoupures<br>
+            ✅ Outils affûtés<br>
+            ✅ Rangement sécurisé<br><br>
+
+            <b>Documents :</b><br>
+            <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-4070/ed4070        `,
+
+            "TMS": `
+            <h3 style='color:#2563eb;'>📦 TMS</h3>
+            <b>Situations :</b><br>
+            • Postures répétées<br>
+            • Ports de carcasses<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Outils ergonomiques<br>
+            ✅ Pauses régulières<br>
+            ✅ Alternance des tâches<br><br>
+
+            <b>Documents :</b><br>
+            <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-917/ed917.pdf    `
         }
     },
 
+    /* ✅ BOULANGER (ENRICHI) */
     boulanger: {
         label: "Boulanger",
         risques: {
+
             "Brûlures": `
-<h3>🔥 Brûlures</h3>
-✅ Gants thermiques<br>
-✅ Manipulation sécurisée du four<br>
-`
+            <h3 style='color:#f97316;'>🔥 Brûlures</h3>
+            <b>Situations :</b><br>
+            • Fours<br>
+            • Plaques chaudes<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Gants thermiques<br>
+            ✅ Prévention vapeur<br><br>
+
+            <b>Documents :</b><br>
+            https://www.inrs.fr/media.html?refINRS=ED%206106
+            INRS ED 6106 – Brûlures</a>
+            `,
+
+            "Poussières de farine": `
+            <h3 style='color:#9333ea;'>🌾 Allergènes / poussières</h3>
+            <b>Situations :</b><br>
+            • Tamisage<br>
+            • Nettoyage à sec<br><br>
+
+            <b>Prévention :</b><br>
+            ✅ Masque FFP2<br>
+            ✅ Aspiration basse<br><br>
+
+            <b>Documents :</b><br>
+            <a href="https://www.inrs.fr/media.html?refINRS=
+            INRS ED 6002 – Allergies</a>
+            `
         }
     }
-
 };
 
 
-/* ✅✅ NAVIGATION — FONCTIONNELLE */
+/* ✅✅ NAVIGATION */
 
 function ouvrirMenuPrincipal() {
     document.getElementById("accueil").style.display = 'none';
@@ -179,7 +281,7 @@ function retourAccueil() {
 }
 
 
-/* ✅✅ VALIDATION MÉTIER */
+/* ✅✅ VALIDER METIER */
 function validerMetier() {
     const metier = document.getElementById("select-metier").value;
 
@@ -212,12 +314,11 @@ function afficherRisques(job) {
 }
 
 
-/* ✅✅ FICHE DÉTAIL */
+/* ✅✅ DETAIL */
 function showDetail(job, risque) {
 
     document.getElementById("menuRisks").innerHTML = `
 <button class='btn btn-back' onclick="afficherRisques('${job}')">← Retour</button>
-
 <h2>${risque}</h2>
 ${data[job].risques[risque]}
 `;
@@ -227,3 +328,4 @@ ${data[job].risques[risque]}
 
 </body>
 </html>
+``
