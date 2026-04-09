@@ -69,37 +69,35 @@
 </div>
 
 <!-- ✅ ✅ MÉTIERS -->
-<div id="menu-metiers" class="card" style="display:none;">
-  <h2>Choisis ton métier :</h2>
+<select id="select-metier" class="btn btn-job" style="width:100%;font-size:18px;padding:12px;border-radius:10px;">
 
-  <select id="select-metier" class="btn btn-job" style="width:100%;font-size:18px;padding:12px;border-radius:10px;">
-      <option value="">-- Sélectionne un métier --</option>
+    <option value=""></option> <!-- ✅ ligne vierge -->
 
-      <!-- A -->
-      <option value="agent_entretien">Agent d'entretien</option>
-      <option value="agent_logistique">Agent de logistique</option>
+    <!-- A -->
+    <option value="agent_entretien">Agent d'entretien</option>
+    <option value="agent_logistique">Agent de logistique</option>
 
-      <!-- B -->
-      <option value="barman">Barman</option>
-      <option value="boucher">Boucher</option>
-      <option value="boulanger">Boulanger</option>
-      <option value="briqueteur">Briqueteur</option>
-      <option value="macon">BTP – Maçon</option>
-      <option value="plaquiste">BTP – Plaquiste</option>
-      <option value="peintre">BTP – Peintre</option>
-      <option value="carreleur">BTP – Carreleur</option>
-      <option value="menuisier">BTP – Menuisier</option>
+    <!-- B -->
+    <option value="barman">Barman</option>
+    <option value="boucher">Boucher</option>
+    <option value="boulanger">Boulanger</option>
+    <option value="briqueteur">Briqueteur</option>
+    <option value="macon">Maçon</option>
+    <option value="plaquiste">Plaquiste</option>
+    <option value="peintre">Peintre</option>
+    <option value="carreleur">Carreleur</option>
+    <option value="menuisier">Menuisier</option>
 
-      <!-- C -->
-      <option value="cariste">Cariste</option>
-      <option value="livreur">Chauffeur-livreur</option>
-      <option value="commercial">Commercial itinérant</option>
-      <option value="coiffeur">Coiffeur / Coiffeuse</option>
-      <option value="cuisinier">Cuisinier</option>
+    <!-- C -->
+    <option value="cariste">Cariste</option>
+    <option value="livreur">Chauffeur-livreur</option>
+    <option value="coiffeur">Coiffeur / Coiffeuse</option>
+    <option value="commercial">Commercial itinérant</option>
+    <option value="cuisinier">Cuisinier</option>
 
-      <!-- M -->
-      <option value="maintenance">Technicien maintenance</option>
-  </select>
+    <!-- M -->
+    <option value="maintenance">Technicien maintenance</option>
+</select>
 
   <button class="btn btn-start" style="margin-top:15px;" onclick="validerMetier()">Valider</button>
   
