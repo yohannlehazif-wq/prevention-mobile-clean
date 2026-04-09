@@ -50,11 +50,6 @@
       padding: 20px;
       border-radius: 12px;
     }
-
-    h2 {
-      margin-bottom: 10px;
-      color: #111827;
-    }
   </style>
 </head>
 
@@ -65,7 +60,7 @@
 <div id="jobs" class="card">
   <h2>Choisis ton métier :</h2>
 
-  <!-- Métiers de base -->
+  <!-- Métiers existants -->
   <button class="btn btn-job" onclick="showRisks('maintenance')">Technicien maintenance</button>
   <button class="btn btn-job" onclick="showRisks('commercial')">Commercial itinérant</button>
   <button class="btn btn-job" onclick="showRisks('boucher')">Boucher</button>
@@ -87,59 +82,4 @@ const data = {
   maintenance: {
     label: "Technicien maintenance",
     risks: {
-      chute: { nom: "Chute de hauteur", detail: "Harnais, protections collectives." },
-      cmr: { nom: "CMR", detail: "Substitution, EPI adaptés." },
-      electrique: { nom: "Risque électrique", detail: "Consignation, habilitation." },
-      tms: { nom: "TMS", detail: "Ergonomie, pauses." }
-    }
-  },
-
-  commercial: {
-    label: "Commercial itinérant",
-    risks: {
-      routier: { nom: "Risque routier", detail: "Fatigue, téléphone, planification." },
-      stress: { nom: "Stress", detail: "Organisation, RPS." }
-    }
-  },
-
-  boucher: {
-    label: "Boucher",
-    risks: {
-      coupure: { nom: "Coupures", detail: "Couteaux adaptés, gants anticoupure." },
-      manutention: { nom: "Manutention", detail: "Gestes et postures." },
-      cmr: { nom: "CMR nettoyants", detail: "FDS, ventilation." }
-    }
-  },
-
-  coiffeur: {
-    label: "Coiffeur / Coiffeuse",
-    risks: {
-      chimique: { nom: "Produits chimiques", detail: "Gants, lunettes." },
-      posture: { nom: "Postures prolongées", detail: "Pauses, réglage poste." }
-    }
-  },
-
-  batiment: {
-    label: "Ouvrier du bâtiment",
-    risks: {
-      chute: { nom: "Chute de hauteur", detail: "Garde-corps, harnais." },
-      manutention: { nom: "Manutention lourde", detail: "Techniques de levage." },
-      bruit: { nom: "Bruit", detail: "Protection auditive." },
-      poussiere: { nom: "Poussières (silice)", detail: "Masques adaptés." }
-    }
-  },
-
-  livreur: {
-    label: "Conducteur / Livreur",
-    risks: {
-      routier: { nom: "Risque routier", detail: "Pauses régulières." },
-      manutention: { nom: "Manutention", detail: "Aides au port de charge." },
-      chute: { nom: "Chutes", detail: "Sol glissant." }
-    }
-  },
-
-  production: {
-    label: "Opérateur de production",
-    risks: {
-      machine: { nom: "Machines", detail: "Carter, consignation." },
-      bruit: { nom: "Bruit", detail: "Protection auditive." },
+      chute: { nom: "Chute de hauteur", detail: "Harnais, protections collectives, échafaudages sécurisés." },
