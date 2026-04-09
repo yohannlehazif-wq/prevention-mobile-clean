@@ -13,7 +13,7 @@
       background: #f3f4f6;
     }
 
-    /* ---- ÉCRAN D’ACCUEIL ---- */
+    /* ACCUEIL */
     #accueil {
       height: 100vh;
       background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -27,7 +27,7 @@
     }
 
     .logo {
-      width: 260px;
+      width: 240px;
       margin-bottom: 30px;
     }
 
@@ -43,9 +43,9 @@
     }
 
     .btn-start { background: white; color: #2563eb; width: 240px; }
-    .btn-job   { background: #2563eb; color: white; }
-    .btn-risk  { background: #f97316; color: white; }
-    .btn-back  { background: #d1d5db; color: black; }
+    .btn-job { background: #2563eb; color: white; }
+    .btn-risk { background: #f97316; color: white; }
+    .btn-back { background: #d1d5db; color: black; }
 
     .card {
       background: white;
@@ -60,9 +60,9 @@
 
 <body>
 
-<!-- ✅ ÉCRAN D’ACCUEIL — LOGO + BOUTON -->
+<!-- ✅ ACCUEIL AVEC TON LOGO LOCAL -->
 <div id="accueil">
-  <img src=logo.png
+  <img src="logo.png" class="logo">
   <h1>Prévention Mobile</h1>
   <p>Application officielle RESTEV</p>
   <button class="btn btn-start" onclick="entrer()">Entrer</button>
@@ -110,7 +110,7 @@ const data = {
     risques: {
       coupure: "Coupures : gants anticoupure.",
       manutention: "Charges lourdes : gestes sûrs.",
-      cmr: "CMR nettoyants : ventilation, gants."
+      cmr: "Produits CMR : ventilation, gants."
     }
   },
 
@@ -142,23 +142,22 @@ const data = {
   }
 };
 
-/* ✅ BOUTON ENTRER — FONCTIONNE */
+/* ✅ BOUTON ENTRER QUI MARCHE */
 function entrer() {
   document.getElementById("accueil").style.display = "none";
   document.getElementById("menu-metiers").style.display = "block";
 }
 
-/* ✅ AFFICHER RISQUES */
+/* ✅ RISQUES */
 function showRisks(job) {
   document.getElementById("menu-metiers").style.display = "none";
-  const zone = document.getElementById("menu-risks");
+  let zone = document.getElementById("menu-risks");
   zone.style.display = "block";
 
   let html = `
     <button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>
     <h2>Risques – ${data[job].label}</h2>
   `;
-
   for (let r in data[job].risques) {
     html += `<button class="btn btn-risk" onclick="showDetail('${job}','${r}')">${r}</button>`;
   }
@@ -166,7 +165,7 @@ function showRisks(job) {
   zone.innerHTML = html;
 }
 
-/* ✅ DÉTAIL */
+/* ✅ FICHE DÉTAIL */
 function showDetail(job, risque) {
   document.getElementById("menu-risks").innerHTML = `
     <button class="btn btn-back" onclick="showRisks('${job}')">← Retour risques</button>
