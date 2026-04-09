@@ -68,26 +68,16 @@
       text-align: left;
     }
 
-    .btn-job {
-      background: #2563eb;
-      color: white;
-    }
+    .btn-job { background: #2563eb; color: white; }
+    .btn-risk { background: #f97316; color: white; }
+    .btn-back { background: #d1d5db; color: black; }
 
-    .btn-risk {
-      background: #f97316;
-      color: white;
-    }
-
-    .btn-back {
-      background: #d1d5db;
-      color: black;
-    }
   </style>
 </head>
 
 <body>
 
-<!-- ✅ ÉCRAN D'ACCUEIL MODERNE -->
+<!-- ✅ ÉCRAN D’ACCUEIL MODERNE AVEC LOGO -->
 <div id="accueil">
   <img src="https://i.ibb.co/rf4MxsC/LOGO-RESTEV-DIGITAL-RVB.png" class="logo">
   <h1>Prévention Mobile</h1>
@@ -106,14 +96,14 @@
   <button class="btn btn-job" onclick="showRisks('batiment')">Ouvrier du bâtiment</button>
   <button class="btn btn-job" onclick="showRisks('livreur')">Conducteur / Livreur</button>
 
-  <button class="btn btn-back" onclick="retourAccueil()">← Retour à l’accueil</button>
+  <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
 
 <!-- ✅ LISTE DES RISQUES -->
 <div id="menu-risks" class="card" style="display:none;"></div>
 
 <script>
-/* ✅ BASE SIMPLE DES RISQUES */
+/* ✅ BASE DES RISQUES */
 const data = {
   maintenance: {
     label: "Technicien maintenance",
@@ -124,9 +114,62 @@ const data = {
       tms: "TMS : ergonomie, alternance."
     }
   },
-
   commercial: {
     label: "Commercial itinérant",
     risques: {
       routier: "Accident routier : pauses, vigilance.",
       stress: "Stress : gestion du temps."
+    }
+  },
+  boucher: {
+    label: "Boucher",
+    risques: {
+      coupure: "Coupures : gants anticoupure.",
+      manutention: "Manutention : gestes sûrs.",
+      cmr: "Nettoyants CMR : ventilation, gants."
+    }
+  },
+  coiffeur: {
+    label: "Coiffeur / Coiffeuse",
+    risques: {
+      chimique: "Produits chimiques : gants, lunettes.",
+      posture: "Postures prolongées : pauses."
+    }
+  },
+  batiment: {
+    label: "Ouvrier du bâtiment",
+    risques: {
+      chute: "Chutes : harnais, échafaudages.",
+      manutention: "Charges lourdes : techniques adaptées.",
+      bruit: "Bruit : casque antibruit.",
+      poussiere: "Poussières : masques adaptés."
+    }
+  },
+  livreur: {
+    label: "Conducteur / Livreur",
+    risques: {
+      routier: "Risque routier : planification, pauses.",
+      manutention: "Colis : diable, transpalette.",
+      chute: "Chutes : sols glissants."
+    }
+  }
+};
+
+/* ✅ ✅ BOUTON ENTRER */
+function entrer() {
+  document.getElementById("accueil").style.display = "none";
+  document.getElementById("menu-metiers").style.display = "block";
+}
+
+/* ✅ RISQUES */
+function showRisks(job) {
+  document.getElementById("menu-metiers").style.display = "none";
+  const zone = document.getElementById("menu-risks");
+  zone.style.display = "block";
+
+  let html = `
+    <button class="btn btn-back" onclick="goBack()">← Retour métiers</button>
+    <h2>Risques – ${data[job].label}</h2>
+  `;
+
+  for (let r in data[job].risques) {
