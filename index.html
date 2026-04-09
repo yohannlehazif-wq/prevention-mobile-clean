@@ -31,9 +31,6 @@
       margin-bottom: 30px;
     }
 
-    #accueil h1 { font-size: 28px; margin-bottom: 10px; }
-    #accueil p  { font-size: 18px; margin-bottom: 30px; }
-
     .btn {
       width: 100%;
       padding: 14px;
@@ -63,15 +60,15 @@
 
 <body>
 
-<!-- ✅ ÉCRAN D’ACCUEIL -->
+<!-- ✅ ÉCRAN D’ACCUEIL — LOGO + BOUTON -->
 <div id="accueil">
-  https://i.ibb.co/rf4MxsC/LOGO-RESTEV-DIGITAL-RVB.png
+  <img src="https://i.ibb.co/rf4MxsC/LOGO-RESTEV-DIGITAL-RVB.png" class="logo">
   <h1>Prévention Mobile</h1>
   <p>Application officielle RESTEV</p>
   <button class="btn btn-start" onclick="entrer()">Entrer</button>
 </div>
 
-<!-- ✅ LISTE DES MÉTIERS -->
+<!-- ✅ MÉTIERS -->
 <div id="menu-metiers" class="card" style="display:none;">
   <h2>Choisis ton métier :</h2>
 
@@ -85,11 +82,10 @@
   <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
 
-<!-- ✅ LISTE DES RISQUES -->
+<!-- ✅ RISQUES -->
 <div id="menu-risks" class="card" style="display:none;"></div>
 
 <script>
-/* ✅ BASE RISQUES (simple et stable) */
 const data = {
   maintenance: {
     label: "Technicien maintenance",
@@ -97,7 +93,7 @@ const data = {
       chute: "Chute de hauteur : protections collectives, harnais.",
       cmr: "CMR : substitution, EPI adaptés.",
       electrique: "Risque électrique : consignation.",
-      tms: "TMS : ergonomie, alternance des tâches."
+      tms: "TMS : ergonomie, alternance."
     }
   },
 
@@ -138,3 +134,59 @@ const data = {
 
   livreur: {
     label: "Conducteur / Livreur",
+    risques: {
+      routier: "Planification + pauses.",
+      manutention: "Diable, transpalette.",
+      chute: "Sols glissants."
+    }
+  }
+};
+
+/* ✅ BOUTON ENTRER — FONCTIONNE */
+function entrer() {
+  document.getElementById("accueil").style.display = "none";
+  document.getElementById("menu-metiers").style.display = "block";
+}
+
+/* ✅ AFFICHER RISQUES */
+function showRisks(job) {
+  document.getElementById("menu-metiers").style.display = "none";
+  const zone = document.getElementById("menu-risks");
+  zone.style.display = "block";
+
+  let html = `
+    <button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>
+    <h2>Risques – ${data[job].label}</h2>
+  `;
+
+  for (let r in data[job].risques) {
+    html += `<button class="btn btn-risk" onclick="showDetail('${job}','${r}')">${r}</button>`;
+  }
+
+  zone.innerHTML = html;
+}
+
+/* ✅ DÉTAIL */
+function showDetail(job, risque) {
+  document.getElementById("menu-risks").innerHTML = `
+    <button class="btn btn-back" onclick="showRisks('${job}')">← Retour risques</button>
+    <h2>${risque}</h2>
+    <p>${data[job].risques[risque]}</p>
+  `;
+}
+
+/* ✅ RETOURS */
+function retourMetiers() {
+  document.getElementById("menu-risks").style.display = "none";
+  document.getElementById("menu-metiers").style.display = "block";
+}
+
+function retourAccueil() {
+  document.getElementById("menu-risks").style.display = "none";
+  document.getElementById("menu-metiers").style.display = "none";
+  document.getElementById("accueil").style.display = "flex";
+}
+</script>
+
+</body>
+</html>
