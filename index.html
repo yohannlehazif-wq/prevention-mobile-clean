@@ -83,7 +83,43 @@
 </head>
 
 <body>
+<script>
 
+const data = {
+  maintenance: {...},
+  boulanger: {...},
+  boucher: {...}
+  // etc.
+};
+
+function validerMetier() {
+  const metier = document.getElementById("select-metier").value;
+
+  if (metier === "") {
+    alert("Merci de sélectionner un métier.");
+    return;
+  }
+
+  afficherRisques(metier);
+}
+
+function afficherRisques(job) {
+  ...
+}
+
+function showDetail(job, risque) {
+  ...
+}
+
+function retourMetiers() {
+  ...
+}
+
+function retourAccueil() {
+  ...
+}
+
+</script>
     <!-- ✅ ÉCRAN D’ACCUEIL -->
     <div id="accueil">
         <img src="logo.png" class="logo">
