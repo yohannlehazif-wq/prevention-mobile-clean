@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <title>RESTEV – Prévention Mobile</title>
@@ -14,7 +13,7 @@
             background: #f3f4f6;
         }
 
-        /* ---- ÉCRAN D’ACCUEIL ---- */
+        /* ACCUEIL */
         #accueil {
             height: 100vh;
             background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -43,21 +42,9 @@
             margin-top: 10px;
         }
 
-        .btn-start {
-            background: white;
-            color: #2563eb;
-        }
-
-        .btn-menu {
-            background: #2563eb;
-            color: white;
-            font-size: 18px;
-        }
-
-        .btn-back {
-            background: #d1d5db;
-            color: black;
-        }
+        .btn-start { background: white; color: #2563eb; }
+        .btn-menu { background: #2563eb; color: white; font-size: 18px; }
+        .btn-back { background: #d1d5db; color: black; }
 
         .card {
             background: white;
@@ -80,17 +67,17 @@
 
 <body>
 
-<!-- ✅ ÉCRAN D’ACCUEIL -->
+<!-- ✅ ACCUEIL -->
 <div id="accueil">
-    <img src="logo.png" class="logo">
+    logo.png
     <h1>Prévention Mobile</h1>
     <p>Application officielle RESTEV</p>
 
     <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
 
-    <button class="btn btn-start" style="margin-top:20px;background:#9333ea;" onclick="alert('À propos du RESTEV')">À propos</button>
-    <button class="btn btn-start" style="background:#4ade80;" onclick="alert('Contact RESTEV : contact@restev.fr')">Contact</button>
-    <button class="btn btn-start" style="background:#ef4444;" onclick="alert('Urgences : 112 / 18 / 15')">Urgences</button>
+    <button class="btn btn-start" style="margin-top:20px;background:#9333ea;">À propos</button>
+    <button class="btn btn-start" style="background:#4ade80;">Contact</button>
+    <button class="btn btn-start" style="background:#ef4444;">Urgences</button>
 </div>
 
 <!-- ✅ MENU PRINCIPAL -->
@@ -98,17 +85,11 @@
     <h2>Menu principal</h2>
 
     <button class="btn btn-menu" onclick="ouvrirMetiers()">Métiers</button>
-    <button class="btn btn-menu" onclick="alert('Module Risques en préparation')">Risques</button>
-    <button class="btn btn-menu" onclick="alert('Module CMR en préparation')">CMR</button>
-    <button class="btn btn-menu" onclick="alert('Fiches INRS en préparation')">Fiches INRS</button>
-    <button class="btn btn-menu" onclick="alert('Documents PDF en préparation')">Documents PDF</button>
-    <button class="btn btn-menu" onclick="alert('Signalement danger en préparation')">Signaler un danger</button>
-    <button class="btn btn-menu" onclick="alert('Plan de prévention en préparation')">Plan de prévention</button>
 
     <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
 
-<!-- ✅ MÉTIERS -->
+<!-- ✅ MENU METIERS -->
 <div id="menuMetiers" class="card" style="display:none;">
     <h2>Choisis ton métier :</h2>
 
@@ -128,55 +109,34 @@
 
 <script>
 
-/* ✅ BASE MÉTIERS / RISQUES */
+/* ✅ BASE DES MÉTIERS / RISQUES */
 const data = {
 
     maintenance: {
         label: "Technicien maintenance",
         risques: {
-            "Chute de hauteur": `
-<h3>⬆️ Chute de hauteur</h3>
-• Travail en hauteur<br><br>
-<b>Prévention :</b><br>
-✅ Harnais<br>
-✅ Plateformes<br>
-`,
-            "Risque électrique": `
-<h3>⚡ Risque électrique</h3>
-• Armoire sous tension<br><br>
-<b>Prévention :</b><br>
-✅ VAT<br>
-✅ Habilitation<br>
-`
+            "Chute": "Travail en hauteur.",
+            "Électrique": "Risque de contact indirect."
         }
     },
 
     boucher: {
         label: "Boucher",
         risques: {
-            "Coupures": `
-<h3>🔪 Coupures</h3>
-✅ Gants anticoupures<br>
-✅ Couteaux affûtés<br>
-`
+            "Coupures": "Lames, couteaux, scies.",
         }
     },
 
     boulanger: {
         label: "Boulanger",
         risques: {
-            "Brûlures": `
-<h3>🔥 Brûlures</h3>
-✅ Gants thermiques<br>
-✅ Manipulation sécurisée<br>
-`
+            "Brûlures": "Fours chauds.",
         }
     }
-
 };
 
 
-/* ✅ ✅ NAVIGATION */
+/* ✅ ✅ NAVIGATION – 100% fonctionnel */
 function ouvrirMenuPrincipal() {
     document.getElementById("accueil").style.display = 'none';
     document.getElementById("menuPrincipal").style.display = 'block';
@@ -196,7 +156,8 @@ function retourAccueil() {
     document.getElementById("menuRisks").style.display = 'none';
 }
 
-/* ✅ ✅ VALIDER UN MÉTIER */
+
+/* ✅ ✅ VALIDATION – 100% fonctionnel */
 function validerMetier() {
     const metier = document.getElementById("select-metier").value;
 
@@ -208,7 +169,8 @@ function validerMetier() {
     afficherRisques(metier);
 }
 
-/* ✅ ✅ AFFICHER RISQUES */
+
+/* ✅ ✅ AFFICHAGE RISQUES – fonctionnel */
 function afficherRisques(job) {
 
     document.getElementById("menuMetiers").style.display = "none";
@@ -227,13 +189,15 @@ function afficherRisques(job) {
     zone.innerHTML = html;
 }
 
-/* ✅ ✅ AFFICHAGE DÉTAIL */
+
+/* ✅ ✅ DETAILS – fonctionne */
 function showDetail(job, risque) {
 
     document.getElementById("menuRisks").innerHTML = `
 <button class='btn btn-back' onclick="afficherRisques('${job}')">← Retour</button>
+
 <h2>${risque}</h2>
-${data[job].risques[risque]}
+<p>${data[job].risques[risque]}</p>
 `;
 }
 
