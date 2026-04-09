@@ -7,79 +7,108 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 450px;
+      max-width: 400px;
       margin: auto;
       padding: 20px;
       background: #f3f4f6;
     }
-
     h1 {
       text-align: center;
       background: #2563eb;
       color: white;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 8px;
     }
-
     .card {
       background: white;
-      border-radius: 12px;
-      padding: 20px;
+      padding: 15px;
+      border-radius: 10px;
       margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
     .btn {
       width: 100%;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 12px;
+      margin: 6px 0;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
     }
-
-    .btn-job { background: #2563eb; color: white; }
-    .btn-risk { background: #f97316; color: white; }
-    .btn-back { background: #d1d5db; color: black; }
-
-    .detail-box {
-      background: #fff7ed;
-      padding: 20px;
-      border-radius: 12px;
+    .btn-back {
+      background: #d1d5db;
+      color: black;
+    }
+    .btn-risk {
+      background: #f97316;
     }
   </style>
 </head>
 
 <body>
 
-<h1>🛡️ Prévention Mobile</h1>
+<h1>Prévention Mobile</h1>
 
-<div id="jobs" class="card">
+<!-- MÉTIERS -->
+<div id="menu-metiers" class="card">
   <h2>Choisis ton métier :</h2>
-
-  <!-- Métiers existants -->
-  <button class="btn btn-job" onclick="showRisks('maintenance')">Technicien maintenance</button>
-  <button class="btn btn-job" onclick="showRisks('commercial')">Commercial itinérant</button>
-  <button class="btn btn-job" onclick="showRisks('boucher')">Boucher</button>
-  <button class="btn btn-job" onclick="showRisks('coiffeur')">Coiffeur / Coiffeuse</button>
-
-  <!-- Nouveaux métiers -->
-  <button class="btn btn-job" onclick="showRisks('batiment')">Ouvrier du bâtiment</button>
-  <button class="btn btn-job" onclick="showRisks('livreur')">Conducteur / Livreur</button>
-  <button class="btn btn-job" onclick="showRisks('production')">Opérateur de production</button>
-  <button class="btn btn-job" onclick="showRisks('entretien')">Agent d'entretien</button>
-  <button class="btn btn-job" onclick="showRisks('commerce')">Employé de commerce</button>
+  <button class="btn" onclick="afficherRisques('maintenance')">Technicien maintenance</button>
+  <button class="btn" onclick="afficherRisques('commercial')">Commercial itinérant</button>
 </div>
 
-<div id="content"></div>
+<!-- RISQUES -->
+<div id="menu-risques" class="card" style="display:none;"></div>
 
 <script>
 const data = {
-
   maintenance: {
     label: "Technicien maintenance",
-    risks: {
-      chute: { nom: "Chute de hauteur", detail: "Harnais, protections collectives, échafaudages sécurisés." },
+    risques: {
+      chute: "Chute de hauteur : Harnais, protections collectives.",
+      electrique: "Risque électrique : Consignation, habilitation.",
+      tms: "TMS : Ergonomie, pauses régulières."
+    }
+  },
+
+  commercial: {
+    label: "Commercial itinérant",
+    risques: {
+      routier: "Risque routier : Planification, pauses, pas de téléphone.",
+      stress: "Stress : Organisation, prévention RPS."
+    }
+  }
+};
+
+function afficherRisques(metier) {
+  document.getElementById("menu-metiers").style.display = "none";
+
+  const zone = document.getElementById("menu-risques");
+  zone.style.display = "block";
+
+  let html = `<button class="btn-back btn" onclick="retour()">← Retour</button>`;
+  html += `<h2>Risques – ${data[metier].label}</h2>`;
+
+  for (let r in data[metier].risques) {
+    html += `<button class="btn-risk btn" onclick="afficherDetail('${metier}','${r}')">${r}</button>`;
+  }
+
+  zone.innerHTML = html;
+}
+
+function afficherDetail(metier, risque) {
+  const zone = document.getElementById("menu-risques");
+  zone.innerHTML = `
+    <button class="btn-back btn" onclick="afficherRisques('${metier}')">← Retour</button>
+    <h2>${risque}</h2>
+    <p>${data[metier].risques[risque]}</p>
+  `;
+}
+
+function retour() {
+  document.getElementById("menu-risques").style.display = "none";
+  document.getElementById("menu-metiers").style.display = "block";
+}
+</script>
+
+</body>
+</html>
