@@ -11,45 +11,42 @@
       margin: auto;
       padding: 20px;
       background: #f3f4f6;
-    }
-
-    /* ----- ÉCRAN D'ACCUEIL ----- */
-    #accueil {
       text-align: center;
-      margin-top: 80px;
     }
 
-    #accueil h1 {
-      font-size: 28px;
+    /* ----- LOGO ----- */
+    .logo {
+      width: 260px;
+      margin: 30px auto 20px auto;
+      display: block;
+    }
+
+    /* ----- TITRE ----- */
+    h1 {
+      font-size: 26px;
       background: #2563eb;
       color: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 25px;
     }
 
-    #accueil p {
-      font-size: 18px;
-      color: #333;
-      margin-bottom: 30px;
-    }
-
+    /* ----- BOUTONS ----- */
     .btn {
       width: 100%;
       padding: 14px;
+      margin-top: 10px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       font-size: 16px;
       font-weight: bold;
-      margin-top: 10px;
     }
 
     .btn-start { background: #2563eb; color: white; }
-    .btn-job { background: #2563eb; color: white; }
-    .btn-risk { background: #f97316; color: white; }
-    .btn-back { background: #d1d5db; color: black; }
+    .btn-job   { background: #2563eb; color: white; }
+    .btn-risk  { background: #f97316; color: white; }
+    .btn-back  { background: #d1d5db; color: black; }
 
     .card {
       background: white;
@@ -57,16 +54,17 @@
       border-radius: 12px;
       margin-bottom: 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: left;
     }
   </style>
 </head>
 
 <body>
 
-<!-- ✅ ÉCRAN D'ACCUEIL RESTEV -->
+<!-- ✅ ✅ ÉCRAN D’ACCUEIL RESTEV AVEC TON LOGO -->
 <div id="accueil">
-  <h1>RESTEV</h1>
-  <p>Application Prévention des Risques</p>
+  <img src="https://i.ibb.co/rf4MxsC/LOGO-RESTEV-DIGITAL-RVB.png" class="logo">
+  <h1>Application Prévention</h1>
   <button class="btn btn-start" onclick="entrer()">🚀 Entrer</button>
 </div>
 
@@ -88,9 +86,8 @@
 <div id="menu-risques" class="card" style="display:none;"></div>
 
 <script>
-/* ✅ BASE DE DONNÉES MÉTIERS / RISQUES */
+// ✅ BASE SMALE ET SIMPLE
 const data = {
-
   maintenance: {
     label: "Technicien maintenance",
     risques: {
@@ -104,8 +101,8 @@ const data = {
   commercial: {
     label: "Commercial itinérant",
     risques: {
-      routier: "Risque routier : pauses, téléphone interdit.",
-      stress: "Stress : organisation, prévention RPS."
+      routier: "Accident routier : pauses, vigilance.",
+      stress: "Stress : organisation, gestion du temps."
     }
   },
 
@@ -113,8 +110,8 @@ const data = {
     label: "Boucher",
     risques: {
       coupure: "Coupures : gants anticoupure.",
-      manutention: "Manutention : gestes adaptés.",
-      cmr: "CMR nettoyants : ventilation, gants."
+      manutention: "Charges lourdes : bonnes postures.",
+      cmr: "CMR : FDS, ventilation."
     }
   },
 
@@ -129,46 +126,47 @@ const data = {
   batiment: {
     label: "Ouvrier du bâtiment",
     risques: {
-      chute: "Chute : échafaudages sécurisés.",
-      manutention: "Charges lourdes : techniques adaptées.",
-      bruit: "Bruit : casque anti-bruit.",
-      poussiere: "Poussières : masques adaptés."
+      chute: "Chutes de hauteur : échafaudages, harnais.",
+      manutention: "Manutention lourde : techniques adaptées.",
+      bruit: "Bruit : protections auditives.",
+      poussiere: "Poussières : masques FFP."
     }
   },
 
   livreur: {
     label: "Conducteur / Livreur",
     risques: {
-      routier: "Risque routier : vigilance + pauses.",
+      routier: "Risque routier : planification, pauses.",
       manutention: "Colis : diable, transpalette.",
       chute: "Chutes : sols glissants."
     }
   }
 };
 
-/* ✅ ENTRER DANS L’APPLICATION */
+// ✅ ACTION : ENTRER
 function entrer() {
   document.getElementById("accueil").style.display = "none";
   document.getElementById("menu-metiers").style.display = "block";
 }
 
-/* ✅ AFFICHER LES RISQUES D’UN MÉTIER */
+// ✅ RISQUES DU MÉTIER
 function afficherRisques(metier) {
+  document.getElementById("menu-metiers").style.display = "none";
+  
   const zone = document.getElementById("menu-risques");
   zone.style.display = "block";
-  document.getElementById("menu-metiers").style.display = "none";
 
   let html = `<button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>`;
   html += `<h2>Risques – ${data[metier].label}</h2>`;
 
   for (let r in data[metier].risques) {
-    html += `<button class="btn-risk btn" onclick="afficherDetail('${metier}','${r}')">${r}</button>`;
+    html += `<button class="btn btn-risk" onclick="afficherDetail('${metier}','${r}')">${r}</button>`;
   }
 
   zone.innerHTML = html;
 }
 
-/* ✅ AFFICHER LE DÉTAIL D’UN RISQUE */
+// ✅ DÉTAILS
 function afficherDetail(metier, risque) {
   document.getElementById("menu-risques").innerHTML = `
     <button class="btn btn-back" onclick="afficherRisques('${metier}')">← Retour risques</button>
@@ -177,13 +175,12 @@ function afficherDetail(metier, risque) {
   `;
 }
 
-/* ✅ RETOUR AUX MÉTIERS */
+// ✅ RETOUR
 function retourMetiers() {
   document.getElementById("menu-risques").style.display = "none";
   document.getElementById("menu-metiers").style.display = "block";
 }
 
-/* ✅ RETOUR ACCUEIL */
 function retourAccueil() {
   document.getElementById("menu-risques").style.display = "none";
   document.getElementById("menu-metiers").style.display = "none";
