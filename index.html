@@ -111,27 +111,96 @@
 const data = {
 
     /* ✅ MÉTIER : TECHNICIEN MAINTENANCE */
-    maintenance: {
-        label: "Technicien maintenance",
-        risques: {
-            "Chute de hauteur": `
-                <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
-                • Travail sur machine, échelle, plateforme<br><br>
-                <b>Prévention :</b><br>
-                ✅ Harnais<br>
-                ✅ Garde-corps<br>
-                ✅ Travail en binôme<br>
-            `,
-            "Risque électrique": `
-                <h3 style='color:#f97316;'>⚡ Risque électrique</h3>
-                • Armoire sous tension<br><br>
-                <b>Prévention :</b><br>
-                ✅ Habilitation BR<br>
-                ✅ Consignation LOTO<br>
-                ✅ Vérification absence de tension<br>
-            `,
-        }
-    },
+  maintenance: {
+  label: "Technicien maintenance",
+  risques: {
+
+    "Chute de hauteur": `
+      <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
+
+      <b>Situations dangereuses :</b><br>
+      • Travail sur machine / mezzanine<br>
+      • Accès non sécurisé<br>
+      • Plateforme instable<br><br>
+
+      <b>Prévention :</b><br>
+      ✅ Garde-corps / plateforme sécurisée<br>
+      ✅ Harnais + ligne de vie<br>
+      ✅ Travail en binôme<br><br>
+
+      <b>Documents utiles :</b><br>
+      INRS ED 6109 – Maintenance en sécurité
+    `,
+
+    "Risque électrique": `
+      <h3 style='color:#f97316;'>⚡ Risque électrique</h3>
+
+      <b>Situations dangereuses :</b><br>
+      • Armoire sous tension<br>
+      • Consignation absente<br>
+      • Mauvaise VAT<br><br>
+
+      <b>Prévention :</b><br>
+      ✅ Habilitation BR / B2V<br>
+      ✅ Procédure LOTO obligatoire<br>
+      ✅ Outils isolés 1000V<br><br>
+
+      <b>Documents utiles :</b><br>
+      INRS ED 912 – Consignation
+    `,
+
+    "Risque mécanique": `
+      <h3 style='color:#dc2626;'>⚙️ Mécanique / Écrasement</h3>
+
+      <b>Situations dangereuses :</b><br>
+      • Carter retiré<br>
+      • Mouvements dangereux<br>
+      • Redémarrage imprévu<br><br>
+
+      <b>Prévention :</b><br>
+      ✅ Verrouillage des carters<br>
+      ✅ Consignation des énergies<br>
+      ✅ Suivi entretien machine<br><br>
+
+      <b>Documents utiles :</b><br>
+      INRS ND 2234 – Risques mécaniques
+    `,
+
+    "CMR / produits chimiques": `
+      <h3 style='color:#9333ea;'>☣️ CMR / Produits chimiques</h3>
+
+      <b>Situations dangereuses :</b><br>
+      • Solvants<br>
+      • Aérosols dégraissants<br>
+      • Huiles minérales<br><br>
+
+      <b>Prévention :</b><br>
+      ✅ Substitution obligatoire<br>
+      ✅ Ventilation<br>
+      ✅ Port masque FFP2 / gants nitrile<br><br>
+
+      <b>Documents utiles :</b><br>
+      INRS ED 984 – CMR
+    `,
+
+    "TMS / postures": `
+      <h3 style='color:#38bdf8;'>🧍 TMS / Postures</h3>
+
+      <b>Situations dangereuses :</b><br>
+      • Zones exiguës<br>
+      • Bras levés prolongés<br>
+      • Port de charges<br><br>
+
+      <b>Prévention :</b><br>
+      ✅ Outils ergonomiques<br>
+      ✅ Alternance des tâches<br>
+      ✅ Éclairage adapté<br><br>
+
+      <b>Documents utiles :</b><br>
+      INRS ED 917 – TMS
+    `
+  }
+},
 
     /* ✅ MÉTIER : BOUCHER (niveau B amélioré) */
     boucher: {
