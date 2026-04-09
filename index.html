@@ -5,22 +5,73 @@
   <title>Prévention Mobile</title>
 
   <style>
-    body { font-family: Arial; max-width: 450px; margin: auto; padding: 20px; background: #f3f4f6; }
-    h1 { text-align: center; background: #2563eb; color: white; padding: 15px; border-radius: 12px; }
-    .card { background: white; padding: 20px; border-radius: 12px; margin-top: 20px; }
-    .btn { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: none; font-size: 16px; cursor: pointer; }
+    body { 
+      font-family: Arial; 
+      max-width: 450px; 
+      margin: auto; 
+      padding: 20px; 
+      background: #f3f4f6; 
+    }
+
+    /* ---- ÉCRAN D’ACCUEIL ---- */
+    #accueil {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    #accueil h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      background: #2563eb;
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    #accueil p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    /* ---- BOUTONS ---- */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .btn-start { background: #2563eb; color: white; }
     .btn-job { background: #2563eb; color: white; }
     .btn-risk { background: #f97316; color: white; }
     .btn-back { background: #d1d5db; color: black; }
+
+    /* ---- CARTES ---- */
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 
 <body>
 
-<h1>Prévention Mobile</h1>
+<!-- ✅ ÉCRAN D’ACCUEIL -->
+<div id="accueil">
+  <h1>Prévention Mobile</h1>
+  <p>Application de prévention des risques en entreprise</p>
+  <button class="btn btn-start" onclick="entrer()">🚀 Entrer</button>
+</div>
 
-<div id="menu-metiers" class="card">
-  <h2>Métiers :</h2>
+<!-- ✅ MENU MÉTIERS -->
+<div id="menu-metiers" class="card" style="display:none;">
+  <h2>Choisis ton métier :</h2>
 
   <button class="btn btn-job" onclick="showRisks('maintenance')">Technicien maintenance</button>
   <button class="btn btn-job" onclick="showRisks('commercial')">Commercial itinérant</button>
@@ -28,27 +79,28 @@
   <button class="btn btn-job" onclick="showRisks('coiffeur')">Coiffeur / Coiffeuse</button>
   <button class="btn btn-job" onclick="showRisks('batiment')">Ouvrier du bâtiment</button>
   <button class="btn btn-job" onclick="showRisks('livreur')">Conducteur / Livreur</button>
+  <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
 
+<!-- ✅ MENU RISQUES -->
 <div id="menu-risks" class="card" style="display:none;"></div>
 
 <script>
-// ✅ Clés simples = PAS D'ERREUR
+/* ✅ BDD métiers / risques */
 const data = {
-
   maintenance: {
     label: "Technicien maintenance",
-    risks: {
+    risques: {
       chute: "Chute de hauteur : harnais, protections collectives.",
       cmr: "CMR : substitution, FDS, EPI.",
       electrique: "Risque électrique : consignation, habilitation.",
-      tms: "TMS : ergonomie, alternance des tâches."
+      tms: "TMS : ergonomie, pauses."
     }
   },
 
   commercial: {
     label: "Commercial itinérant",
-    risks: {
+    risques: {
       routier: "Risque routier : pauses régulières, vigilance.",
       stress: "Stress : organisation, prévention RPS."
     }
@@ -56,75 +108,4 @@ const data = {
 
   boucher: {
     label: "Boucher",
-    risks: {
-      coupure: "Coupures : gants anticoupure.",
-      manutention: "Manutention : gestes adaptés.",
-      cmr: "CMR nettoyants : FDS, ventilation."
-    }
-  },
-
-  coiffeur: {
-    label: "Coiffeur / Coiffeuse",
-    risks: {
-      chimique: "Produits chimiques : gants, lunettes.",
-      posture: "Postures prolongées : pauses, réglage poste."
-    }
-  },
-
-  batiment: {
-    label: "Ouvrier du bâtiment",
-    risks: {
-      chute: "Chutes de hauteur : échafaudages sécurisés.",
-      manutention: "Manutention lourde : techniques de levage.",
-      bruit: "Bruit : protections auditives.",
-      poussiere: "Poussières : masques adaptés."
-    }
-  },
-
-  livreur: {
-    label: "Conducteur / Livreur",
-    risks: {
-      routier: "Risque routier : planning réaliste.",
-      manutention: "Manutention : diable, transpalette.",
-      chute: "Chutes : attention aux sols glissants."
-    }
-  }
-
-};
-
-// ✅ AFFICHAGE DES RISQUES
-function showRisks(jobKey) {
-  document.getElementById("menu-metiers").style.display = "none";
-
-  const zone = document.getElementById("menu-risks");
-  zone.style.display = "block";
-
-  let html = `<button class="btn btn-back" onclick="retour()">← Retour</button>`;
-  html += `<h2>Risques – ${data[jobKey].label}</h2>`;
-
-  for (let r in data[jobKey].risks) {
-    html += `<button class="btn btn-risk" onclick="showDetail('${jobKey}', '${r}')">${r}</button>`;
-  }
-
-  zone.innerHTML = html;
-}
-
-// ✅ AFFICHAGE DES DÉTAILS
-function showDetail(jobKey, riskKey) {
-  const zone = document.getElementById("menu-risks");
-  zone.innerHTML = `
-    <button class="btn btn-back" onclick="showRisks('${jobKey}')">← Retour</button>
-    <h2>${riskKey}</h2>
-    <p>${data[jobKey].risks[riskKey]}</p>
-  `;
-}
-
-// ✅ RETOUR
-function retour() {
-  document.getElementById("menu-risks").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "block";
-}
-</script>
-
-</body>
-</html>
+    risques: {
