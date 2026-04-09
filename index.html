@@ -1,92 +1,118 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Prévention Mobile - RESTEV</title>
+  <meta charset="UTF-8" />
+  <title>RESTEV – Prévention Mobile</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 450px;
+      max-width: 480px;
       margin: auto;
-      padding: 20px;
+      padding: 0;
       background: #f3f4f6;
+    }
+
+    /* ---- ÉCRAN D’ACCUEIL ---- */
+    #accueil {
+      height: 100vh;
+      background: linear-gradient(135deg, #2563eb, #9333ea);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 20px;
       text-align: center;
     }
 
-    /* ----- LOGO ----- */
     .logo {
       width: 260px;
-      margin: 30px auto 20px auto;
-      display: block;
+      margin-bottom: 30px;
     }
 
-    /* ----- TITRE ----- */
-    h1 {
-      font-size: 26px;
-      background: #2563eb;
-      color: white;
-      padding: 18px;
-      border-radius: 12px;
-      margin-bottom: 25px;
+    #accueil h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
     }
 
-    /* ----- BOUTONS ----- */
+    #accueil p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
     .btn {
       width: 100%;
       padding: 14px;
-      margin-top: 10px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: bold;
+      margin-top: 10px;
     }
 
-    .btn-start { background: #2563eb; color: white; }
-    .btn-job   { background: #2563eb; color: white; }
-    .btn-risk  { background: #f97316; color: white; }
-    .btn-back  { background: #d1d5db; color: black; }
+    .btn-start {
+      background: white;
+      color: #2563eb;
+      width: 240px;
+    }
 
+    /* ---- CARTES ---- */
     .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: left;
+      margin: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-job {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-risk {
+      background: #f97316;
+      color: white;
+    }
+
+    .btn-back {
+      background: #d1d5db;
+      color: black;
     }
   </style>
 </head>
 
 <body>
 
-<!-- ✅ ✅ ÉCRAN D’ACCUEIL RESTEV AVEC TON LOGO -->
+<!-- ✅ ÉCRAN D'ACCUEIL MODERNE -->
 <div id="accueil">
-  <img src="https://i.ibb.co/rf4MxsC/LOGO-RESTEV-DIGITAL-RVB.png" class="logo">
-  <h1>Application Prévention</h1>
-  <button class="btn btn-start" onclick="entrer()">🚀 Entrer</button>
+  public/LOGO-RESTEV-DIGITAL-RVB.png
+  <h1>Prévention Mobile</h1>
+  <p>Application officielle RESTEV</p>
+  <button class="btn btn-start" onclick="entrer()">Entrer</button>
 </div>
 
 <!-- ✅ LISTE DES MÉTIERS -->
 <div id="menu-metiers" class="card" style="display:none;">
   <h2>Choisis ton métier :</h2>
 
-  <button class="btn btn-job" onclick="afficherRisques('maintenance')">Technicien maintenance</button>
-  <button class="btn btn-job" onclick="afficherRisques('commercial')">Commercial itinérant</button>
-  <button class="btn btn-job" onclick="afficherRisques('boucher')">Boucher</button>
-  <button class="btn btn-job" onclick="afficherRisques('coiffeur')">Coiffeur / Coiffeuse</button>
-  <button class="btn btn-job" onclick="afficherRisques('batiment')">Ouvrier du bâtiment</button>
-  <button class="btn btn-job" onclick="afficherRisques('livreur')">Conducteur / Livreur</button>
+  <button class="btn btn-job" onclick="showRisks('maintenance')">Technicien maintenance</button>
+  <button class="btn btn-job" onclick="showRisks('commercial')">Commercial itinérant</button>
+  <button class="btn btn-job" onclick="showRisks('boucher')">Boucher</button>
+  <button class="btn btn-job" onclick="showRisks('coiffeur')">Coiffeur / Coiffeuse</button>
+  <button class="btn btn-job" onclick="showRisks('batiment')">Ouvrier du bâtiment</button>
+  <button class="btn btn-job" onclick="showRisks('livreur')">Conducteur / Livreur</button>
 
-  <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
+  <button class="btn btn-back" onclick="retourAccueil()">← Retour à l’accueil</button>
 </div>
 
 <!-- ✅ LISTE DES RISQUES -->
-<div id="menu-risques" class="card" style="display:none;"></div>
+<div id="menu-risks" class="card" style="display:none;"></div>
 
 <script>
-// ✅ BASE SMALE ET SIMPLE
+/* ✅ BASE DE DONNÉES RISQUES */
 const data = {
   maintenance: {
     label: "Technicien maintenance",
@@ -97,94 +123,87 @@ const data = {
       tms: "TMS : ergonomie, alternance."
     }
   },
-
   commercial: {
     label: "Commercial itinérant",
     risques: {
       routier: "Accident routier : pauses, vigilance.",
-      stress: "Stress : organisation, gestion du temps."
+      stress: "Stress : gestion du temps."
     }
   },
-
   boucher: {
     label: "Boucher",
     risques: {
       coupure: "Coupures : gants anticoupure.",
-      manutention: "Charges lourdes : bonnes postures.",
-      cmr: "CMR : FDS, ventilation."
+      manutention: "Manutention : posture sûre.",
+      cmr: "Nettoyants CMR : FDS, ventilation."
     }
   },
-
   coiffeur: {
     label: "Coiffeur / Coiffeuse",
     risques: {
       chimique: "Produits chimiques : gants, lunettes.",
-      posture: "Postures prolongées : pauses, réglage poste."
+      posture: "Postures prolongées : pauses."
     }
   },
-
   batiment: {
     label: "Ouvrier du bâtiment",
     risques: {
-      chute: "Chutes de hauteur : échafaudages, harnais.",
-      manutention: "Manutention lourde : techniques adaptées.",
-      bruit: "Bruit : protections auditives.",
-      poussiere: "Poussières : masques FFP."
+      chute: "Chutes : harnais, échafaudages.",
+      manutention: "Charges lourdes : gestes sûrs.",
+      bruit: "Bruit : casque antibruit.",
+      poussiere: "Poussières : masques adaptés."
     }
   },
-
   livreur: {
     label: "Conducteur / Livreur",
     risques: {
-      routier: "Risque routier : planification, pauses.",
-      manutention: "Colis : diable, transpalette.",
+      routier: "Risque routier : pauses, vigilance.",
+      manutention: "Colis lourds : diable.",
       chute: "Chutes : sols glissants."
     }
   }
 };
 
-// ✅ ACTION : ENTRER
+/* ✅ Entrer dans l'application */
 function entrer() {
-  document.getElementById("accueil").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "block";
+  accueil.style.display = "none";
+  menu-metiers.style.display = "block";
 }
 
-// ✅ RISQUES DU MÉTIER
-function afficherRisques(metier) {
-  document.getElementById("menu-metiers").style.display = "none";
-  
-  const zone = document.getElementById("menu-risques");
-  zone.style.display = "block";
+/* ✅ Afficher risques du métier */
+function showRisks(job) {
+  menu-metiers.style.display = "none";
+  menu-risks.style.display = "block";
 
-  let html = `<button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>`;
-  html += `<h2>Risques – ${data[metier].label}</h2>`;
+  let html = `<button class="btn btn-back" onclick="goBack()">← Retour métiers</button>`;
+  html += `<h2>Risques – ${data[job].label}</h2>`;
 
-  for (let r in data[metier].risques) {
-    html += `<button class="btn btn-risk" onclick="afficherDetail('${metier}','${r}')">${r}</button>`;
+  for (let r in data[job].risques) {
+    html += `<button class="btn btn-risk" onclick="showDetail('${job}','${r}')">${r}</button>`;
   }
-
-  zone.innerHTML = html;
+  menu-risks.innerHTML = html;
 }
 
-// ✅ DÉTAILS
-function afficherDetail(metier, risque) {
-  document.getElementById("menu-risques").innerHTML = `
-    <button class="btn btn-back" onclick="afficherRisques('${metier}')">← Retour risques</button>
+/* ✅ Détail */
+function showDetail(job, risque) {
+  menu-risks.innerHTML = `
+    <button class="btn btn-back" onclick="showRisks('${job}')">← Retour risques</button>
     <h2>${risque}</h2>
-    <p>${data[metier].risques[risque]}</p>
+    <p>${data[job].risques[risque]}</p>
   `;
 }
 
-// ✅ RETOUR
-function retourMetiers() {
-  document.getElementById("menu-risques").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "block";
+/* ✅ Retour métiers */
+function goBack() {
+  menu-risks.style.display = "none";
+  menu-metiers.style.display = "block";
 }
 
+/* ✅ Retour accueil */
 function retourAccueil() {
-  document.getElementById("menu-risques").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "none";
-  document.getElementById("accueil").style.display = "block";
+  menu-risks.style.display = "none";
+  menu-metiers.style.display = "none";
+  accueil.style.display = "flex";
 }
 </script>
 
