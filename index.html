@@ -88,87 +88,107 @@
 <script>
 /* ✅ BASE RISQUES FIABLE */
 const data = {
- maintenance: {
+maintenance: {
   label: "Technicien maintenance",
   risques: {
 
     "Chute de hauteur": `
-      <b>SITUATIONS DANGEREUSES :</b><br>
+      <div style='padding:10px;font-size:16px'>
+      <h3 style='color:#2563eb;margin-top:0'>⬆️ Chute de hauteur</h3>
+
+      <b>Situations dangereuses :</b><br>
       • Travail en hauteur sur machine / toiture<br>
-      • Plateforme instable ou improvisée<br>
-      • Garde-corps absents<br><br>
+      • Accès sans rampe / garde‑corps<br>
+      • Échelles ou plateformes instables<br><br>
 
-      <b>PRÉVENTION (HIÉRARCHIE INRS/CARSAT) :</b><br>
-      • Plateformes sécurisées / garde-corps<br>
-      • Harnais + ligne de vie<br>
-      • Travail en binôme<br>
-      • Formation port du harnais<br><br>
+      <b>Prévention :</b><br>
+      ✅ Plateformes sécurisées<br>
+      ✅ Garde‑corps<br>
+      ✅ Harnais + ligne de vie<br>
+      ✅ Travail en binôme<br><br>
 
-      <b>RÉFÉRENCES :</b><br>
-      INRS ED 6109 – Maintenance et sécurité
+      <b>Documents utiles :</b><br>
+      • INRS ED 6109 – Maintenance<br>
+      • CARSAT – Travail en hauteur
+      </div>
     `,
 
     "Risque électrique": `
-      <b>SITUATIONS DANGEREUSES :</b><br>
-      • Armoire sous tension<br>
-      • Consignation non effectuée<br>
-      • Mauvaise VAT<br><br>
+      <div style='padding:10px;font-size:16px'>
+      <h3 style='color:#2563eb;margin-top:0'>⚡ Risque électrique</h3>
 
-      <b>PRÉVENTION :</b><br>
-      • Procédure LOTO (consignation)<br>
-      • Habilitation BR / B2V<br>
-      • Vérification absence de tension (VAT)<br>
-      • Outils isolés 1000V<br><br>
+      <b>Situations dangereuses :</b><br>
+      • Intervention sur armoire sous tension<br>
+      • Consignation absente ou incorrecte<br>
+      • Intervention urgente non préparée<br><br>
 
-      <b>RÉFÉRENCES :</b><br>
-      INRS ED 912 – Consignation
+      <b>Prévention :</b><br>
+      ✅ Procédure LOTO (Consignation)<br>
+      ✅ Habilitation adaptée (BR / B2V)<br>
+      ✅ Vérification d'Absence de Tension (VAT)<br>
+      ✅ Outils isolés 1000V<br><br>
+
+      <b>Documents utiles :</b><br>
+      • INRS ED 912 – Consignation
+      </div>
     `,
 
     "CMR": `
-      <b>SITUATIONS DANGEREUSES :</b><br>
-      • Aérosols dégraissants<br>
-      • Solvants en atelier<br>
-      • Nettoyants agressifs<br><br>
+      <div style='padding:10px;font-size:16px'>
+      <h3 style='color:#9333ea;margin-top:0'>☣️ CMR</h3>
 
-      <b>PRÉVENTION :</b><br>
-      • Substitution obligatoire<br>
-      • Ventilation locale aspirante<br>
-      • Port gants nitrile / masque FFP2<br>
-      • Respect strict FDS<br><br>
+      <b>Situations dangereuses :</b><br>
+      • Solvants, aérosols dégraissants<br>
+      • Huiles minérales, graisses<br><br>
 
-      <b>RÉFÉRENCES :</b><br>
-      INRS ED 984 – CMR
+      <b>Prévention :</b><br>
+      ✅ Substitution obligatoire<br>
+      ✅ Ventilation locale aspirante<br>
+      ✅ FDS disponible avant intervention<br>
+      ✅ Gants nitrile – Masque FFP2<br><br>
+
+      <b>Documents utiles :</b><br>
+      • INRS ED 984 – CMR
+      </div>
     `,
 
     "TMS": `
-      <b>SITUATIONS DANGEREUSES :</b><br>
-      • Travail en zone exiguë<br>
+      <div style='padding:10px;font-size:16px'>
+      <h3 style='color:#f97316;margin-top:0'>🧍 TMS</h3>
+
+      <b>Situations dangereuses :</b><br>
       • Postures accroupies / bras levés<br>
-      • Port de charges répétées<br><br>
+      • Travail dans zones exiguës<br>
+      • Port de charges lourdes<br><br>
 
-      <b>PRÉVENTION :</b><br>
-      • Pauses régulières<br>
-      • Outils ergonomiques<br>
-      • Alternance des tâches<br>
-      • Éclairage adapté<br><br>
+      <b>Prévention :</b><br>
+      ✅ Pauses régulières<br>
+      ✅ Outils ergonomiques<br>
+      ✅ Alternance des tâches<br>
+      ✅ Éclairage adapté<br><br>
 
-      <b>RÉFÉRENCES :</b><br>
-      INRS – TMS (ED 917)
+      <b>Documents utiles :</b><br>
+      • INRS ED 917 – TMS
+      </div>
     `,
 
     "Mécanique / Écrasement": `
-      <b>SITUATIONS DANGEREUSES :</b><br>
+      <div style='padding:10px;font-size:16px'>
+      <h3 style='color:#dc2626;margin-top:0'>⚙️ Mécanique / Écrasement</h3>
+
+      <b>Situations dangereuses :</b><br>
       • Carter enlevé<br>
       • Machine en mouvement<br>
       • Réarmement intempestif<br><br>
 
-      <b>PRÉVENTION :</b><br>
-      • Consignation obligatoire<br>
-      • Carter verrouillable<br>
-      • Procédures travaux dangereux<br><br>
+      <b>Prévention :</b><br>
+      ✅ Consignation obligatoire<br>
+      ✅ Carter verrouillable<br>
+      ✅ Procédure travaux dangereux<br><br>
 
-      <b>RÉFÉRENCES :</b><br>
-      INRS ND 2234 – Risques mécaniques
+      <b>Documents utiles :</b><br>
+      • INRS ND 2234 – Risques mécaniques
+      </div>
     `
   }
 },
