@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
 <title>RESTEV – Prévention Mobile</title>
@@ -13,7 +14,7 @@
         background: #f3f4f6;
     }
 
-    /* ---- ACCUEIL ---- */
+    /* ACCUEIL */
     #accueil {
         height: 100vh;
         background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -47,21 +48,23 @@
     .btn-back { background:#d1d5db; color:black; }
 
     .card {
-        background:white;
-        padding:20px;
-        border-radius:12px;
-        margin:20px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.15);
-        text-align:left;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        text-align: left;
     }
 
     select {
-        width:100%;
-        font-size:18px;
-        padding:12px;
-        border-radius:10px;
-        margin-bottom:15px;
+        width: 100%;
+        font-size: 18px;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 15px;
     }
+
+    h3 { margin-bottom: 8px; }
 </style>
 </head>
 
@@ -69,11 +72,15 @@
 
 <!-- ✅ ACCUEIL -->
 <div id="accueil">
-    logo.png
+    <img src="logo.png" class="logo">
     <h1>Prévention Mobile</h1>
     <p>Application officielle RESTEV</p>
 
     <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
+
+    <button class="btn btn-start" style="margin-top:20px;background:#9333ea;">À propos</button>
+    <button class="btn btn-start" style="background:#4ade80;">Contact</button>
+    <button class="btn btn-start" style="background:#ef4444;">Urgences</button>
 </div>
 
 <!-- ✅ MENU PRINCIPAL -->
@@ -92,9 +99,10 @@
     <select id="select-metier">
         <option value=""></option>
 
-        <option value="maintenance">Technicien maintenance</option>
-        <option value="boucher">Boucher</option>
+        <option value="agent_entretien">Agent d'entretien</option>
+        <option value="agent_logistique">Agent logistique</option>
         <option value="boulanger">Boulanger</option>
+        <option value="maintenance">Technicien maintenance</option>
     </select>
 
     <button class="btn btn-menu" onclick="validerMetier()">VALIDER ✅</button>
@@ -107,244 +115,32 @@
 
 <script>
 
-/* ✅✅ BASE MÉTIERS + FICHES DÉVELOPPÉES (niveau B) */
+/* ✅ BASE DE DONNÉES MÉTIERS (niveau B) */
 const data = {
 
-    /* ✅ MÉTIER : TECHNICIEN MAINTENANCE */
-  maintenance: {
-  label: "Technicien maintenance",
-  risques: {
+    /* ✅ AGENT D’ENTRETIEN */
+    agent_entretien: {
+      label: "Agent d’entretien",
+      risques: {
 
-    "Chute de hauteur": `
-      <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
+        "Produits chimiques": `
+            <h3 style='color:#9333ea;'>🧴 Produits chimiques</h3>
+            <b>Situations :</b><br>
+            • Mélanges dangereux (chlore/acide)<br>
+            • Aérosols irritants<br>
+            • Nettoyage sans ventilation<br><br>
 
-      <b>Situations dangereuses :</b><br>
-      • Travail sur machine / mezzanine<br>
-      • Accès non sécurisé<br>
-      • Plateforme instable<br><br>
+            <b>Prévention :</b><br>
+            ✅ Substitution produits neutres<br>
+            ✅ Gants nitrile + lunettes<br>
+            ✅ Jamais de mélanges<br><br>
 
-      <b>Prévention :</b><br>
-      ✅ Garde-corps / plateforme sécurisée<br>
-      ✅ Harnais + ligne de vie<br>
-      ✅ Travail en binôme<br><br>
+            <b>Documents :</b><br>
+            INRS ED 984 – CMR
+        `,
 
-      <b>Documents utiles :</b><br>
-      INRS ED 6109 – Maintenance en sécurité
-    `,
+        "TMS": `
+            <h3 style='color:#2563eb;'>📦 TMS – gestes répétitifs</h3>
+            • Lavage sols<br>
+            • Vitres répétitives<br><br>
 
-    "Risque électrique": `
-      <h3 style='color:#f97316;'>⚡ Risque électrique</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Armoire sous tension<br>
-      • Consignation absente<br>
-      • Mauvaise VAT<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Habilitation BR / B2V<br>
-      ✅ Procédure LOTO obligatoire<br>
-      ✅ Outils isolés 1000V<br><br>
-
-      <b>Documents utiles :</b><br>
-      INRS ED 912 – Consignation
-    `,
-
-    "Risque mécanique": `
-      <h3 style='color:#dc2626;'>⚙️ Mécanique / Écrasement</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Carter retiré<br>
-      • Mouvements dangereux<br>
-      • Redémarrage imprévu<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Verrouillage des carters<br>
-      ✅ Consignation des énergies<br>
-      ✅ Suivi entretien machine<br><br>
-
-      <b>Documents utiles :</b><br>
-      INRS ND 2234 – Risques mécaniques
-    `,
-
-    "CMR / produits chimiques": `
-      <h3 style='color:#9333ea;'>☣️ CMR / Produits chimiques</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Solvants<br>
-      • Aérosols dégraissants<br>
-      • Huiles minérales<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Substitution obligatoire<br>
-      ✅ Ventilation<br>
-      ✅ Port masque FFP2 / gants nitrile<br><br>
-
-      <b>Documents utiles :</b><br>
-      INRS ED 984 – CMR
-    `,
-
-    "TMS / postures": `
-      <h3 style='color:#38bdf8;'>🧍 TMS / Postures</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Zones exiguës<br>
-      • Bras levés prolongés<br>
-      • Port de charges<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Outils ergonomiques<br>
-      ✅ Alternance des tâches<br>
-      ✅ Éclairage adapté<br><br>
-
-      <b>Documents utiles :</b><br>
-      INRS ED 917 – TMS
-    `
-  }
-},
-
-    /* ✅ MÉTIER : BOUCHER (niveau B amélioré) */
-    boucher: {
-        label: "Boucher",
-        risques: {
-
-            "Coupures et lacérations": `
-                <h3 style='color:#dc2626;'>🔪 Coupures et lacérations</h3>
-
-                <b>Situations dangereuses :</b><br>
-                • Désossage rapide<br>
-                • Couteaux hors étui<br>
-                • Scies / trancheuses<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Gants anticoupure EN388<br>
-                ✅ Sur-gant inox<br>
-                ✅ Affûtage régulier<br>
-                ✅ Rangement sécurisé des lames<br><br>
-
-                <b>Documents utiles :</b><br>
-                INRS ED 4070 – Coupures et lacérations
-            `,
-
-            "Manutention et TMS": `
-                <h3 style='color:#2563eb;'>📦 Manutention & TMS</h3>
-
-                <b>Situations dangereuses :</b><br>
-                • Port de quartiers 15–40 kg<br>
-                • Découpe répétée<br>
-                • Postures penchées<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Plans réglables<br>
-                ✅ Rotation des tâches<br>
-                ✅ Outils ergonomiques<br><br>
-
-                <b>Documents utiles :</b><br>
-                INRS ED 917 – TMS
-            `,
-
-            "Froid": `
-                <h3 style='color:#38bdf8;'>❄️ Travail au froid</h3>
-
-                <b>Situations :</b><br>
-                • Chambre froide 0–4°C<br>
-                • Humidité<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Gants isolants<br>
-                ✅ Pauses régulières<br><br>
-
-                <b>Documents :</b><br>
-                INRS ED 6111 – Travail au froid
-            `,
-
-            "Chutes et glissades": `
-                <h3 style='color:#0ea5e9;'>🦶 Chutes / glissades</h3>
-
-                <b>Situations :</b><br>
-                • Sol gras / humide<br>
-                • Chambre froide<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Chaussures S3<br>
-                ✅ Nettoyage immédiat<br>
-            `
-        }
-    },
-
-    /* ✅ MÉTIER : BOULANGER (niveau B) */
-    boulanger: {
-        label: "Boulanger",
-        risques: {
-            "Brûlures": `
-                <h3 style='color:#f97316;'>🔥 Brûlures</h3>
-                • Fours, plaques chaudes<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Gants thermiques<br>
-                ✅ Manipulation sécurisée<br>
-            `,
-            "Poussières de farine": `
-                <h3 style='color:#9333ea;'>🌾 Poussières de farine</h3>
-                • Tamisage, nettoyage à sec<br><br>
-
-                <b>Prévention :</b><br>
-                ✅ Masque FFP2<br>
-                ✅ Ventilation / aspiration<br>
-            `
-        }
-    }
-
-};
-
-
-
-/* ✅✅ FONCTIONS DE NAVIGATION */
-
-function ouvrirMenuPrincipal() {
-    document.getElementById("accueil").style.display = "none";
-    document.getElementById("menuPrincipal").style.display = "block";
-    document.getElementById("menuMetiers").style.display = "none";
-    document.getElementById("menuRisks").style.display = "none";
-}
-
-function ouvrirMetiers() {
-    document.getElementById("menuPrincipal").style.display = "none";
-    document.getElementById("menuMetiers").style.display = "block";
-}
-
-function retourAccueil() {
-    document.getElementById("accueil").style.display = "flex";
-    document.getElementById("menuPrincipal").style.display = "none";
-    document.getElementById("menuMetiers").style.display = "none";
-    document.getElementById("menuRisks").style.display = "none";
-}
-
-
-
-/* ✅✅ VALIDATION METIER */
-function validerMetier() {
-    const metier = document.getElementById("select-metier").value;
-
-    if (metier === "") {
-        alert("Merci de sélectionner un métier.");
-        return;
-    }
-
-    afficherRisques(metier);
-}
-
-
-
-/* ✅✅ AFFICHAGE RISQUES */
-function afficherRisques(job) {
-
-    document.getElementById("menuMetiers").style.display = "none";
-    const zone = document.getElementById("menuRisks");
-    zone.style.display = "block";
-
-    let html = `
-<button class='btn btn-back' onclick='ouvrirMetiers()'>← Retour métiers</button>
-<h2>Risques – ${data[job].label}</h2>
-`;
-
-    for (let r in data[job].risques) {
