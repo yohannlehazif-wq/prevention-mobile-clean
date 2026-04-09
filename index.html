@@ -14,7 +14,7 @@
         background: #f3f4f6;
     }
 
-    /* ACCUEIL */
+    /* ACCUEIL SIMPLE */
     #accueil {
         height: 100vh;
         background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -43,9 +43,21 @@
         margin-top: 10px;
     }
 
-    .btn-start { background:white; color:#2563eb; }
-    .btn-menu { background:#2563eb; color:white; font-size:18px; }
-    .btn-back { background:#d1d5db; color:black; }
+    .btn-start {
+        background: white;
+        color: #2563eb;
+    }
+
+    .btn-menu {
+        background: #2563eb;
+        color: white;
+        font-size: 18px;
+    }
+
+    .btn-back {
+        background: #d1d5db;
+        color: black;
+    }
 
     .card {
         background: white;
@@ -63,42 +75,24 @@
         border-radius: 10px;
         margin-bottom: 15px;
     }
-
-    h3 { margin-bottom: 8px; }
 </style>
 </head>
 
 <body>
 
-<!-- ✅ ACCUEIL -->
+<!-- ✅ ACCUEIL SIMPLE -->
 <div id="accueil">
-    <img src="logo.png" class="logo">
-    <h1>Prévention Mobile</h1>
-    <p>Application officielle RESTEV</p>
-
-    <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
-
-    <button class="btn btn-start" style="margin-top:20px;background:#9333ea;">À propos</button>
-    <button class="btn btn-start" style="background:#4ade80;">Contact</button>
-    <button class="btn btn-start" style="background:#ef4444;">Urgences</button>
+    logo.png class="logo">
+    <h1>Prévention RESTEV</h1>
+    <button class="btn btn-start" onclick="ouvrirMetiers()">ENTRER</button>
 </div>
 
-<!-- ✅ MENU PRINCIPAL -->
-<div id="menuPrincipal" class="card" style="display:none;">
-    <h2>Menu principal</h2>
-
-    <button class="btn btn-menu" onclick="ouvrirMetiers()">Métiers</button>
-
-    <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
-</div>
-
-<!-- ✅ MENU METIERS -->
+<!-- ✅ MENU MÉTIERS -->
 <div id="menuMetiers" class="card" style="display:none;">
     <h2>Choisis ton métier :</h2>
 
     <select id="select-metier">
         <option value=""></option>
-
         <option value="agent_entretien">Agent d'entretien</option>
         <option value="agent_logistique">Agent logistique</option>
         <option value="boulanger">Boulanger</option>
@@ -106,41 +100,154 @@
     </select>
 
     <button class="btn btn-menu" onclick="validerMetier()">VALIDER ✅</button>
-    <button class="btn btn-back" onclick="ouvrirMenuPrincipal()">← Retour</button>
+    <button class="btn btn-back" onclick="retourAccueil()">← Retour</button>
 </div>
 
 <!-- ✅ RISQUES -->
 <div id="menuRisks" class="card" style="display:none;"></div>
 
-
 <script>
 
-/* ✅ BASE DE DONNÉES MÉTIERS (niveau B) */
+/* ✅ MÉTIERS + FICHES (Niveau B) */
 const data = {
 
-    /* ✅ AGENT D’ENTRETIEN */
     agent_entretien: {
       label: "Agent d’entretien",
       risques: {
-
         "Produits chimiques": `
-            <h3 style='color:#9333ea;'>🧴 Produits chimiques</h3>
-            <b>Situations :</b><br>
-            • Mélanges dangereux (chlore/acide)<br>
-            • Aérosols irritants<br>
-            • Nettoyage sans ventilation<br><br>
-
-            <b>Prévention :</b><br>
-            ✅ Substitution produits neutres<br>
-            ✅ Gants nitrile + lunettes<br>
-            ✅ Jamais de mélanges<br><br>
-
-            <b>Documents :</b><br>
-            INRS ED 984 – CMR
+          <h3 style='color:#9333ea;'>🧴 Produits chimiques</h3>
+          • Aérosols, irritants<br><br>
+          ✅ Gants nitrile<br>
+          ✅ Jamais de mélanges<br>
         `,
-
         "TMS": `
-            <h3 style='color:#2563eb;'>📦 TMS – gestes répétitifs</h3>
-            • Lavage sols<br>
-            • Vitres répétitives<br><br>
+          <h3 style='color:#2563eb;'>📦 TMS</h3>
+          • Lavage, vitres répétitives<br><br>
+          ✅ Alternance tâches<br>
+          ✅ Manche télescopique<br>
+        `,
+        "Chutes": `
+          <h3 style='color:#0ea5e9;'>🦶 Chutes</h3>
+          ✅ Signalisation sol<br>
+          ✅ Chaussures antidérapantes<br>
+        `
+      }
+    },
 
+    agent_logistique: {
+      label: "Agent logistique",
+      risques: {
+        "Manutention lourde": `
+          <h3 style='color:#2563eb;'>📦 Manutention</h3>
+          ✅ Transpalette<br>
+          ✅ Rotation tâches<br>
+        `,
+        "Chocs": `
+          <h3 style='color:#dc2626;'>🚧 Heurts engins</h3>
+          ✅ Chemins piétons<br>
+          ✅ Gilet HV<br>
+        `
+      }
+    },
+
+    boulanger: {
+      label: "Boulanger",
+      risques: {
+        "Brûlures": `
+          <h3 style='color:#f97316;'>🔥 Brûlures</h3>
+          ✅ Gants thermiques<br>
+          ✅ Manipulation sécurisée<br>
+        `,
+        "Farine": `
+          <h3 style='color:#9333ea;'>🌾 Poussières</h3>
+          ✅ FFP2<br>
+          ✅ Aspiration<br>
+        `
+      }
+    },
+
+    maintenance: {
+      label: "Technicien maintenance",
+      risques: {
+        "Chute hauteur": `
+          <h3 style='color:#2563eb;'>⬆️ Chute</h3>
+          ✅ Garde-corps<br>
+          ✅ Harnais<br>
+        `,
+        "Électrique": `
+          <h3 style='color:#f97316;'>⚡ Électrique</h3>
+          ✅ BR / B2V<br>
+          ✅ Consignation LOTO<br>
+        `,
+        "Mécanique": `
+          <h3 style='color:#dc2626;'>⚙️ Mécanique</h3>
+          ✅ Carter verrouillé<br>
+          ✅ Procédure<br>
+        `
+      }
+    },
+};
+
+
+/* ✅ NAVIGATION SIMPLE */
+function ouvrirMetiers() {
+    document.getElementById("accueil").style.display = "none";
+    document.getElementById("menuMetiers").style.display = "block";
+    document.getElementById("menuRisks").style.display = "none";
+}
+
+function retourAccueil() {
+    document.getElementById("accueil").style.display = "flex";
+    document.getElementById("menuMetiers").style.display = "none";
+    document.getElementById("menuRisks").style.display = "none";
+}
+
+
+/* ✅ VALIDATION MÉTIER */
+function validerMetier() {
+
+    const metier = document.getElementById("select-metier").value;
+
+    if (metier === "") {
+        alert("Merci de sélectionner un métier.");
+        return;
+    }
+
+    afficherRisques(metier);
+}
+
+
+/* ✅ AFFICHAGE DES RISQUES */
+function afficherRisques(job) {
+
+    document.getElementById("menuMetiers").style.display = "none";
+
+    const zone = document.getElementById("menuRisks");
+    zone.style.display = "block";
+
+    let html = `
+<button class='btn btn-back' onclick='ouvrirMetiers()'>← Retour métiers</button>
+<h2>Risques – ${data[job].label}</h2>
+`;
+
+    for (let r in data[job].risques) {
+        html += `<button class='btn btn-menu' onclick="showDetail('${job}','${r}')">${r}</button>`;
+    }
+
+    zone.innerHTML = html;
+}
+
+
+/* ✅ AFFICHAGE DU DÉTAIL */
+function showDetail(job, risque) {
+
+    document.getElementById("menuRisks").innerHTML = `
+<button class='btn btn-back' onclick="afficherRisques('${job}')">← Retour</button>
+<h2>${risque}</h2>
+${data[job].risques[risque]}
+`;
+}
+</script>
+
+</body>
+</html>
