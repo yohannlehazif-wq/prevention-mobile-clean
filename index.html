@@ -13,12 +13,6 @@
       background: #f3f4f6;
     }
 
-    .logo {
-      width: 200px;
-      display: block;
-      margin: 0 auto 20px auto;
-    }
-
     h1 {
       text-align: center;
       background: #2563eb;
@@ -26,7 +20,6 @@
       padding: 15px;
       border-radius: 12px;
       margin-bottom: 20px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
 
     .card {
@@ -49,18 +42,13 @@
     }
 
     .btn-job { background: #2563eb; color: white; }
-    .btn-job:hover { background: #1e40af; }
-
     .btn-risk { background: #f97316; color: white; }
-    .btn-risk:hover { background: #ea580c; }
-
     .btn-back { background: #d1d5db; color: black; }
 
     .detail-box {
       background: #fff7ed;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     h2 {
@@ -72,145 +60,86 @@
 
 <body>
 
-<!-- ✅ TON LOGO RESTEV — CHEMIN CORRIGÉ -->
-<img src="./publique/LOGO-RESTEV-DIGITAL-RVB.png" alt="Logo RESTEV" class="logo">
-
 <h1>🛡️ Prévention Mobile</h1>
 
-<!-- ✅ MENU MÉTIERS -->
 <div id="jobs" class="card">
   <h2>Choisis ton métier :</h2>
-  <button class="btn btn-job" onclick="showRisks('maintenance')">🛠️ Technicien maintenance</button>
-  <button class="btn btn-job" onclick="showRisks('commercial')">🚗 Commercial itinérant</button>
-  <button class="btn btn-job" onclick="showRisks('boucher')">🔪 Boucher</button>
-  <button class="btn btn-job" onclick="showRisks('coiffeur')">✂️ Coiffeur / Coiffeuse</button>
-  <button class="btn btn-job" onclick="showRisks('batiment')">🏗️ Ouvrier du bâtiment</button>
-<button class="btn btn-job" onclick="showRisks('livreur')">🚚 Conducteur / Livreur</button>
-<button class="btn btn-job" onclick="showRisks('production')">🏭 Opérateur de production</button>
-<button class="btn btn-job" onclick="showRisks('entretien')">🧽 Agent d'entretien</button>
-<button class="btn btn-job" onclick="showRisks('commerce')">🛒 Employé de commerce</button>
+
+  <!-- Métiers de base -->
+  <button class="btn btn-job" onclick="showRisks('maintenance')">Technicien maintenance</button>
+  <button class="btn btn-job" onclick="showRisks('commercial')">Commercial itinérant</button>
+  <button class="btn btn-job" onclick="showRisks('boucher')">Boucher</button>
+  <button class="btn btn-job" onclick="showRisks('coiffeur')">Coiffeur / Coiffeuse</button>
+
+  <!-- Nouveaux métiers -->
+  <button class="btn btn-job" onclick="showRisks('batiment')">Ouvrier du bâtiment</button>
+  <button class="btn btn-job" onclick="showRisks('livreur')">Conducteur / Livreur</button>
+  <button class="btn btn-job" onclick="showRisks('production')">Opérateur de production</button>
+  <button class="btn btn-job" onclick="showRisks('entretien')">Agent d'entretien</button>
+  <button class="btn btn-job" onclick="showRisks('commerce')">Employé de commerce</button>
 </div>
 
-<!-- ✅ ZONE RISQUES + DÉTAILS -->
 <div id="content"></div>
 
 <script>
-const data =
+const data = {
+
+  maintenance: {
+    label: "Technicien maintenance",
+    risks: {
+      chute: { nom: "Chute de hauteur", detail: "Harnais, protections collectives." },
+      cmr: { nom: "CMR", detail: "Substitution, EPI adaptés." },
+      electrique: { nom: "Risque électrique", detail: "Consignation, habilitation." },
+      tms: { nom: "TMS", detail: "Ergonomie, pauses." }
+    }
+  },
+
+  commercial: {
+    label: "Commercial itinérant",
+    risks: {
+      routier: { nom: "Risque routier", detail: "Fatigue, téléphone, planification." },
+      stress: { nom: "Stress", detail: "Organisation, RPS." }
+    }
+  },
+
+  boucher: {
+    label: "Boucher",
+    risks: {
+      coupure: { nom: "Coupures", detail: "Couteaux adaptés, gants anticoupure." },
+      manutention: { nom: "Manutention", detail: "Gestes et postures." },
+      cmr: { nom: "CMR nettoyants", detail: "FDS, ventilation." }
+    }
+  },
+
+  coiffeur: {
+    label: "Coiffeur / Coiffeuse",
+    risks: {
+      chimique: { nom: "Produits chimiques", detail: "Gants, lunettes." },
+      posture: { nom: "Postures prolongées", detail: "Pauses, réglage poste." }
+    }
+  },
+
   batiment: {
     label: "Ouvrier du bâtiment",
     risks: {
-      chute: { nom: "Chute de hauteur", detail: "Travail en hauteur : harnais, garde-corps, échafaudages sécurisés." },
-      manutention: { nom: "Manutention lourde", detail: "Port de charges : techniques de levage, aides mécaniques." },
-      bruit: { nom: "Bruit", detail: "Utilisation d'EPI auditifs, isolement source de bruit." },
-      poussiere: { nom: "Poussières (silice)", detail: "Aspiration, masques adaptés, arrosage zones de coupe." }
+      chute: { nom: "Chute de hauteur", detail: "Garde-corps, harnais." },
+      manutention: { nom: "Manutention lourde", detail: "Techniques de levage." },
+      bruit: { nom: "Bruit", detail: "Protection auditive." },
+      poussiere: { nom: "Poussières (silice)", detail: "Masques adaptés." }
     }
   },
 
   livreur: {
     label: "Conducteur / Livreur",
     risks: {
-      routier: { nom: "Risque routier", detail: "Fatigue, téléphone, vitesse : plan de prévention et pauses régulières." },
-      manutention: { nom: "Manutention", detail: "Gestes et postures adaptées, diable, transpalette." },
-      chute: { nom: "Chutes au même niveau", detail: "Chaussures antidérapantes, surveillance du sol." }
+      routier: { nom: "Risque routier", detail: "Pauses régulières." },
+      manutention: { nom: "Manutention", detail: "Aides au port de charge." },
+      chute: { nom: "Chutes", detail: "Sol glissant." }
     }
   },
 
   production: {
     label: "Opérateur de production",
     risks: {
-      machine: { nom: "Machines en mouvement", detail: "Carter, consignation, interdiction de contournement." },
-      bruit: { nom: "Bruit", detail: "Port de protections auditives." },
-      chimique: { nom: "Produits chimiques", detail: "FDS, ventilation, EPI adaptés." },
-      tms: { nom: "TMS", detail: "Adapter poste, limiter gestes répétitifs." }
-    }
-  },
-
-  entretien: {
-    label: "Agent d'entretien",
-    risks: {
-      chimique: { nom: "Produits chimiques", detail: "Gants, lunettes, ventilation, respect des dilutions." },
-      chute: { nom: "Chutes", detail: "Sol mouillé : signalisation, chaussures antidérapantes." },
-      tms: { nom: "TMS", detail: "Adapter matériel, manches télescopiques, pauses." }
-    }
-  },
-
-  commerce: {
-    label: "Employé de commerce",
-    risks: {
-      manutention: { nom: "Manutention", detail: "Déballage, stockage, charges légères répétées." },
-      chute: { nom: "Chutes", detail: "Sol encombré, vigilance permanente." },
-      incivilite: { nom: "Incivilités", detail: "Gestion des conflits, consignes internes." },
-      tms: { nom: "TMS", detail: "Réglage de poste, alternance des tâches." }
-    }
-  },{
-  maintenance: {
-    label: "Technicien maintenance",
-    risks: {
-      chute: { nom: "Chute de hauteur", detail: "Utiliser harnais, protections collectives, plateformes sécurisées." },
-      cmr: { nom: "CMR", detail: "Substances cancérogènes : substitution, EPI, ventilation, suivi médical." },
-      electrique: { nom: "Risque électrique", detail: "Consignation, habilitation électrique, outils isolés." },
-      tms: { nom: "TMS", detail: "Ergonomie, alternance des tâches, limiter postures contraignantes." }
-    }
-  },
-  commercial: {
-    label: "Commercial itinérant",
-    risks: {
-      routier: { nom: "Risque routier", detail: "Fatigue, téléphone, vitesse : première cause d’accident du travail." },
-      stress: { nom: "Stress", detail: "Organisation, charge mentale, RPS." }
-    }
-  },
-  boucher: {
-    label: "Boucher",
-    risks: {
-      coupure: { nom: "Coupures", detail: "Couteaux adaptés, gants anti-coupure." },
-      manutention: { nom: "Manutention", detail: "Gestes et postures, aides mécaniques." },
-      cmr: { nom: "CMR nettoyants", detail: "FDS, ventilation, EPI chimiques." }
-    }
-  },
-  coiffeur: {
-    label: "Coiffeur / Coiffeuse",
-    risks: {
-      chimique: { nom: "Produits chimiques", detail: "Gants, lunettes, aération du salon." },
-      posture: { nom: "Postures prolongées", detail: "Pauses régulières, réglage du siège et du bac." }
-    }
-  }
-};
-
-function showRisks(jobKey) {
-  const job = data[jobKey];
-  let html = `
-    <div class="card">
-      <button class="btn btn-back" onclick="goBack()">← Retour</button>
-      <h2>Risques – ${job.label}</h2>
-  `;
-  for (let riskKey in job.risks) {
-    html += `
-      <button class="btn btn-risk" onclick="showDetail('${jobKey}', '${riskKey}')">
-        ⚠️ ${job.risks[riskKey].nom}
-      </button>
-    `;
-  }
-  html += "</div>";
-  document.getElementById("jobs").style.display = "none";
-  document.getElementById("content").innerHTML = html;
-}
-
-function showDetail(jobKey, riskKey) {
-  const risk = data[jobKey].risks[riskKey];
-  document.getElementById("content").innerHTML = `
-    <div class="card detail-box">
-      <button class="btn btn-back" onclick="showRisks('${jobKey}')">← Retour</button>
-      <h2>${risk.nom}</h2>
-      <p>${risk.detail}</p>
-    </div>
-  `;
-}
-
-function goBack() {
-  document.getElementById("jobs").style.display = "block";
-  document.getElementById("content").innerHTML = "";
-}
-</script>
-
-</body>
-</html>
+      machine: { nom: "Machines", detail: "Carter, consignation." },
+      bruit: { nom: "Bruit", detail: "Protection auditive." },
