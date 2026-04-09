@@ -13,7 +13,7 @@
       background: #f3f4f6;
     }
 
-    /* ---- ÉCRAN D’ACCUEIL ---- */
+    /* ---- ACCUEIL ---- */
     #accueil {
       height: 100vh;
       background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -27,56 +27,48 @@
     }
 
     .logo {
-     .logo {
- .logo {
- .logo {
-  width: 180px;
-  margin-bottom: 30px;
-}
-
+      width: 100px;      /* ✅ TON LOGO TAILLE 100px */
+      margin-bottom: 30px;
     }
 
-    #accueil h1 { font-size: 28px; margin-bottom: 10px; }
-    #accueil p  { font-size: 18px; margin-bottom: 30px; }
-
     .btn {
-      width: 100%;
+      width: 90%;
       padding: 16px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      font-size: 20px; /* ✅ bouton plus grand */
+      font-size: 20px;   /* ✅ bouton plus grand */
       font-weight: bold;
       margin-top: 10px;
     }
 
-    .btn-start { background: white; color: #2563eb; width: 260px; } /* ✅ bouton Entrer bien visible */
+    .btn-start { background: white; color: #2563eb; }
     .btn-job   { background: #2563eb; color: white; font-size: 18px; }
     .btn-risk  { background: #f97316; color: white; font-size: 17px; }
     .btn-back  { background: #d1d5db; color: black; }
 
+    /* ---- CARTES ---- */
     .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
       margin: 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      text-align: left;
     }
   </style>
 </head>
 
 <body>
 
-<!-- ✅ ÉCRAN D’ACCUEIL AVEC TON LOGO -->
+<!-- ✅ ✅ ACCUEIL AVEC TON LOGO LOCAL -->
 <div id="accueil">
-  <img src="logo.png" class="logo"> <!-- ✅ ceci affiche ton logo correctement -->
+  logo.png
   <h1>Prévention Mobile</h1>
   <p>Application officielle RESTEV</p>
-  <button class="btn btn-start" onclick="entrer()">ENTRER</button> <!-- ✅ bouton fonctionne -->
+  <button class="btn btn-start" onclick="entrer()">ENTRER</button>
 </div>
 
-<!-- ✅ MÉTIERS -->
+<!-- ✅ ✅ MÉTIERS -->
 <div id="menu-metiers" class="card" style="display:none;">
   <h2>Choisis ton métier :</h2>
 
@@ -90,17 +82,17 @@
   <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
 </div>
 
-<!-- ✅ RISQUES -->
+<!-- ✅ ✅ RISQUES -->
 <div id="menu-risks" class="card" style="display:none;"></div>
 
 <script>
-/* ✅ BASE DES RISQUES */
+/* ✅ BASE RISQUES FIABLE */
 const data = {
   maintenance: {
     label: "Technicien maintenance",
     risques: {
       chute: "Chute de hauteur : protections collectives, harnais.",
-      cmr: "CMR : produits dangereux, EPI adaptés.",
+      cmr: "CMR : substitution, EPI adaptés.",
       electrique: "Risque électrique : consignation.",
       tms: "TMS : ergonomie, alternance."
     }
@@ -119,7 +111,7 @@ const data = {
     risques: {
       coupure: "Coupures : gants anticoupure.",
       manutention: "Charges lourdes : gestes sûrs.",
-      cmr: "CMR nettoyants : ventilation, gants."
+      cmr: "CMR : ventilation, gants."
     }
   },
 
@@ -151,23 +143,24 @@ const data = {
   }
 };
 
-/* ✅ ENTRER — fonctionne */
+/* ✅ ✅ BOUTON ENTRER */
 function entrer() {
   document.getElementById("accueil").style.display = "none";
   document.getElementById("menu-metiers").style.display = "block";
 }
 
-/* ✅ RISQUES */
+/* ✅ ✅ AFFICHAGE DES RISQUES */
 function showRisks(job) {
   document.getElementById("menu-metiers").style.display = "none";
 
-  let zone = document.getElementById("menu-risks");
+  const zone = document.getElementById("menu-risks");
   zone.style.display = "block";
 
   let html = `
     <button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>
     <h2>Risques – ${data[job].label}</h2>
   `;
+
   for (let r in data[job].risques) {
     html += `<button class="btn btn-risk" onclick="showDetail('${job}','${r}')">${r}</button>`;
   }
@@ -175,7 +168,7 @@ function showRisks(job) {
   zone.innerHTML = html;
 }
 
-/* ✅ DÉTAIL */
+/* ✅ ✅ FICHE DÉTAIL */
 function showDetail(job, risque) {
   document.getElementById("menu-risks").innerHTML = `
     <button class="btn btn-back" onclick="showRisks('${job}')">← Retour risques</button>
@@ -184,7 +177,7 @@ function showDetail(job, risque) {
   `;
 }
 
-/* ✅ RETOURS */
+/* ✅ ✅ RETOURS */
 function retourMetiers() {
   document.getElementById("menu-risks").style.display = "none";
   document.getElementById("menu-metiers").style.display = "block";
@@ -199,4 +192,3 @@ function retourAccueil() {
 
 </body>
 </html>
-``
