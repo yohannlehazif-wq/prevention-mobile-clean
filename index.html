@@ -1,432 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <title>RESTEV – Prévention Mobile</title>
+    <meta charset="UTF-8">
+    <title>RESTEV – Prévention Mobile</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 480px;
-      margin: auto;
-      padding: 0;
-      background: #f3f4f6;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 480px;
+            margin: auto;
+            padding: 0;
+            background: #f3f4f6;
+        }
 
-    /* ---- ACCUEIL ---- */
-    #accueil {
-      height: 100vh;
-      background: linear-gradient(135deg, #2563eb, #9333ea);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+        /* ---- ÉCRAN D’ACCUEIL ---- */
+        #accueil {
+            height: 100vh;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
-    .logo {
-      width: 100px;      /* ✅ TON LOGO TAILLE 100px */
-      margin-bottom: 30px;
-    }
+        .logo {
+            width: 160px;
+            margin-bottom: 25px;
+        }
 
-    .btn {
-      width: 90%;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 20px;   /* ✅ bouton plus grand */
-      font-weight: bold;
-      margin-top: 10px;
-    }
+        h1 {
+            margin-bottom: 5px;
+        }
 
-    .btn-start { background: white; color: #2563eb; }
-    .btn-job   { background: #2563eb; color: white; font-size: 18px; }
-    .btn-risk  { background: #f97316; color: white; font-size: 17px; }
-    .btn-back  { background: #d1d5db; color: black; }
+        .btn {
+            width: 90%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
 
-    /* ---- CARTES ---- */
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-  </style>
+        .btn-start {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-menu {
+            background: #2563eb;
+            color: white;
+            font-size: 18px;
+        }
+
+        .btn-back {
+            background: #d1d5db;
+            color: black;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            text-align: left;
+        }
+
+        select {
+            width: 100%;
+            font-size: 18px;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ✅ ✅ ACCUEIL AVEC TON LOGO LOCAL -->
-<div id="accueil">
-  logo.png
-  <h1>Prévention Mobile</h1>
-  <p>Application officielle RESTEV</p>
-  <button class="btn btn-start" onclick="entrer()">ENTRER</button>
-</div>
-
-<!-- ✅ ✅ MÉTIERS -->
-<div id="menu-metiers" class="card" style="display:none;">
-  <h2>Choisis ton métier :</h2>
-
-  <select id="select-metier" 
-          style="width:100%;font-size:18px;padding:12px;border-radius:10px;margin-bottom:15px;">
-    
-    <option value=""> </option> <!-- ✅ ligne totalement vide -->
-
-    <!-- A -->
-    <option value="agent_entretien">Agent d'entretien</option>
-    <option value="agent_logistique">Agent de logistique</option>
-
-    <!-- B -->
-    <option value="boucher">Boucher</option>
-    <option value="boulanger">Boulanger</option>
-    <option value="briqueteur">Briqueteur</option>
-    <option value="macon">Maçon</option>
-    <option value="plaquiste">Plaquiste</option>
-    <option value="peintre">Peintre</option>
-    <option value="carreleur">Carreleur</option>
-    <option value="menuisier">Menuisier</option>
-
-    <!-- C -->
-    <option value="cariste">Cariste</option>
-    <option value="livreur">Chauffeur-livreur</option>
-    <option value="coiffeur">Coiffeur / Coiffeuse</option>
-    <option value="commercial">Commercial itinérant</option>
-    <option value="cuisinier">Cuisinier</option>
-
-    <!-- M -->
-    <option value="maintenance">Technicien maintenance</option>
-  </select>
-
-  <!-- ✅ VRAI BOUTON -->
-  <button class="btn btn-job" onclick="validerMetier()">VALIDER ✅</button>
-
-  <button class="btn btn-back" onclick="retourAccueil()" style="margin-top:20px;">
-    ← Retour accueil
-  </button>
-</div>
-``
-
-<!-- ✅ ✅ RISQUES -->
-<div id="menu-risks" class="card" style="display:none;"></div>
-
-<script>
-/* ✅ BASE RISQUES FIABLE */
-const data = {
-maintenance: {
-  label: "Technicien maintenance",
-  risques: {
-
-    "Chute de hauteur": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#2563eb;margin-top:0'>⬆️ Chute de hauteur</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Travail en hauteur sur machine / toiture<br>
-      • Accès sans rampe / garde‑corps<br>
-      • Échelles ou plateformes instables<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Plateformes sécurisées<br>
-      ✅ Garde‑corps<br>
-      ✅ Harnais + ligne de vie<br>
-      ✅ Travail en binôme<br><br>
-
-      <b>Documents utiles :</b><br>
-      • <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-6109/ed6109.pdf" target="_blank">INRS ED 6109 – Maintenance et sécurité</a><br>
-      • <a href="https://www.carsat-ra.fr/doc/travail-en-hauteur" target="_blank">CARSAT – Travail en hauteur</a>
-      </div>
-    `,
-
-    "Risque électrique": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#2563eb;margin-top:0'>⚡ Risque électrique</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Intervention sur armoire sous tension<br>
-      • Consignation non effectuée<br>
-      • Mauvaise VAT<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Procédure LOTO (Consignation)<br>
-      ✅ Habilitation BR / B2V<br>
-      ✅ Vérification d'Absence de Tension<br>
-      ✅ Outils isolés 1000V<br><br>
-
-      <b>Documents utiles :</b><br>
-      • <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-912/ed912.pdf" target="_blank">INRS ED 912 – Consignation</a>
-      </div>
-    `,
-
-    "CMR": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#9333ea;margin-top:0'>☣️ CMR</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Aérosols dégraissants<br>
-      • Solvants en atelier<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Substitution obligatoire<br>
-      ✅ Ventilation locale aspirante<br>
-      ✅ Respect strict FDS / FDS+<br>
-      ✅ Gants nitrile – Masque FFP2<br><br>
-
-      <b>Documents utiles :</b><br>
-      • <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-984/ed984.pdf" target="_blank">INRS ED 984 – Agents CMR</a>
-      </div>
-    `,
-
-    "TMS": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#f97316;margin-top:0'>🧍 TMS</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Postures contraintes<br>
-      • Zones exiguës<br>
-      • Port de charges<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Alternance des tâches<br>
-      ✅ Pauses régulières<br>
-      ✅ Éclairage renforcé<br>
-      ✅ Outils ergonomiques<br><br>
-
-      <b>Documents utiles :</b><br>
-      • <a href="https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-917/ed917.pdf" target="_blank">INRS ED 917 – TMS</a>
-      </div>
-    `,
-
-    "Mécanique / Écrasement": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#dc2626;margin-top:0'>⚙️ Mécanique / Écrasement</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Carter enlevé<br>
-      • Réarmement intempestif<br>
-      • Machine en mouvement<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Consignation obligatoire<br>
-      ✅ Carter verrouillable<br>
-      ✅ Mode opératoire clair<br><br>
-
-      <b>Documents utiles :</b><br>
-      • <a href="https://www.inrs.fr/media.html?refINRS=ND%202234" target="_blank">INRS ND 2234 – Risques mécaniques</a>
-      </div>
-    `
-  }
-},
-
-  commercial: {
-    label: "Commercial itinérant",
-    risques: {
-      routier: "Risque routier : pauses, vigilance.",
-      stress: "Stress : gestion du temps."
-    }
-  },
-
-boucher: {
-  label: "Boucher",
-  risques: {
-
-    "Coupures": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#dc2626;margin-top:0'>🔪 Coupures</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Découpe de viande à grande cadence<br>
-      • Utilisation de couteaux mal affûtés<br>
-      • Chute d’outils coupants<br>
-      • Manipulation de scies / trancheuses<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Couteaux bien affûtés (moins d’effort, moins de dérapage)<br>
-      ✅ Gants anticoupure (EN 388)<br>
-      ✅ Sur-gants inox pour désossage<br>
-      ✅ Respect des zones de coupe<br>
-      ✅ Rangement sécurisé des lames<br><br>
-
-      <b>Documents utiles :</b><br>
-      • https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-4070/ed4070.pdfINRS ED 4070 – Coupures et lacérations</a><br>
-      • https://www.carsat-ra.frCARSAT – Prévention en boucherie</a>
-      </div>
-    `,
-
-    "Manutention": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#2563eb;margin-top:0'>📦 Manutention / TMS</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Port de quartiers de viande lourds<br>
-      • Répétition des gestes (désossage, découpe)<br>
-      • Postures pénibles (bras levés, dos courbé)<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Découpe sur plan de travail réglable en hauteur<br>
-      ✅ Utilisation de crochets de levage<br>
-      ✅ Alterner les tâches pour éviter les TMS<br>
-      ✅ Former aux gestes et postures<br><br>
-
-      <b>Documents utiles :</b><br>
-      • https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-917/ed917.pdfINRS ED 917 – TMS</a><br>
-      • https://www.carsat-ra.frCARSAT – Manutention</a>
-      </div>
-    `,
-
-    "CMR": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#9333ea;margin-top:0'>☣️ CMR (Nettoyants / Désinfectants)</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Utilisation de dégraissants agressifs<br>
-      • Désinfection en zone froide / mal ventilée<br>
-      • Nettoyants contenant des agents corrosifs ou allergènes<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Substitution obligatoire (choisir produits non CMR)<br>
-      ✅ Ventilation renforcée de l’atelier<br>
-      ✅ Gants nitrile + lunettes<br>
-      ✅ Lire systématiquement la FDS<br><br>
-
-      <b>Documents utiles :</b><br>
-      • https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-984/ed984.pdf
-      </div>
-    `,
-
-    "Chute / glissade": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#0ea5e9;margin-top:0'>🦶 Chutes et glissades</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Sol humide / graisse<br>
-      • Chambre froide (givre, condensation)<br>
-      • Déplacement rapide lors des pics d’activité<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Chaussures antidérapantes S3<br>
-      ✅ Nettoyage immédiat des éclaboussures<br>
-      ✅ Tapis antidérapants en chambre froide<br><br>
-
-      <b>Documents utiles :</b><br>
-      • https://www.inrs.fr/dms/inrs/CataloguePapier/ED/TI-ED-6160/ed6160.pdfINRS ED 6160 – Chutes de plain-pied</a>
-      </div>
-    `,
-
-    "Froid": `
-      <div style='padding:10px;font-size:16px'>
-      <h3 style='color:#38bdf8;margin-top:0'>❄️ Froid (chambres froides)</h3>
-
-      <b>Situations dangereuses :</b><br>
-      • Travail prolongé en températures basses<br>
-      • Tirage de carcasses en chambre froide<br>
-      • Risques d’hypothermie locale<br><br>
-
-      <b>Prévention :</b><br>
-      ✅ Gants isolants<br>
-      ✅ Pauses régulières<br>
-      ✅ Limitation du temps d’exposition<br><br>
-
-      <b>Documents utiles :</b><br>
-      • https://www.inrs.fr/media.html?refINRS=ED%206111INRS ED 6111 – Travail au froid</a>
-      </div>
-    `
-  }
-},
-
-  coiffeur: {
-    label: "Coiffeur / Coiffeuse",
-    risques: {
-      chimique: "Produits chimiques : gants, lunettes.",
-      posture: "Postures prolongées : pauses."
-    }
-  },
-
-  batiment: {
-    label: "Ouvrier du bâtiment",
-    risques: {
-      chute: "Harnais, échafaudages sécurisés.",
-      manutention: "Manutention lourde.",
-      bruit: "Casques anti-bruit.",
-      poussiere: "Masques adaptés."
-    }
-  },
-
-  livreur: {
-    label: "Conducteur / Livreur",
-    risques: {
-      routier: "Planification + pauses.",
-      manutention: "Diable, transpalette.",
-      chute: "Sols glissants."
-    }
-  }
-};
-
-/* ✅ ✅ BOUTON ENTRER */
-function entrer() {
-  document.getElementById("accueil").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "block";
-}
-
-/* ✅ ✅ AFFICHAGE DES RISQUES */
-function showRisks(job) {
-  document.getElementById("menu-metiers").style.display = "none";
-
-  const zone = document.getElementById("menu-risks");
-  zone.style.display = "block";
-
-  let html = `
-    <button class="btn btn-back" onclick="retourMetiers()">← Retour métiers</button>
-    <h2>Risques – ${data[job].label}</h2>
-  `;
-
-  for (let r in data[job].risques) {
-    html += `<button class="btn btn-risk" onclick="showDetail('${job}','${r}')">${r}</button>`;
-  }
-
-  zone.innerHTML = html;
-}
-
-/* ✅ ✅ FICHE DÉTAIL */
-function showDetail(job, risque) {
-  document.getElementById("menu-risks").innerHTML = `
-    <button class="btn btn-back" onclick="showRisks('${job}')">← Retour risques</button>
-    <h2>${risque}</h2>
-    <p>${data[job].risques[risque]}</p>
-  `;
-}
-
-/* ✅ ✅ RETOURS */
-function retourMetiers() {
-  document.getElementById("menu-risks").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "block";
-}
-
-function retourAccueil() {
-  document.getElementById("menu-risks").style.display = "none";
-  document.getElementById("menu-metiers").style.display = "none";
-  document.getElementById("accueil").style.display = "flex";
-}
-</script>
-const data = {
-   maintenance: {...},
-   boulanger: {...},
-   boucher: {...},
-   // etc.
-};
- function validerMetier() {
-  const metier = document.getElementById("select-metier").value;
-
-  if (metier === "") {
-    alert("Merci de sélectionner un métier.");
-    return;
-  }
-
-  afficherRisques(metier);  
-} 
-</body>
-</html>
+    <!-- ✅ ÉCRAN D’ACCUEIL -->
+    <div id="accueil">
+        <img src="logo.png" class="logo">
+        <h1>Prévention Mobile</h1>
+        <p>Application officielle RESTEV</p>
+
+        <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
+
+        <button class="btn btn-start" style="margin-top:20px;background:#9333ea;" onclick="alert('À propos du RESTEV')">À propos</button>
+        <button class="btn btn-start" style="background:#4ade80;" onclick="alert('Contact RESTEV')">Contact</button>
+        <button class="btn btn-start" style="background:#ef4444;" onclick="alert('Urgences : 112 / 18 / 15')">Urgences</button>
+    </div>
+
+    <!-- ✅ MENU PRINCIPAL -->
+    <div id="menu-principal" class="card" style="display:none;">
+        <h2>Menu principal</h2>
+
+        <button class="btn btn-menu" onclick="ouvrirMetiers()">Métiers</button>
+        <button class="btn btn-menu" onclick="alert('Module Risques à venir')">Risques</button>
+        <button class="btn btn-menu" onclick="alert('Module CMR à venir')">CMR</button>
+        <button class="btn btn-menu" onclick="alert('Fiches INRS à venir')">Fiches INRS</button>
+        <button class="btn btn-menu" onclick="alert('Documents PDF à venir')">Documents PDF</button>
+        <button class="btn btn-menu" onclick="alert('Signalement danger à venir')">Signaler un danger</button>
+        <button class="btn btn-menu" onclick="alert('Plan de prévention à venir')">Plan de prévention</button>
+        <button class="btn btn-back" onclick="retourAccueil()">Retour accueil</button>
+    </div>
+
+    <!-- ✅ MÉTIERS AVEC MENU DÉROULANT -->
+    <div id="menu-metiers" class="card" style="display:none;">
+        <h2>Choisis ton métier :</h2>
+
+        <select id="select-metier">
+            <option value=""> </option> <!-- ligne vide -->
+
+            <!-- A -->
+            <option value="agent_entretien">Agent d'entretien</option>
+            <option value="agent_logistique">Agent de logistique</option>
+
+            <!-- B -->
+            <option value="boucher">Boucher</option>
+            <option value="boulanger">Boulanger</option>
+            <option value="briqueteur">Briqueteur</option>
+            <option value="macon">Maçon</option>
+
+            <!-- C -->
+            <option value="cariste">Cariste</option>
+            <option value="livreur">Chauffeur-livreur</option>
+            <option value="coiffeur">Coiffeur / Coiffeuse</option>
