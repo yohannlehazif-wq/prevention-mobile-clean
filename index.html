@@ -7,7 +7,7 @@
 
 <style>
 
-/* === STYLE GLOBAL (MODERNE PREMIUM) === */
+/* === STYLE GLOBAL MODERNE PREMIUM === */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     max-width: 480px;
@@ -15,17 +15,10 @@ body {
     background: #f2f4f8;
     padding: 0;
 }
+.fade { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
 
-/* --- EFFET FADE (TRANSITION) --- */
-.fade {
-    animation: fadeIn 0.4s ease;
-}
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
-}
-
-/* --- ACCUEIL MODERNE --- */
+/* ACCUEIL */
 #accueil {
     height: 100vh;
     background: linear-gradient(135deg, #2563eb, #9333ea);
@@ -38,13 +31,9 @@ body {
     padding: 20px;
 }
 
-.logo {
-    width: 180px;
-    margin-bottom: 30px;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-}
+.logo { width: 180px; margin-bottom: 30px; }
 
-/* --- BOUTONS MODERNES --- */
+/* BOUTONS */
 .btn {
     width: 90%;
     padding: 15px;
@@ -56,34 +45,21 @@ body {
     margin-top: 12px;
     transition: 0.2s;
 }
-
 .btn-start {
     background: white;
     color: #2563eb;
-    box-shadow: 0 4px 12px rgba(255,255,255,0.3);
 }
-.btn-start:hover {
-    transform: scale(1.05);
-}
-
 .btn-menu {
-    background: linear-gradient(135deg, #2563eb, #9333ea);
+    background: linear-gradient(135deg,#2563eb,#9333ea);
     color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-.btn-menu:hover {
-    transform: scale(1.03);
-}
-
 .btn-back {
     background: #e5e7eb;
     color: #111;
 }
-.btn-back:hover {
-    transform: scale(1.03);
-}
+.btn:hover { transform: scale(1.05); }
 
-/* --- CARTES --- */
+/* CARTES */
 .card {
     background: white;
     padding: 22px;
@@ -92,24 +68,22 @@ body {
     box-shadow: 0 4px 14px rgba(0,0,0,0.15);
 }
 
-/* --- MENU DÉROULANT --- */
+/* SELECT */
 select {
     width: 100%;
     font-size: 18px;
     padding: 14px;
     border-radius: 12px;
-    margin-bottom: 15px;
     border: 2px solid #d1d5db;
-}
-
-h2 {
-    font-size: 24px;
-    color: #1f2937;
     margin-bottom: 15px;
 }
 
-h3 {
-    margin-top: 12px;
+.block {
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 12px;
 }
 
 </style>
@@ -117,23 +91,30 @@ h3 {
 
 <body>
 
-<!-- ✅ ✅ ACCUEIL (STYLE A – PREMIUM) -->
+<!-- ✅ ACCUEIL -->
 <div id="accueil" class="fade">
     logo.png
-    <h1 style="font-size:30px;margin-bottom:10px;font-weight:700;">Prévention Mobile</h1>
+    <h1 style="font-size:30px;font-weight:700;">Prévention Mobile</h1>
     <p style="font-size:18px;opacity:0.9;">Application officielle RESTEV</p>
-
-    <button class="btn btn-start" onclick="ouvrirMetiers()">ENTRER</button>
+    <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
 </div>
 
+<!-- ✅ MENU PRINCIPAL -->
+<div id="menuPrincipal" class="card fade" style="display:none;">
+    <h2>Menu principal</h2>
 
-<!-- ✅ ✅ MENU METIERS (DÉROULANT) -->
+    <button class="btn btn-menu" onclick="ouvrirMetiers()">Métiers</button>
+    <button class="btn btn-menu" onclick="ouvrirCMR()">CMR</button>
+
+    <button class="btn btn-back" onclick="retourAccueil()">← Retour accueil</button>
+</div>
+
+<!-- ✅ MENU MÉTIERS -->
 <div id="menuMetiers" class="card fade" style="display:none;">
     <h2>Choisis ton métier :</h2>
 
     <select id="select-metier">
         <option value=""></option>
-
         <option value="agent_entretien">Agent d'entretien</option>
         <option value="agent_logistique">Agent logistique</option>
         <option value="boulanger">Boulanger</option>
@@ -142,217 +123,343 @@ h3 {
     </select>
 
     <button class="btn btn-menu" onclick="validerMetier()">VALIDER ✅</button>
-    <button class="btn btn-back" onclick="retourAccueil()">← Retour</button>
+    <button class="btn btn-back" onclick="ouvrirMenuPrincipal()">← Retour</button>
 </div>
 
-
-<!-- ✅ ✅ RISQUES -->
+<!-- ✅ RISQUES (AFFICHAGE PAR BLOCS) -->
 <div id="menuRisks" class="card fade" style="display:none;"></div>
+
+<!-- ✅ PAGE CMR -->
+<div id="pageCMR" class="card fade" style="display:none;">
+    <h2>☣️ Substances CMR</h2>
+    <div class="block">
+        <h3>📌 Définition</h3>
+        Produits Cancérigènes, Mutagènes ou Reprotoxiques.
+    </div>
+
+    <div class="block">
+        <h3>🧪 Exemples</h3>
+        Solvants, dégraissants, silice, colorants coiffure.
+    </div>
+
+    <div class="block">
+        <h3>⚠️ Effets santé</h3>
+        Cancers, allergies, atteinte reproduction.
+    </div>
+
+    <div class="block">
+        <h3>📜 Obligations</h3>
+        Substitution, FDS, registre exposition, suivi médical.
+    </div>
+
+    <div class="block">
+        <h3>🛡️ Prévention</h3>
+        FFP2/3, gants nitrile, ventilation, stockage réduit.
+    </div>
+
+    <button class="btn btn-back" onclick="ouvrirMenuPrincipal()">← Retour</button>
+</div>
 
 
 <script>
 
-/* ✅✅ BASE DE DONNÉES MÉTIERS – NIVEAU B */
+/* ✅ BASE MÉTIERS - VERSION PAR BLOCS */
 const data = {
 
-/* ===== AGENT D’ENTRETIEN ===== */
 agent_entretien: {
-  label: "Agent d’entretien",
-  risques: {
+    label: "Agent d’entretien",
 
-    "Produits chimiques": `
-      <h3 style='color:#9333ea;'>🧴 Produits chimiques</h3>
-      <b>Situations :</b><br>
-      • Mélanges dangereux<br>
-      • Aérosols irritants<br><br>
-      <b>Prévention :</b><br>
-      ✅ Substitution produits neutres<br>
-      ✅ Gants nitrile<br>
-      ✅ Jamais de mélanges<br>
+    risques_metier: [
+        "Produits chimiques irritants",
+        "Risque biologique (sanitaires)",
+        "TMS : vitres, lavage, port charges",
+        "Chutes sur sol mouillé"
+    ],
+
+    risques_cmr: [
+        "Certains détergents corrosifs",
+        "Dégraissants irritants"
+    ],
+
+    risques_tms: [
+        "Travail répétitif",
+        "Épaules sollicitées",
+        "Poignets / dos"
+    ],
+
+    risques_rps: [
+        "Isolement tôt le matin",
+        "Pression de rendement",
+        "Charge mentale lors de multi-sites"
+    ],
+
+    prevention: `
+        ✅ Jamais de mélange chimique<br>
+        ✅ Manche télescopique<br>
+        ✅ Chaussures antidérapantes<br>
+        ✅ Ventilation + lecture FDS<br>
     `,
 
-    "TMS": `
-      <h3 style='color:#2563eb;'>📦 TMS</h3>
-      ✅ Alternance tâches<br>
-      ✅ Manche télescopique<br>
-      ✅ Chariot ergonomique<br>
+    obligations: `
+        • Mise à disposition FDS<br>
+        • Respect des dilutions<br>
+        • DUERP obligatoire<br>
     `,
 
-    "Chutes": `
-      <h3 style='color:#0ea5e9;'>🦶 Chutes</h3>
-      ✅ Chaussures antidérapantes<br>
-      ✅ Sol mouillé balisé<br>
+    docs: `
+        • INRS ED 984 (CMR)<br>
+        • INRS ED 824 (Nettoyage)<br>
     `
-  }
 },
 
 
-/* ===== AGENT LOGISTIQUE ===== */
 agent_logistique: {
-  label: "Agent logistique",
-  risques: {
+    label: "Agent logistique",
 
-    "Manutention lourde": `
-      <h3 style='color:#2563eb;'>📦 Charges lourdes</h3>
-      ✅ Transpalettes / gerbeurs<br>
-      ✅ Rotation tâches<br>
+    risques_metier: [
+        "Manutention lourde",
+        "Heurts engins",
+        "Chutes de plain-pied",
+        "Effondrement rayonnages"
+    ],
+
+    risques_cmr: [
+        "Poussières fines des palettes / emballages"
+    ],
+
+    risques_tms: [
+        "Port charges répétées",
+        "Torsions dos"
+    ],
+
+    risques_rps: [
+        "Pression préparations",
+        "Travail en horaires décalés"
+    ],
+
+    prevention: `
+        ✅ Transpalettes / gerbeurs<br>
+        ✅ Cheminements piétons<br>
+        ✅ Gilet HV + S3<br>
     `,
 
-    "Chocs / Engins": `
-      <h3 style='color:#dc2626;'>🚧 Heurts engins</h3>
-      ✅ Gilet HV<br>
-      ✅ Zones piétons séparées<br>
+    obligations: `
+        • Vérification racks<br>
+        • Formation gestes & postures<br>
     `,
 
-    "Chutes": `
-      <h3 style='color:#0ea5e9;'>🦶 Chutes</h3>
-      ✅ Rangement<br>
-      ✅ Nettoyage rapide<br>
+    docs: `
+        • INRS – Manutention<br>
+        • CARSAT – Logistique<br>
     `
-  }
 },
 
 
-/* ===== BOULANGER ===== */
 boulanger: {
-  label: "Boulanger",
-  risques: {
+    label: "Boulanger",
 
-    "Brûlures": `
-      <h3 style='color:#f97316;'>🔥 Brûlures</h3>
-      ✅ Gants thermiques<br>
-      ✅ Manipulation sécurisée<br>
+    risques_metier: [
+        "Brûlures aux fours",
+        "Poussières farine (asthme)",
+        "TMS (pétrissage, façonnage)",
+        "Chutes sols farinés"
+    ],
+
+    risques_cmr: [
+        "Farine classée allergène professionnelle"
+    ],
+
+    risques_tms: [
+        "Bras levés",
+        "Poignets en torsion",
+        "Postures prolongées"
+    ],
+
+    risques_rps: [
+        "Travail de nuit",
+        "Pression horaires"
+    ],
+
+    prevention: `
+        ✅ Gants thermiques<br>
+        ✅ Aspiration farine<br>
+        ✅ Rotation tâches<br>
     `,
 
-    "Farine": `
-      <h3 style='color:#9333ea;'>🌾 Poussières de farine</h3>
-      ✅ FFP2<br>
-      ✅ Aspiration<br>
+    obligations: `
+        • Ventilation fournil<br>
+        • FDS farine disponible<br>
+    `,
+
+    docs: `
+        • INRS ED 6002 (Allergies)<br>
+        • INRS ED 6106 (Brûlures)<br>
     `
-  }
 },
 
 
-/* ===== TECHNICIEN MAINTENANCE ===== */
 maintenance: {
-  label: "Technicien maintenance",
-  risques: {
+    label: "Technicien maintenance",
 
-    "Chute hauteur": `
-      <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
-      ✅ Harnais<br>
-      ✅ Garde-corps<br>
-      ✅ Travail en binôme<br>
+    risques_metier: [
+        "Électrique",
+        "Chute hauteur",
+        "Mécanique (écrasement)",
+        "CMR solvants / huiles",
+        "TMS zones exiguës",
+        "Travail isolé"
+    ],
+
+    risques_cmr: [
+        "Solvants dégraissants",
+        "Lubrifiants"
+    ],
+
+    risques_tms: [
+        "Accroupi prolongé",
+        "Bras levés",
+        "Port moteurs"
+    ],
+
+    risques_rps: [
+        "Urgence dépannages",
+        "Travail seul",
+        "Bruit"
+    ],
+
+    prevention: `
+        ✅ Consignation LOTO<br>
+        ✅ Travail en binôme<br>
+        ✅ Harnais + plateformes<br>
+        ✅ Substitution solvants<br>
     `,
 
-    "Électrique": `
-      <h3 style='color:#f97316;'>⚡ Risque électrique</h3>
-      ✅ Habilitation BR<br>
-      ✅ Consignation LOTO<br>
+    obligations: `
+        • Habilitation BR / B2V<br>
+        • Registre exposition CMR<br>
+        • Analyse pré-intervention<br>
     `,
 
-    "Mécanique": `
-      <h3 style='color:#dc2626;'>⚙️ Mécanique</h3>
-      ✅ Carter verrouillé<br>
-      ✅ Procédure de consignation<br>
-    `,
-
-    "CMR": `
-      <h3 style='color:#9333ea;'>☣️ Produits CMR</h3>
-      ✅ Substitution<br>
-      ✅ Ventilation<br>
-      ✅ Gants nitrile<br>
+    docs: `
+        • INRS ED 912 (consignation)<br>
+        • ED 984 (CMR)<br>
     `
-  }
 },
 
 
-/* ===== BRIQUETEUR ===== */
 briqueteur: {
-  label: "Briqueteur",
-  risques: {
+    label: "Briqueteur",
 
-    "Chute de hauteur": `
-      <h3 style='color:#2563eb;'>⬆️ Chute de hauteur</h3>
-      ✅ Échafaudages conformes<br>
-      ✅ Filets / garde-corps<br>
+    risques_metier: [
+        "Chute échafaudage",
+        "Silice (cancer)",
+        "TMS maçonnage",
+        "Bruit disqueuse"
+    ],
+
+    risques_cmr: [
+        "Silice cristalline"
+    ],
+
+    risques_tms: [
+        "Charges lourdes",
+        "Postures répétées"
+    ],
+
+    risques_rps: [
+        "Exposition intempéries",
+        "Pression délais chantiers"
+    ],
+
+    prevention: `
+        ✅ FFP3<br>
+        ✅ Coupe à l’eau<br>
+        ✅ Échafaudages conformes<br>
     `,
 
-    "TMS / Charges": `
-      <h3 style='color:#f97316;'>📦 Charges lourdes</h3>
-      ✅ Palan / grue<br>
-      ✅ Alternance tâches<br>
+    obligations: `
+        • Formation montage échafaudage<br>
+        • Prévention silice obligatoire<br>
     `,
 
-    "Silice": `
-      <h3 style='color:#9333ea;'>🌫️ Silice (cancer)</h3>
-      ✅ Masque FFP3<br>
-      ✅ Coupe à l’eau<br>
-      ✅ Zone dédiée<br>
-    `,
-
-    "Coupures / projections": `
-      <h3 style='color:#dc2626;'>🧩 Projections / coupures</h3>
-      ✅ Lunettes enveloppantes<br>
-      ✅ Gants<br>
+    docs: `
+        • INRS ED 6180 (Silice)<br>
+        • OPPBTP – Maçonnerie<br>
     `
-  }
-},
+}
 
 };
 
-/* ✅✅ NAVIGATION MODERNE */
 
-function ouvrirMetiers() {
-    document.getElementById("accueil").style.display = "none";
-    document.getElementById("menuMetiers").style.display = "block";
-    document.getElementById("menuRisks").style.display = "none";
+/* ✅ NAVIGATION */
+function cacherTout(){
+    accueil.style.display = "none";
+    menuPrincipal.style.display = "none";
+    menuMetiers.style.display = "none";
+    menuRisks.style.display = "none";
+    pageCMR.style.display = "none";
 }
 
-function retourAccueil() {
-    document.getElementById("accueil").style.display = "flex";
-    document.getElementById("menuMetiers").style.display = "none";
-    document.getElementById("menuRisks").style.display = "none";
+function retourAccueil(){ cacherTout(); accueil.style.display = "flex"; }
+
+function ouvrirMenuPrincipal(){ cacherTout(); menuPrincipal.style.display="block"; }
+
+function ouvrirMetiers(){ cacherTout(); menuMetiers.style.display="block"; }
+
+function ouvrirCMR(){ cacherTout(); pageCMR.style.display="block"; }
+
+
+/* ✅ MÉTIERS */
+function validerMetier(){
+    const m = document.getElementById("select-metier").value;
+    if(m===""){ alert("Merci de sélectionner un métier."); return; }
+    afficherRisques(m);
 }
 
-/* ✅ VALIDATION METIER */
-function validerMetier() {
-    const metier = document.getElementById("select-metier").value;
-
-    if (metier === "") {
-        alert("Merci de sélectionner un métier.");
-        return;
-    }
-    afficherRisques(metier);
-}
-
-/* ✅ AFFICHAGE RISQUES */
-function afficherRisques(job) {
-
-    document.getElementById("menuMetiers").style.display = "none";
-    const zone = document.getElementById("menuRisks");
-    zone.style.display = "block";
-
+function afficherRisques(m){
+    cacherTout();
     let html = `
-<button class='btn btn-back' onclick='ouvrirMetiers()'>← Retour métiers</button>
-<h2>Risques – ${data[job].label}</h2>
-`;
+    <button class='btn btn-back' onclick='ouvrirMetiers()'>← Retour métiers</button>
+    <h2>${data[m].label}</h2>
 
-    for (let r in data[job].risques) {
-        html += `<button class='btn btn-menu' onclick="showDetail('${job}','${r}')">${r}</button>`;
-    }
+    <div class='block'>
+        <h3>🔵 Risques principaux</h3>
+        ${data[m].risques_metier.map(r=> "• "+r).join("<br>")}
+    </div>
 
-    zone.innerHTML = html;
-}
+    <div class='block'>
+        <h3>🟣 Risques CMR liés au métier</h3>
+        ${data[m].risques_cmr.map(r=> "• "+r).join("<br>")}
+    </div>
 
-/* ✅ DETAILS */
-function showDetail(job, risque) {
+    <div class='block'>
+        <h3>🟠 Risques TMS</h3>
+        ${data[m].risques_tms.map(r=> "• "+r).join("<br>")}
+    </div>
 
-    document.getElementById("menuRisks").innerHTML = `
-<button class='btn btn-back' onclick="afficherRisques('${job}')">← Retour</button>
-<h2>${risque}</h2>
-${data[job].risques[risque]}
-`;
+    <div class='block'>
+        <h3>🟡 Risques RPS</h3>
+        ${data[m].risques_rps.map(r=> "• "+r).join("<br>")}
+    </div>
+
+    <div class='block'>
+        <h3>🛡️ Prévention (INRS)</h3>
+        ${data[m].prevention}
+    </div>
+
+    <div class='block'>
+        <h3>📜 Obligations réglementaires</h3>
+        ${data[m].obligations}
+    </div>
+
+    <div class='block'>
+        <h3>📘 Documents utiles</h3>
+        ${data[m].docs}
+    </div>
+    `;
+
+    menuRisks.innerHTML = html;
+    menuRisks.style.display="block";
 }
 
 </script>
