@@ -17,22 +17,21 @@ body {
 }
 
 .fade { animation: fadeIn 0.4s ease; }
-@keyframes fadeIn { 
-    from {opacity:0; transform:translateY(10px);} 
-    to {opacity:1; transform:translateY(0);} 
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
 }
 
 /* ACCUEIL */
 #accueil {
     height: 100vh;
-    background: linear-gradient(135deg, #2563eb, #9333ea);
+    background: linear-gradient(135deg,#2563eb,#9333ea);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: white;
     text-align: center;
-    padding: 20px;
 }
 
 .logo { width: 180px; margin-bottom: 30px; }
@@ -49,45 +48,39 @@ body {
     margin-top: 12px;
     transition: 0.2s;
 }
-.btn-start {
-    background: white;
-    color: #2563eb;
-}
-.btn-menu {
-    background: linear-gradient(135deg,#2563eb,#9333ea);
-    color: white;
-}
-.btn-back {
-    background: #e5e7eb;
-    color: #111;
-}
+
+.btn-start { background: white; color: #2563eb; }
+.btn-menu { background: linear-gradient(135deg,#2563eb,#9333ea); color:white; }
+.btn-back { background: #e5e7eb; color:#111; }
+
 .btn:hover { transform: scale(1.05); }
 
 /* CARTES */
 .card {
-    background: white;
-    padding: 22px;
-    border-radius: 16px;
-    margin: 20px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    margin:20px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.15);
 }
 
-/* MENU DÉROULANT */
+/* SELECT */
 select {
-    width: 100%;
-    font-size: 18px;
-    padding: 14px;
-    border-radius: 12px;
-    border: 2px solid #d1d5db;
-    margin-bottom: 15px;
+    width:100%;
+    font-size:18px;
+    padding:14px;
+    border-radius:12px;
+    border:2px solid #d1d5db;
+    margin-bottom:15px;
 }
 
+/* BLOCS D’INFO */
 .block {
-    background: #f8fafc;
-    border-left: 5px solid #2563eb;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 12px;
+    background:#f8fafc;
+    border-left:5px solid #2563eb;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:12px;
 }
 
 </style>
@@ -100,7 +93,6 @@ select {
     logo.png
     <h1 style="font-size:30px;font-weight:700;">Prévention Mobile</h1>
     <p style="font-size:18px;opacity:0.9;">Application officielle RESTEV</p>
-
     <button class="btn btn-start" onclick="ouvrirMenuPrincipal()">ENTRER</button>
 </div>
 
@@ -134,3 +126,194 @@ select {
 
 <!-- ✅ RISQUES (BLOCS) -->
 <div id="menuRisks" class="card fade" style="display:none;"></div>
+
+<!-- ✅ PAGE CMR -->
+<div id="pageCMR" class="card fade" style="display:none;">
+    <h2>☣️ Substances CMR</h2>
+
+    <div class="block">
+        <h3>📌 Définition (CLP)</h3>
+        Substances Cancérigènes, Mutagènes ou Reprotoxiques.<br>
+        C1A/C1B – M1A/M1B – R1A/R1B.
+    </div>
+
+    <div class="block">
+        <h3>🧪 Exemples courants</h3>
+        • Solvants moteurs<br>
+        • Huiles minérales<br>
+        • Silice (BTP)<br>
+        • Fumées soudage<br>
+        • Agent oxydants / PPD (coiffure)
+    </div>
+
+    <div class="block">
+        <h3>⚠️ Effets santé</h3>
+        Cancers – Mutations ADN – Infertilité – Allergies chroniques.
+    </div>
+
+    <div class="block">
+        <h3>📜 Obligations employeur</h3>
+        ✅ Substitution obligatoire<br>
+        ✅ FDS<br>
+        ✅ Registre exposition<br>
+        ✅ Suivi médical renforcé<br>
+        ✅ Stockage sécurisé<br>
+    </div>
+
+    <div class="block">
+        <h3>🛡️ Prévention (INRS)</h3>
+        FFP3 – ABEK – gants nitrile – aspiration – ventilation – armoires ventilées.
+    </div>
+
+    <button class="btn btn-back" onclick="ouvrirMenuPrincipal()">← Retour</button>
+</div>
+
+<!-- ✅ PAGE DUERP -->
+<div id="pageDUERP" class="card fade" style="display:none;">
+    <h2>📄 DUERP – Document Unique</h2>
+
+    <div class="block">
+        <h3>1. Définir les unités de travail</h3>
+        Atelier – Entretien – Logistique – Cuisine – Commerce – Maintenance.
+    </div>
+
+    <div class="block">
+        <h3>2. Identifier les dangers</h3>
+        Chimiques – Mécaniques – TMS – RPS – Routier – Chutes – Incendie – Bruit.
+    </div>
+
+    <div class="block">
+        <h3>3. Évaluer les risques</h3>
+        Gravité × Probabilité = Criticité (1 à 4).
+    </div>
+
+    <div class="block">
+        <h3>4. Prévention hiérarchisée</h3>
+        Suppression → Substitution → Collectif → Organisation → EPI.
+    </div>
+
+    <div class="block">
+        <h3>5. Mise à jour DUERP</h3>
+        Annuellement + après tout changement important.
+    </div>
+
+    <button class="btn btn-back" onclick="ouvrirMenuPrincipal()">← Retour</button>
+</div>
+
+<script>
+
+/* ✅ DATA DES MÉTIERS */
+const data = {
+
+agent_entretien:{
+ label:"Agent d'entretien",
+ risques_metier:["Produits chimiques","Risque biologique","Chutes sol","TMS bras"],
+ risques_cmr:["Dégraissants corrosifs"],
+ risques_tms:["Vitres","Lavage","Sol"],
+ risques_rps:["Isolement","Pression rapide"],
+ prevention:`✅ Substitution<br>✅ Ventilation<br>✅ Manche télescopique<br>✅ S3`,
+ obligations:`• FDS<br>• DUERP`,
+ docs:`• INRS ED984<br>• ED824`
+},
+
+agent_logistique:{
+ label:"Agent logistique",
+ risques_metier:["Manutention","Chocs engins","Chutes plain-pied"],
+ risques_cmr:["Poussières fines"],
+ risques_tms:["Dos","Port charges"],
+ risques_rps:["Pression délais"],
+ prevention:`✅ Transpalette<br>✅ Zones piétons<br>✅ HV`,
+ obligations:`• Formation gestes`,
+ docs:`• CARSAT - Logistique`
+},
+
+boulanger:{
+ label:"Boulanger",
+ risques_metier:["Brûlures","Poussières farine","TMS répétées"],
+ risques_cmr:["Allergènes farine"],
+ risques_tms:["Bras levés"],
+ risques_rps:["Travail de nuit"],
+ prevention:`✅ Aspiration farine<br>✅ FFP2<br>✅ Gants`,
+ obligations:`• Ventilation`,
+ docs:`• INRS ED6002`
+},
+
+maintenance:{
+ label:"Technicien maintenance",
+ risques_metier:["Électrique","Hauteur","Mécanique","CMR solvants"],
+ risques_cmr:["Solvants","Huiles minérales"],
+ risques_tms:["Exiguïté"],
+ risques_rps:["Urgences","Travail seul"],
+ prevention:`✅ LOTO<br>✅ Harnais<br>✅ Masque solvants`,
+ obligations:`• BR/B2V<br>• Registre CMR`,
+ docs:`• ED912<br>• ED984`
+},
+
+briqueteur:{
+ label:"Briqueteur",
+ risques_metier:["Échafaudage","Silice","Bruit"],
+ risques_cmr:["Silice"],
+ risques_tms:["Charges lourdes"],
+ risques_rps:["Pression chantier"],
+ prevention:`✅ FFP3<br>✅ Coupe à l’eau<br>✅ Echafaudage conforme`,
+ obligations:`• Silice obligatoire`,
+ docs:`• INRS ED6180`
+}
+
+};
+
+/* ✅ FONCTIONS NAVIGATION */
+function cacherTout(){
+    accueil.style.display="none";
+    menuPrincipal.style.display="none";
+    menuMetiers.style.display="none";
+    menuRisks.style.display="none";
+    pageCMR.style.display="none";
+    pageDUERP.style.display="none";
+}
+
+function retourAccueil(){ cacherTout(); accueil.style.display="flex"; }
+function ouvrirMenuPrincipal(){ cacherTout(); menuPrincipal.style.display="block"; }
+function ouvrirMetiers(){ cacherTout(); menuMetiers.style.display="block"; }
+function ouvrirCMR(){ cacherTout(); pageCMR.style.display="block"; }
+function ouvrirDUERP(){ cacherTout(); pageDUERP.style.display="block"; }
+
+/* ✅ MÉTIER → FICHE BLOC */
+function validerMetier(){
+    const m=document.getElementById("select-metier").value;
+    if(m===""){ alert("Merci de sélectionner un métier."); return; }
+    afficherRisques(m);
+}
+
+function afficherRisques(m){
+    cacherTout();
+    menuRisks.style.display="block";
+
+    menuRisks.innerHTML = `
+    <button class='btn btn-back' onclick='ouvrirMetiers()'>← Retour</button>
+    <h2>${data[m].label}</h2>
+
+    <div class='block'><h3>🔵 Risques métier</h3>
+    ${data[m].risques_metier.map(r=>"• "+r).join("<br>")}</div>
+
+    <div class='block'><h3>🟣 Risques CMR</h3>
+    ${data[m].risques_cmr.map(r=>"• "+r).join("<br>")}</div>
+
+    <div class='block'><h3>🟠 TMS</h3>
+    ${data[m].risques_tms.map(r=>"• "+r).join("<br>")}</div>
+
+    <div class='block'><h3>🟡 RPS</h3>
+    ${data[m].risques_rps.map(r=>"• "+r).join("<br>")}</div>
+
+    <div class='block'><h3>🛡️ Prévention</h3>${data[m].prevention}</div>
+
+    <div class='block'><h3>📜 Obligations</h3>${data[m].obligations}</div>
+
+    <div class='block'><h3>📘 Documents utiles</h3>${data[m].docs}</div>
+    `;
+}
+
+</script>
+
+</body>
+</html>
