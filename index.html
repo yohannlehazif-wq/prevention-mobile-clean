@@ -435,8 +435,11 @@
         <div class="col-6" onclick="nav('page-sgh')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #fff9c4; border-left-color: #fff176;"><i class="fa-solid fa-triangle-exclamation fa-2x mb-2" style="color: #fbc02d;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #827717;">LEXIQUE SGH</small></div>
         </div>
-        <div class="col-6" onclick="nav('page-epi')">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #e2e8f0; border-left-color: #64748b;"><i class="fa-solid fa-mask-ventilator fa-2x mb-2" style="color: #475569;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1e293b;">GUIDE EPI DYNAMIQUE</small></div>
+        <div class="col-6" onclick="nav('page-gants')">
+            <div class="card-custom text-center py-3 mb-0" style="background-color: #e0f2fe; border-left-color: #3b82f6;"><i class="fa-solid fa-hand-dots fa-2x mb-2" style="color: #2563eb;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1d4ed8;">SÉLECTEUR GANTS</small></div>
+        </div>
+        <div class="col-6" onclick="nav('page-masques')">
+            <div class="card-custom text-center py-3 mb-0" style="background-color: #fef2f2; border-left-color: #ef4444;"><i class="fa-solid fa-head-side-mask fa-2x mb-2" style="color: #dc2626;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #991b1b;">COMBO MASQUES & FILTRES</small></div>
         </div>
         <div class="col-6" onclick="nav('page-storage')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #fff3e0; border-left-color: #ffb74d;"><i class="fa-solid fa-warehouse fa-2x mb-2" style="color: #f57c00;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #e65100;">COMPATIBILITÉ STOCK</small></div>
@@ -456,19 +459,18 @@
     </div>
 </div>
 
-<!-- SECTION EPI DYNAMIQUE -->
-<div id="page-epi" class="app-page">
-    <h5 class="fw-bold mb-3"><i class="fa-solid fa-helmet-safety me-2" style="color:var(--r-teal)"></i>Guide EPI Dynamique</h5>
+<!-- PAGE SÉLECTEUR DE GANTS CHIMIQUES -->
+<div id="page-gants" class="app-page">
+    <h5 class="fw-bold mb-3"><i class="fa-solid fa-hand-dots me-2" style="color:#3b82f6"></i>Sélecteur de Gants Chimiques</h5>
     
-    <!-- MODULE GANTS SEPARÉ -->
     <div class="card-custom mb-4" style="border-left: 4px solid #3b82f6;">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="fw-bold text-primary mb-0"><i class="fa-solid fa-hand-dots me-2"></i>1. Sélecteur de Gants Chimiques</h6>
+            <h6 class="fw-bold text-primary mb-0"><i class="fa-solid fa-microscope me-2"></i>Analyse de Matériau</h6>
             <button class="btn btn-xs btn-outline-primary py-1 px-2 fw-bold" style="font-size: 0.7rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-gants">
                 <i class="fa-solid fa-circle-info me-1"></i> Infos Gants
             </button>
         </div>
-        <p class="small text-muted mb-3">Choisissez le type de produit à manipuler pour trouver le bon matériau de gant (Norme EN ISO 374).</p>
+        <p class="small text-muted mb-3">Choisissez le type de produit à manipuler pour trouver le bon matériau de gant protecteur (Norme EN ISO 374).</p>
         
         <div class="mb-3">
             <select id="epi-chemical" class="form-select fw-bold" onchange="updateGloveDiagnostic()">
@@ -497,11 +499,17 @@
             </ul>
         </div>
     </div>
+    
+    <button class="btn btn-outline-secondary w-100 mt-2 py-2.5" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
+</div>
 
-    <!-- MODULE MASQUES SEPARÉ -->
+<!-- PAGE COMBO MASQUES & FILTRES -->
+<div id="page-masques" class="app-page">
+    <h5 class="fw-bold mb-3"><i class="fa-solid fa-head-side-mask me-2" style="color:#ef4444"></i>Combo Masques & Cartouches</h5>
+
     <div class="card-custom mb-4" style="border-left: 4px solid #ef4444;">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="fw-bold text-danger mb-0"><i class="fa-solid fa-head-side-mask me-2"></i>2. Combo Masques & Cartouches</h6>
+            <h6 class="fw-bold text-danger mb-0"><i class="fa-solid fa-mask-ventilator me-2"></i>Configuration Filtres</h6>
             <button class="btn btn-xs btn-outline-danger py-1 px-2 fw-bold" style="font-size: 0.7rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
                 <i class="fa-solid fa-clock me-1"></i> Durée & Infos
             </button>
@@ -986,7 +994,8 @@ function nav(id, el) {
     if(id === 'page-sgh') renderSGH();
     if(id === 'page-centres') renderCentres();
     if(id === 'page-quiz') resetQuiz();
-    if(id === 'page-epi') { updateGloveDiagnostic(); updateMaskDiagnostic(); }
+    if(id === 'page-gants') { updateGloveDiagnostic(); }
+    if(id === 'page-masques') { updateMaskDiagnostic(); }
     window.scrollTo(0, 0);
 }
 
@@ -1306,96 +1315,82 @@ function renderSGH() {
 
     document.getElementById('global-modals-container').innerHTML = sghData.map(s => `
         <div class="modal fade" id="modal-${s.id}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header text-white" style="background-color: var(--r-blue-dark)">
-                        <h5 class="modal-title fw-bold">${s.title}</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header bg-dark text-white py-3">
+                        <h6 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>SGH - ${s.title}</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="text-center mb-4">
-                            <img src="${s.img}" style="width:100px; height:100px; object-fit:contain;" onerror="this.src='https://placehold.co/100?text=SGH'">
-                        </div>
-                        <h6 class="fw-bold text-danger mb-1">Danger principal :</h6>
-                        <p class="small mb-3 text-dark font-monospace">${detailsSGH[s.id] ? detailsSGH[s.id].danger : '-'}</p>
-                        <h6 class="fw-bold text-primary mb-1">Risques associés :</h6>
-                        <p class="small mb-3">${detailsSGH[s.id] ? detailsSGH[s.id].risques : '-'}</p>
-                        <h6 class="fw-bold text-success mb-1">Mesures de prévention impératives :</h6>
-                        <p class="small mb-0 bg-light p-3 rounded-3 border-start border-success border-3 fw-medium">${detailsSGH[s.id] ? detailsSGH[s.id].prevention : '-'}</p>
+                    <div class="modal-body small">
+                        <div class="text-center mb-3"><img src="${s.img}" style="width:70px" onerror="this.src='https://placehold.co/70?text=SGH'"></div>
+                        <p><b>Type de Danger :</b> <span class="text-danger">${detailsSGH[s.id]?.danger || 'Inconnu'}</span></p>
+                        <p><b>Risques principaux :</b> ${detailsSGH[s.id]?.risques || '-'}</p>
+                        <div class="p-2 bg-light rounded border border-warning fw-semibold">${detailsSGH[s.id]?.prevention || '-'}</div>
                     </div>
                 </div>
             </div>
         </div>`).join('');
 }
 
-function renderCentres(){
+function renderCentres() {
     document.getElementById('centres-list').innerHTML = centres.map(c => `
-        <div class="card-custom mb-3">
-            <h6 class="fw-bold text-dark mb-1"><i class="fa-solid fa-building-shield me-2 text-primary"></i>${c.n}</h6>
-            <p class="small text-muted mb-2"><i class="fa-solid fa-location-dot me-2"></i>${c.a}</p>
-            <div class="row g-2">
-                <div class="col-6"><a href="tel:${c.t}" class="btn btn-sm btn-light w-100 fw-bold border text-secondary"><i class="fa-solid fa-phone me-1 text-success"></i> Appeler</a></div>
-                <div class="col-6"><a href="${c.g}" target="_blank" class="btn btn-sm btn-outline-primary w-100 fw-bold"><i class="fa-solid fa-route me-1"></i> Y aller</a></div>
+        <div class="card-custom" style="border-left-color: var(--r-teal);">
+            <h6 class="fw-bold mb-1 text-dark">${c.n}</h6>
+            <p class="small text-muted mb-2"><i class="fa-solid fa-location-dot text-secondary me-1"></i> ${c.a}</p>
+            <div class="d-flex gap-2">
+                <a href="tel:${c.t}" class="btn btn-sm btn-outline-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px;"><i class="fa-solid fa-phone me-1"></i> Appeler</a>
+                <a href="${c.g}" target="_blank" class="btn btn-sm btn-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px; background-color: var(--r-teal);"><i class="fa-solid fa-map-pin me-1"></i> Itinéraire</a>
             </div>
         </div>`).join('');
 }
 
-function resetQuiz(){
+function resetQuiz() {
     currentQ = 0; totalScore = 0;
     document.getElementById('q-box').style.display = 'block';
     document.getElementById('q-result').style.display = 'none';
     showQuestion();
 }
 
-function showQuestion(){
+function showQuestion() {
     document.getElementById('quiz-progress').style.width = `${(currentQ + 1) * 10}%`;
     document.getElementById('q-text').innerText = questions[currentQ];
 }
 
-function quizAnswer(points){
+function quizAnswer(points) {
     totalScore += points;
     currentQ++;
-    if(currentQ < questions.length){
+    if (currentQ < questions.length) {
         showQuestion();
     } else {
         showQuizResult();
     }
 }
 
-function showQuizResult(){
+function showQuizResult() {
     document.getElementById('q-box').style.display = 'none';
-    document.getElementById('q-result').style.display = 'block';
+    const resultBox = document.getElementById('q-result');
+    resultBox.style.display = 'block';
     
-    const scoreEl = document.getElementById('quiz-score');
-    const labelEl = document.getElementById('quiz-label');
-    const adviceEl = document.getElementById('quiz-advice');
-    
-    scoreEl.innerText = `${totalScore}/30`;
-    
-    if(totalScore >= 24){
-        labelEl.innerText = "Excellent niveau de maîtrise ! 🟢";
-        labelEl.className = "fw-bold mb-3 text-success";
-        adviceEl.innerText = "Votre structure affiche une excellente culture de sécurité. Continuez à maintenir vos fiches d'inventaire et vos DUERP à jour avec votre conseiller RESTEV.";
-    } else if(totalScore >= 14){
-        labelEl.innerText = "Niveau intermédiaire (Des axes d'amélioration) 🟡";
-        labelEl.className = "fw-bold mb-3 text-warning";
-        adviceEl.innerText = "La base est là, mais certains points faibles peuvent vous mettre en défaut lors d'un contrôle ou d'un accident. Prenez contact avec RESTEV pour planifier une action ciblée.";
+    document.getElementById('quiz-score').innerText = totalScore;
+    const label = document.getElementById('quiz-label');
+    const advice = document.getElementById('quiz-advice');
+
+    if (totalScore >= 24) {
+        label.innerText = "🟢 Excellent niveau de maîtrise";
+        label.className = "fw-bold mb-3 text-success";
+        advice.innerText = "Votre structure affiche une solide culture sécurité. Continuez à maintenir vos FDS à jour et à sensibiliser les nouveaux arrivants.";
+    } else if (totalScore >= 14) {
+        label.innerText = "🟡 Conformité partielle";
+        label.className = "fw-bold mb-3 text-warning";
+        advice.innerText = "De bonnes bases existent, mais des points critiques restent en suspens (accès FDS, traçabilité ou stockage). Contactez votre conseiller RESTEV pour un point technique.";
     } else {
-        labelEl.innerText = "Situation critique (Action urgente requise) 🔴";
-        labelEl.className = "fw-bold mb-3 text-danger";
-        adviceEl.innerText = "Plusieurs piliers de la prévention réglementaire ne sont pas assurés. Vous risquez des sanctions et mettez vos équipes en danger. Sollicitez immédiatement un accompagnement RESTEV.";
+        label.innerText = "🔴 Actions prioritaires requises";
+        label.className = "fw-bold mb-3 text-danger";
+        advice.innerText = "Votre niveau de risque réglementaire et technique est élevé. Une mise à niveau de votre DUERP et un accompagnement terrain RESTEV sont vivement recommandés.";
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    updateStats();
-    const chk = document.getElementById('chk-reconditionne');
-    if(chk) {
-        chk.addEventListener('change', (e) => {
-            document.getElementById('recond-alert').style.display = e.target.checked ? 'block' : 'none';
-        });
-    }
-});
+window.onload = () => { updateStats(); };
 </script>
 </body>
 </html>
