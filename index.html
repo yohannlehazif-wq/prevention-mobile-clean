@@ -1307,11 +1307,23 @@ function toggleArchives(){
 }
 
 function renderSGH() {
-    document.getElementById('sgh-list').innerHTML = sghData.map(s => `
-        <div class="card-custom sgh-card" data-bs-toggle="modal" data-bs-target="#modal-${s.id}">
-            <img src="${s.img}" class="sgh-img" onerror="this.src='https://placehold.co/65?text=SGH'">
-            <div><b class="text-dark">${s.title}</b><br><small class="text-muted">${s.desc}</small></div>
-        </div>`).join('');
+    const container = document.getElementById('sgh-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    sghData.forEach(picto => {
+        const details = detailsSGH[picto.id] || { danger: picto.title, risques: "-", prevention: "-" };
+        container.innerHTML += `
+        <div class="card-custom sgh-card mb-3" onclick="alert('ℹ️ ${details.danger} \\n\\nRisques : ${details.risques.replace(/'/g, "\\'")} \\n\\nPrévention : ${details.prevention.replace(/'/g, "\\'")}')">
+            <img src="${picto.img}" alt="${picto.title}" class="sgh-img" onerror="this.src='https://placehold.co/60x60/ffffff/ef4444?text=${picto.id}'">
+            <div>
+                <h6 class="fw-bold text-dark mb-1">${picto.id} - ${details.danger}</h6>
+                <p class="small text-muted mb-0">${picto.desc}</p>
+            </div>
+        </div>`;
+    });
+}
+
 
     document.getElementById('global-modals-container').innerHTML = sghData.map(s => `
         <div class="modal fade" id="modal-${s.id}" tabindex="-1" aria-hidden="true">
@@ -1333,37 +1345,50 @@ function renderSGH() {
 }
 
 function renderCentres() {
-    document.getElementById('centres-list').innerHTML = centres.map(c => `
-        <div class="card-custom" style="border-left-color: var(--r-teal);">
-            <h6 class="fw-bold mb-1 text-dark">${c.n}</h6>
-            <p class="small text-muted mb-2"><i class="fa-solid fa-location-dot text-secondary me-1"></i> ${c.a}</p>
-            <div class="d-flex gap-2">
-                <a href="tel:${c.t}" class="btn btn-sm btn-outline-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px;"><i class="fa-solid fa-phone me-1"></i> Appeler</a>
-                <a href="${c.g}" target="_blank" class="btn btn-sm btn-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px; background-color: var(--r-teal);"><i class="fa-solid fa-map-pin me-1"></i> Itinéraire</a>
+    const container = document.getElementById('centres-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    centres.forEach(c => {
+        container.innerHTML += `
+        <div class="card-custom mb-3" style="border-left-color: var(--r-blue)">
+            <h6 class="fw-bold text-dark mb-2">${c.n}</h6>
+            <p class="small text-muted mb-3"><i class="fa-solid fa-location-dot me-2"></i>${c.a}</p>
+            <div class="row g-2">
+                <div class="col-6">
+                    <a href="tel:${c.t}" class="btn btn-sm btn-outline-primary w-100 fw-bold"><i class="fa-solid fa-phone me-1"></i> Appeler</a>
+                </div>
+                <div class="col-6">
+                    <a href="${c.g}" target="_blank" class="btn btn-sm btn-primary w-100 fw-bold"><i class="fa-solid fa-map-pin me-1"></i> Y aller</a>
+                </div>
             </div>
-        </div>`).join('');
+        </div>`;
+    });
 }
 
+
 function resetQuiz() {
-    currentQ = 0; totalScore = 0;
+    currentQ = 0;
+    totalScore = 0;
     document.getElementById('q-box').style.display = 'block';
     document.getElementById('q-result').style.display = 'none';
     showQuestion();
 }
 
 function showQuestion() {
-    document.getElementById('quiz-progress').style.width = `${(currentQ + 1) * 10}%`;
-    document.getElementById('q-text').innerText = questions[currentQ];
+    if (currentQ < questions.length) {
+        document.getElementById('q-text').innerText = questions[currentQ];
+        const progressPercent = ((currentQ + 1) / questions.length) * 100;
+        document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+    } else {
+        showQuizResult();
+    }
 }
 
 function quizAnswer(points) {
     totalScore += points;
     currentQ++;
-    if (currentQ < questions.length) {
-        showQuestion();
-    } else {
-        showQuizResult();
-    }
+    showQuestion();
 }
 
 function showQuizResult() {
@@ -1371,24 +1396,27 @@ function showQuizResult() {
     const resultBox = document.getElementById('q-result');
     resultBox.style.display = 'block';
     
-    document.getElementById('quiz-score').innerText = totalScore;
-    const label = document.getElementById('quiz-label');
-    const advice = document.getElementById('quiz-advice');
-
+    const maxScore = questions.length * 3;
+    document.getElementById('quiz-score').innerText = `${totalScore}/${maxScore}`;
+    
+    const labelEl = document.getElementById('quiz-label');
+    const adviceEl = document.getElementById('quiz-advice');
+    
     if (totalScore >= 24) {
-        label.innerText = "🟢 Excellent niveau de maîtrise";
-        label.className = "fw-bold mb-3 text-success";
-        advice.innerText = "Votre structure affiche une solide culture sécurité. Continuez à maintenir vos FDS à jour et à sensibiliser les nouveaux arrivants.";
-    } else if (totalScore >= 14) {
-        label.innerText = "🟡 Conformité partielle";
-        label.className = "fw-bold mb-3 text-warning";
-        advice.innerText = "De bonnes bases existent, mais des points critiques restent en suspens (accès FDS, traçabilité ou stockage). Contactez votre conseiller RESTEV pour un point technique.";
+        labelEl.className = "fw-bold mb-3 text-success";
+        labelEl.innerText = "🟢 Excellente culture sécurité !";
+        adviceEl.innerText = "Votre structure a de superbes réflexes en prévention. Continuez à maintenir vos fiches à jour et à analyser le risque de près.";
+    } else if (totalScore >= 12) {
+        labelEl.className = "fw-bold mb-3 text-warning";
+        labelEl.innerText = "🟡 Des bases acquises, à consolider";
+        adviceEl.innerText = "La structure est sensibilisée, mais des points restent vulnérables (accès aux FDS, traçabilité ou mise à jour du DUERP). Rapprochez-vous de votre centre RESTEV.";
     } else {
-        label.innerText = "🔴 Actions prioritaires requises";
-        label.className = "fw-bold mb-3 text-danger";
-        advice.innerText = "Votre niveau de risque réglementaire et technique est élevé. Une mise à niveau de votre DUERP et un accompagnement terrain RESTEV sont vivement recommandés.";
+        labelEl.className = "fw-bold mb-3 text-danger";
+        labelEl.innerText = "🔴 Actions prioritaires requises";
+        adviceEl.innerText = "Attention, plusieurs indicateurs sont au rouge. La conformité réglementaire (DUERP, affichage SGH) doit être reprise rapidement pour protéger vos équipes.";
     }
 }
+
 
 window.onload = () => { updateStats(); };
 </script>
