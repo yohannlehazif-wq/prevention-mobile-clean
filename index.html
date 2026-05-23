@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -476,4 +476,114 @@
             <select id="epi-chemical" class="form-select fw-bold" onchange="updateGloveDiagnostic()">
                 <option value="solv">🧪 Solvants hydrocarbonés (Essence, White-Spirit)</option>
                 <option value="acet">💅 Solvants polaires (Acétone, Esters)</option>
-                <option value="acid">💥 Acides forts (Acide sulfurique, chlo
+                <option value="acid">💥 Acides forts (Acide sulfurique, chlorhydrique)</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS APPLICATIFS -->
+<script>
+// Variables globales & Initialisations fallback
+let inventory = JSON.parse(localStorage.getItem('restev_inventory_v3')) || [];
+const SUPABASE_URL = "TA_SUPABASE_URL"; 
+const SUPABASE_KEY = "TA_SUPABASE_KEY";
+const sb = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// Initialisation Realtime pour synchronisation smartphones (si Supabase dispo)
+if (sb) {
+    sb.channel('suivi-inventaire')
+      .on(
+        'postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'inventaire_utilisateurs' }, 
+        (payload) => {
+            console.log('Nouveau produit détecté en temps réel !', payload.new);
+            const nouveauProduit = payload.new;
+            const nom = nouveauProduit.nom_produit;
+            const code = nouveauProduit.code_barres;
+            const urlFds = nouveauProduit.url_fds;
+
+            const itemLocal = { id: Date.now(), name: nom, code: code, fdsUrl: urlFds };
+            inventory.push(itemLocal);
+            localStorage.setItem('restev_inventory_v3', JSON.stringify(inventory));
+
+            updateStats();
+            if (document.getElementById('page-list') && document.getElementById('page-list').classList.contains('active-page')) {
+                if (typeof renderInventory === 'function') renderInventory();
+            }
+
+            alert(`🔔 RESTEV : Le produit "${nom}" a été ajouté. Génération de la fiche PDF...`);
+            genererPdfProduitUnique(nom, code, urlFds);
+        }
+      )
+      .subscribe();
+}
+
+function Splash() {
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.opacity = '0';
+    setTimeout(() => { if (splash) splash.style.display = 'none'; }, 600);
+}
+
+function nav(pageId, navEl) {
+    document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) targetPage.classList.add('active-page');
+    
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (navEl) navEl.classList.add('active');
+}
+
+function updateStats() {
+    const statsEl = document.getElementById('inv-stats');
+    if (statsEl) {
+        statsEl.textContent = `${inventory.length} produit(s) chimique(s) référencé(s)`;
+    }
+}
+
+function genererPdfProduitUnique(nomProduit, codeBarres, fdsUrl) {
+    if (!window.jspdf) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFillColor(48, 101, 168);
+    doc.rect(0, 0, 210, 32, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.text("FICHE PRODUIT - INVENTAIRE CHIMIQUE", 105, 16, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("RESTEV 85 - Support Technique Adhérent", 105, 25, { align: "center" });
+
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    doc.text(`Nom du produit : ${nomProduit}`, 15, 50);
+    doc.text(`Code-barres : ${codeBarres || "Saisie manuelle"}`, 15, 60);
+    doc.text(`Lien de la FDS : ${fdsUrl || "Aucun lien direct"}`, 15, 70);
+    doc.text(`Date d'importation : ${new Date().toLocaleDateString('fr-FR')}`, 15, 80);
+
+    doc.setDrawColor(230, 160, 15);
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(15, 95, 180, 30, 3, 3, 'FD');
+    doc.setTextColor(184, 115, 10);
+    doc.text("Rappel Risque Chimique :", 20, 102);
+    doc.setFontSize(10);
+    doc.setTextColor(51, 65, 85);
+    doc.text("Toute FDS doit être accessible aux postes de travail. Si le produit est transvasé,", 20, 110);
+    doc.text("l'étiquetage d'origine (SGH) doit être impérativement recopié sur le nouveau contenant.", 20, 115);
+
+    doc.save(`FDS_${nomProduit.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+    if (fdsUrl) window.open(fdsUrl, '_blank');
+}
+
+function updateGloveDiagnostic() {
+    console.log("Changement de type de produit chimique détecté.");
+}
+
+// Lancement automatique au chargement
+document.addEventListener("DOMContentLoaded", () => {
+    updateStats();
+});
+</script>
+
+</body>
+</html>
