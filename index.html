@@ -526,13 +526,24 @@ function Splash() {
 }
 
 function nav(pageId, navEl) {
-    document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
+    // 1. On cherche la page cible
     const targetPage = document.getElementById(pageId);
-    if (targetPage) targetPage.classList.add('active-page');
     
+    // Sécurité : Si la page n'existe pas encore dans le HTML, on affiche une alerte amicale au lieu de tout planter
+    if (!targetPage) {
+        alert(`🚧 La page "${pageId}" est en cours de développement ou manquante dans le code HTML.`);
+        return; 
+    }
+
+    // 2. Si elle existe, on masque les autres et on l'affiche
+    document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
+    targetPage.classList.add('active-page');
+    
+    // 3. Gestion active du menu du bas (si fourni)
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     if (navEl) navEl.classList.add('active');
 }
+    
 
 function updateStats() {
     const statsEl = document.getElementById('inv-stats');
