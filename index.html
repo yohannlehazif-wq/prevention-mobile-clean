@@ -922,7 +922,38 @@ const SUPABASE_URL = 'https://nklarbzamffhiwasxoph.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rbGFyYnphbWZmaGl3YXN4b3BoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzI5MzQsImV4cCI6MjA5MzQwODkzNH0.Tjy3Z9Yf9FOn47yKqlqQNC9Xfmy_tMMLkfa4UUFdf6k'; 
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let inventory = JSON.parse(localStorage.getItem('restev_inventory_v3')) || [];
+
+// ÉCOUTEUR EN TEMPS RÉEL (À insérer ici)
+sb.channel('suivi-inventaire')
+  .on(
+    'postgres_changes', 
+    { event: 'INSERT', schema: 'public', table: 'inventaire_utilisateurs' }, 
+    (payload) => {
+        console.log('Nouveau produit détecté en temps réel !', payload.new);
+        
+        // 1. Récupération des données envoyées par l'autre smartphone
+        const nouveauProduit = payload.new;
+        const nom = nouveauProduit.nom_produit;
+        const code = nouveauProduit.code_barres;
+        const urlFds = nouveauProduit.url_fds;
+
+        // 2. Mise à jour de l'inventaire local (LocalStorage) du smartphone B
+        const itemLocal = { id: Date.now(), name: nom, code: code, fdsUrl: urlFds };
+        inventory.push(itemLocal);
+        localStorage.setItem('restev_inventory_v3', JSON.stringify(inventory));
+
+        // 3. Rafraîchir les statistiques visuelles et l'affichage de la page Liste
+        updateStats();
+        if (document.getElementById('page-list').classList.contains('active-page')) {
+            renderInventory();
+        }
+
+        // 4. Déclenchement automatique de l'ouverture FDS + Téléchargement du PDF
+        alert(`🔔 RESTEV : Le produit "${nom}" a été ajouté par un autre utilisateur. Génération de la fiche PDF...`);
+        genererPdfProduitUnique(nom, code, urlFds);
+    }
+  )
+  .subscribe(); || [];
 
 const centres = [
     { n: "La Roche-sur-Yon (Siège)", t: "0251370668", a: "Impasse Newton, 85000 La Roche-sur-Yon", g: "https://maps.google.com/?q=Impasse+Newton+La+Roche+sur+Yon" },
@@ -1020,7 +1051,9 @@ function renderInventory() {
         </div>`;
     });
 }
+// Initialisation existante de ton client Supabase
 
+    
 async function saveProduct() {
     const name = document.getElementById('prod-name').value;
     const code = document.getElementById('prod-code').value.trim();
@@ -1233,6 +1266,51 @@ function exportToCSV() {
     link.href = URL.createObjectURL(blob);
     link.download = "mon_inventaire_restev.csv";
     link.click();
+}
+// Fonction pour générer et enregistrer le PDF d'un produit spécifique trouvé
+function genererPdfProduitUnique(nomProduit, codeBarres, fdsUrl) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const blue = [48, 101, 168];
+
+    // Design de l'en-tête (Similaire à ton attestation globale)
+    doc.setFillColor(...blue);
+    doc.rect(0, 0, 210, 32, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text("FICHE PRODUIT - INVENTAIRE CHIMIQUE", 105, 16, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("RESTEV 85 - Support Technique Adhérent", 105, 25, { align: "center" });
+
+    // Contenu de la fiche
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    doc.text(`Nom du produit : ${nomProduit}`, 15, 50);
+    doc.text(`Code-barres : ${codeBarres || "Saisie manuelle"}`, 15, 60);
+    doc.text(`Lien de la FDS : ${fdsUrl || "Aucun lien direct"}`, 15, 70);
+    doc.text(`Date d'importation : ${new Date().toLocaleDateString('fr-FR')}`, 15, 80);
+
+    // Bloc d'avertissement réglementaire
+    doc.setDrawColor(230, 160, 15); // var(--r-yellow)
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(15, 95, 180, 30, 3, 3, 'FD');
+    doc.setTextColor(184, 115, 10);
+    doc.setFont(undefined, 'bold');
+    doc.text("Rappel Risque Chimique :", 20, 102);
+    doc.setFont(undefined, 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(51, 65, 85);
+    doc.text("Toute FDS doit être accessible aux postes de travail. Si le produit est transvasé,", 20, 110);
+    doc.text("l'étiquetage d'origine (SGH) doit être impérativement recopié sur le nouveau contenant.", 20, 115);
+
+    // Sauvegarde automatique du PDF sur l'appareil
+    doc.save(`FDS_${nomProduit.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+
+    // Ouverture automatique de la FDS originale dans un autre onglet si l'URL existe
+    if (fdsUrl) {
+        window.open(fdsUrl, '_blank');
+    }
 }
 
 async function generatePDFProof() {
