@@ -1,315 +1,286 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RESTEV 85 - Expert Prévention</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RESTEV 85 - Expert Prévention</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link class="js-manifest" rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3065a8">
+<link rel="icon" type="image/png" href="logo_restev_carre.png">
 
-    <style>
-        :root { 
-            --r-blue: #3065a8; 
-            --r-blue-dark: #1e4475;
-            --r-teal: #75bba8; 
-            --r-purple: #ae227d; 
-            --r-yellow: #e6a00f; 
-            --r-light: #f4f7fa; 
-            --shadow-sm: 0 2px 8px rgba(48, 101, 168, 0.05);
-            --shadow-md: 0 8px 24px rgba(48, 101, 168, 0.08);
-        }
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RESTEV 85">
+<link rel="apple-touch-icon" href="logo_restev_carre.png">
 
-        body {
-            background-color: var(--r-light);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        .epi-nav-pills .nav-link {
-            color: var(--r-blue);
-            border: 2px solid var(--r-blue);
-            margin-bottom: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        .epi-nav-pills .nav-link.active {
-            background-color: var(--r-blue);
-            border-color: var(--r-blue);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
+<style>
+:root { 
+    --r-blue: #3065a8; 
+    --r-blue-dark: #1e4475;
+    --r-teal: #75bba8; 
+    --r-purple: #ae227d; 
+    --r-yellow: #e6a00f; 
+    --r-light: #f4f7fa; 
+    --shadow-sm: 0 2px 8px rgba(48, 101, 168, 0.05);
+    --shadow-md: 0 8px 24px rgba(48, 101, 168, 0.08);
+}
 
-        .card-epi {
-            border: none;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            background: white;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
+body {
+    background-color: var(--r-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        .card-epi-header-gants {
-            background: linear-gradient(135deg, var(--r-blue), var(--r-teal));
-            color: white;
-            padding: 20px;
-        }
+/* Styles pour les nouveaux modules de prévention */
+.card-epi {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    background: white;
+    overflow: hidden;
+}
 
-        .card-epi-header-resp {
-            background: linear-gradient(135deg, var(--r-purple), var(--r-blue));
-            color: white;
-            padding: 20px;
-        }
+.card-epi-header-gants {
+    background: linear-gradient(135deg, var(--r-blue), var(--r-teal));
+    color: white;
+    padding: 20px;
+}
 
-        .badge-epi {
-            font-size: 0.85rem;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
+.card-epi-header-resp {
+    background: linear-gradient(135deg, var(--r-purple), var(--r-blue));
+    color: white;
+    padding: 20px;
+}
 
-        .norme-box {
-            background: #eef3f9;
-            border-left: 4px solid var(--r-blue);
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 0 8px 8px 0;
-        }
+.norme-box {
+    background: #eef3f9;
+    border-left: 4px solid var(--r-blue);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 0 8px 8px 0;
+}
 
-        .step-number {
-            width: 30px;
-            height: 30px;
-            background-color: var(--r-blue);
-            color: white;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-        }
+.step-number {
+    width: 30px;
+    height: 30px;
+    background-color: var(--r-blue);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
 
-        .resp-step .step-number {
-            background-color: var(--r-purple);
-        }
-    </style>
+.resp-step .step-number {
+    background-color: var(--r-purple);
+}
+
+.btn-menu-epi {
+    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.btn-menu-epi:hover {
+    transform: translateY(-2px);
+}
+</style>
 </head>
 <body>
 
 <div class="container my-4">
-    <!-- Header de section -->
-    <div class="text-center mb-4">
-        <h2 class="fw-bold" style="color: var(--r-blue-dark);">Modules de Prévention Dynamique EPI</h2>
-        <p class="text-muted">Évaluez vos risques et sélectionnez la protection adaptée à vos équipes sur le terrain.</p>
-    </div>
-
-    <!-- Navigation Onglets Principaux -->
-    <div class="row mb-4">
-        <div class="col-md-6 mx-auto">
-            <ul class="nav nav-pills epi-nav-pills nav-justified" id="epiTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active me-2" id="gants-tab" data-bs-toggle="tab" data-bs-target="#gants-content" type="button" role="tab"><i class="fa-solid fa-hands-protective me-2"></i>Protection des Mains</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link ms-2" id="resp-tab" data-bs-toggle="tab" data-bs-target="#resp-content" type="button" role="tab"><i class="fa-solid fa-head-side-mask me-2"></i>Protection Respiratoire</button>
-                </li>
-            </ul>
+    
+    <!-- Zone de tes 2 boutons distincts existants (exemple d'intégration) -->
+    <div class="row g-3 mb-4 justify-content-center">
+        <div class="col-md-5">
+            <button class="btn w-100 py-3 btn-menu-epi text-white" style="background-color: var(--r-blue);" onclick="afficherModuleGants()">
+                <i class="fa-solid fa-hands-protective mb-2 fs-3 d-block"></i>
+                Prévention & Choix des Gants
+            </button>
+        </div>
+        <div class="col-md-5">
+            <button class="btn w-100 py-3 btn-menu-epi text-white" style="background-color: var(--r-purple);" onclick="afficherModuleRespiratoire()">
+                <i class="fa-solid fa-head-side-mask mb-2 fs-3 d-block"></i>
+                Prévention Protection Respiratoire
+            </button>
         </div>
     </div>
 
-    <!-- Contenu des Onglets -->
-    <div class="tab-content" id="epiTabContent">
-        
-        <!-- ================= MODULE GANTS ================= -->
-        <div class="tab-pane fade show active" id="gants-content" role="tabpanel">
+    <!-- ================= CONTENEUR DYNAMIQUE DES MODULES ================= -->
+    <div id="zone-modules-prevention">
+
+        <!-- MODULE GANTS (Caché par défaut via d-none) -->
+        <div id="module-gants" class="d-none animate__animated animate__fadeIn">
             <div class="card card-epi">
-                <div class="card-epi-header-gants">
-                    <h3 class="m-0"><i class="fa-solid fa-hands"></i> Assistant de Choix : Gants de Protection</h3>
-                    <p class="m-0 mt-1 opacity-75">Conformité normes EN 388 (Mécanique), EN 374 (Chimique), EN 407 (Thermique)</p>
+                <div class="card-epi-header-gants d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="m-0"><i class="fa-solid fa-hands"></i> Assistant Technique : Gants de Protection</h3>
+                        <p class="m-0 mt-1 opacity-75">Évaluation de la conformité : EN 388, EN 374, EN 407</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light" onclick="fermerModules()"><i class="fa-solid fa-xmark"></i> Masquer</button>
                 </div>
                 <div class="card-body p-4">
                     <div class="row">
-                        <!-- Formulaire interactif -->
-                        <div class="col-lg-5 border-end-lg mb-4 mb-lg-0">
-                            <h5 class="fw-bold mb-3 text-secondary">1. Analysez la situation de travail</h5>
-                            
+                        <!-- Formulaire -->
+                        <div class="col-lg-5 border-end mb-4 mb-lg-0">
+                            <h5 class="fw-bold mb-3 text-secondary">1. Situation de travail</h5>
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Secteur ou Activité principale :</label>
+                                <label class="form-label fw-semibold">Secteur ou Risque ciblé :</label>
                                 <select class="form-select" id="gant-activite" onchange="calculerProtectionGants()">
-                                    <option value="">-- Sélectionner une activité --</option>
-                                    <option value="mecanique">Maintenance, Logistique, Manutention</option>
-                                    <option value="chimique_leger">Nettoyage, Utilisation de produits ménagers</option>
-                                    <option value="chimique_fort">Manipulation de Solvants, Acides, Hydrocarbures</option>
-                                    <option value="thermique_chaud">Soudure, Métallurgie, Boulangerie (Chaud)</option>
-                                    <option value="thermique_froid">Travail en milieu frigorifique, extérieur hiver</option>
-                                    <option value="electrique">Travaux sous tension, Électricité</option>
+                                    <option value="">-- Sélectionner l'activité --</option>
+                                    <option value="mecanique">Maintenance, Logistique, Risques mécaniques</option>
+                                    <option value="chimique_leger">Nettoyage, Produits ménagers ou biologiques</option>
+                                    <option value="chimique_fort">Manipulation Solvants, Acides, Hydrocarbures</option>
+                                    <option value="thermique_chaud">Soudure, Métallurgie, Chaleur de contact</option>
+                                    <option value="thermique_froid">Travail en milieu frigorifique ou extérieur</option>
+                                    <option value="electrique">Travaux sous tension (Habilitation électricien)</option>
                                 </select>
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Durée du contact ou de la tâche :</label>
+                                <label class="form-label fw-semibold">Durée d'exposition continue :</label>
                                 <div class="btn-group w-100" role="group">
                                     <input type="radio" class="btn-check" name="gant-duree" id="gant-court" value="court" checked onchange="calculerProtectionGants()">
                                     <label class="btn btn-outline-secondary" for="gant-court">Intermittent (< 1h)</label>
-                                    
                                     <input type="radio" class="btn-check" name="gant-duree" id="gant-long" value="long" onchange="calculerProtectionGants()">
                                     <label class="btn btn-outline-secondary" for="gant-long">Continu (> 1h)</label>
                                 </div>
                             </div>
-
                             <div class="alert alert-warning d-flex align-items-center mt-4">
-                                <i class="fa-solid fa-triangle-exclamation me-3 fs-4"></i>
-                                <div><small><strong>Rappel :</strong> Un gant unique contre TOUS les risques n'existe pas. Adaptez le modèle au poste.</small></div>
+                                <i class="fa-solid fa-circle-info me-3 fs-4"></i>
+                                <div><small>Vérifiez régulièrement l'état d'usure de vos gants. Un gant poreux accélère l'absorption cutanée.</small></div>
                             </div>
                         </div>
-
-                        <!-- Résultat Dynamique -->
+                        <!-- Résultat -->
                         <div class="col-lg-7 ps-lg-4">
-                            <h5 class="fw-bold mb-3 text-secondary">2. Recommandations RESTEV Prévention</h5>
-                            
+                            <h5 class="fw-bold mb-3 text-secondary">2. Préconisations RESTEV</h5>
                             <div id="gant-resultat-vide" class="text-center py-5 text-muted">
-                                <i class="fa-solid fa-hand-pointer fs-1 mb-2 text-opacity-25 text-dark"></i>
-                                <p>Sélectionnez une activité pour générer les préconisations techniques.</p>
+                                <i class="fa-solid fa-hand-pointer fs-1 mb-2 text-dark opacity-25"></i>
+                                <p>Choisissez un risque à gauche pour afficher les recommandations.</p>
                             </div>
-
                             <div id="gant-resultat" class="d-none">
                                 <div class="p-3 mb-3 bg-light rounded border">
-                                    <h6 class="fw-bold text-dark mb-2">Matériau de gant recommandé :</h6>
+                                    <h6 class="fw-bold text-dark mb-2">Matériau recommandé :</h6>
                                     <h4 class="text-primary fw-bold" id="gant-matiere">-</h4>
                                     <p class="text-muted small mb-0" id="gant-description">-</p>
                                 </div>
-
-                                <h6 class="fw-bold mb-2">Normes obligatoires à vérifier :</h6>
+                                <h6 class="fw-bold mb-2">Normes d'homologation requises :</h6>
                                 <div id="gant-normes"></div>
-
                                 <div class="mt-4">
-                                    <h6 class="fw-bold text-danger"><i class="fa-solid fa-circle-xmark me-2"></i>Interdictions / Points de vigilance :</h6>
+                                    <h6 class="fw-bold text-danger"><i class="fa-solid fa-ban me-2"></i>Points de vigilance critiques :</h6>
                                     <ul class="text-muted small ps-3" id="gant-alertes"></ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Fiche Réflexe Gants -->
+                    <!-- Fiche Réflexe -->
                     <hr class="my-4">
-                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-graduation-cap me-2 text-success"></i>Bonnes pratiques : Retrait sécurisé (Technique "Sans Contact")</h5>
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-shield-halved me-2 text-success"></i>Méthode HSE : Retrait des gants souillés sans contact cutané</h5>
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded h-100">
-                                <p class="mb-1"><span class="step-number">1</span><strong>Pincer :</strong></p>
-                                <small class="text-muted">Pincez l'extérieur du premier gant au niveau du poignet, sans toucher votre peau.</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded h-100">
-                                <p class="mb-1"><span class="step-number">2</span><strong>Retourner :</strong></p>
-                                <small class="text-muted">Tirez le gant vers le bas pour le retirer en le retournant sur lui-même. Gardez-le en boule dans la main gantée.</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded h-100">
-                                <p class="mb-1"><span class="step-number">3</span><strong>Glisser :</strong></p>
-                                <small class="text-muted">Glissez deux doigts nus à l'intérieur du second gant au niveau du poignet. Poussez vers l'extérieur pour l'enlever sans toucher l'extérieur contaminé.</small>
-                            </div>
-                        </div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded h-100"><p class="mb-1"><span class="step-number">1</span><strong>Pincer :</strong></p><small class="text-muted">Pincez le gant près du poignet sur la face externe, sans toucher votre peau.</small></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded h-100"><p class="mb-1"><span class="step-number">2</span><strong>Retourner :</strong></p><small class="text-muted">Tirez vers les doigts pour le retirer à l'envers. Gardez-le en boule dans l'autre main.</small></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded h-100"><p class="mb-1"><span class="step-number">3</span><strong>Glisser :</strong></p><small class="text-muted">Glissez vos doigts nus sous le poignet du gant restant et retournez-le par-dessus le premier.</small></div></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= MODULE RESPIRATOIRE ================= -->
-        <div class="tab-pane fade" id="resp-content" role="tabpanel">
+        <!-- MODULE RESPIRATOIRE (Caché par défaut via d-none) -->
+        <div id="module-respiratoire" class="d-none animate__animated animate__fadeIn">
             <div class="card card-epi">
-                <div class="card-epi-header-resp">
-                    <h3 class="m-0"><i class="fa-solid fa-head-side-mask"></i> Assistant de Choix : Protection Respiratoire</h3>
-                    <p class="m-0 mt-1 opacity-75">Conformité normes EN 149 (Masques jetables), EN 140 & EN 143 (Filtres)</p>
+                <div class="card-epi-header-resp d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="m-0"><i class="fa-solid fa-head-side-mask"></i> Assistant Technique : Protection Respiratoire</h3>
+                        <p class="m-0 mt-1 opacity-75">Évaluation de la conformité : EN 149, EN 140, EN 14387</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light" onclick="fermerModules()"><i class="fa-solid fa-xmark"></i> Masquer</button>
                 </div>
                 <div class="card-body p-4">
                     <div class="row">
-                        <!-- Formulaire Interactif -->
-                        <div class="col-lg-5 border-end-lg mb-4 mb-lg-0">
-                            <h5 class="fw-bold mb-3 text-secondary">1. Caractérisation du polluant</h5>
-                            
+                        <!-- Formulaire -->
+                        <div class="col-lg-5 border-end mb-4 mb-lg-0">
+                            <h5 class="fw-bold mb-3 text-secondary">1. Identification des polluants</h5>
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Nature du contaminant :</label>
+                                <label class="form-label fw-semibold">Type de contaminant présent :</label>
                                 <select class="form-select" id="resp-polluant" onchange="calculerProtectionResp()">
-                                    <option value="">-- Sélectionner le polluant --</option>
-                                    <option value="poussiere_inerte">Poussières de bois grossières, ponçage basique</option>
-                                    <option value="poussiere_dangereuse">Poussières de silice, bois durs, béton, plâtre</option>
-                                    <option value="amiante">Amiante (Opérations de sous-section 4 à faible niveau)</option>
-                                    <option value="vapeur_organique">Solvants, Peintures solvantées, Vernis, Colles</option>
-                                    <option value="gaz_acide">Chlore, Produits de nettoyage industriels acides</option>
-                                    <option value="multi_gaz">Gaz combinés, Maintenance chimique lourde</option>
+                                    <option value="">-- Sélectionner le contaminant --</option>
+                                    <option value="poussiere_inerte">Poussières de bois grossières, meulage, plâtre</option>
+                                    <option value="poussiere_dangereuse">Silice cristalline, quartz, fumées de soudage, plomb</option>
+                                    <option value="amiante">Amiante (Interventions d'entretien SS4 encadrées)</option>
+                                    <option value="vapeur_organique">Solvants, résines, peintures solvantées, hydrocarbures</option>
+                                    <option value="gaz_acide">Chlore, vapeurs acides, désinfectants corrosifs</option>
+                                    <option value="multi_gaz">Risques mixtes (vapeurs organiques + acides + poussières)</option>
                                 </select>
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Configuration de l'espace de travail :</label>
+                                <label class="form-label fw-semibold">Environnement de travail :</label>
                                 <select class="form-select" id="resp-espace" onchange="calculerProtectionResp()">
-                                    <option value="ventile">Zone ouverte ou atelier correctement ventilé</option>
-                                    <option value="confine">Espace confiné / Cuve / Volume restreint sans ventilation</option>
+                                    <option value="ventile">Atelier ventilé ou extérieur (Taux O₂ > 19.5%)</option>
+                                    <option value="confine">Milieu confiné / Cuve / Fosse (Risque manque O₂ / forte concentration)</option>
                                 </select>
                             </div>
-
                             <div class="alert alert-danger d-flex align-items-center mt-4">
-                                <i class="fa-solid fa-circle-exclamation me-3 fs-4"></i>
-                                <div><small><strong>Attention vitale :</strong> Les filtres classiques ne protègent jamais du manque d'oxygène (Taux &lt; 19.5%).</small></div>
+                                <i class="fa-solid fa-triangle-exclamation me-3 fs-4"></i>
+                                <div><small><strong>Alerte Oxygène :</strong> Un appareil filtrant ne remplace pas l'oxygène. Ne jamais l'utiliser si le taux d'O₂ est inconnu ou inférieur à 19,5%.</small></div>
                             </div>
                         </div>
-
-                        <!-- Résultat Dynamique -->
+                        <!-- Résultat -->
                         <div class="col-lg-7 ps-lg-4">
-                            <h5 class="fw-bold mb-3 text-secondary">2. Équipement requis & Marquage filtre</h5>
-                            
+                            <h5 class="fw-bold mb-3 text-secondary">2. Spécifications du masque & du filtre</h5>
                             <div id="resp-resultat-vide" class="text-center py-5 text-muted">
-                                <i class="fa-solid fa-mask-face fs-1 mb-2 text-opacity-25 text-dark"></i>
-                                <p>Déterminez la nature du contaminant pour afficher le type de masque et de filtre requis.</p>
+                                <i class="fa-solid fa-mask-face fs-1 mb-2 text-dark opacity-25"></i>
+                                <p>Sélectionnez le type de contaminant pour afficher les critères de filtration.</p>
                             </div>
-
                             <div id="resp-resultat" class="d-none">
                                 <div class="p-3 mb-3 bg-light rounded border">
-                                    <h6 class="fw-bold text-dark mb-2">Type d'appareil respiratoire :</h6>
+                                    <h6 class="fw-bold text-dark mb-2">Classe d'équipement requise :</h6>
                                     <h4 class="fw-bold" style="color: var(--r-purple);" id="resp-appareil">-</h4>
                                     <p class="text-muted small mb-0" id="resp-description">-</p>
                                 </div>
-
                                 <div class="row g-2 mb-3">
                                     <div class="col-6">
                                         <div class="p-2 border rounded text-center bg-white">
-                                            <small class="text-muted d-block">Classe/Type Filtre</small>
+                                            <small class="text-muted d-block">Type de Marquage Filtre</small>
                                             <span class="fw-bold badge bg-dark text-white fs-6 mt-1" id="resp-filtre-badge">-</span>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="p-2 border rounded text-center bg-white">
-                                            <small class="text-muted d-block">Code Couleur Normalisé</small>
-                                            <div class="mt-1 d-inline-block px-3 py-1 rounded fw-bold text-white small" id="resp-couleur-badge" style="background-color: #666;">-</div>
+                                            <small class="text-muted d-block">Code Couleur AFNOR</small>
+                                            <div class="mt-1 d-inline-block px-3 py-1 rounded fw-bold text-white small" id="resp-couleur-badge">-</div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="norme-box">
-                                    <small class="d-block text-dark fw-semibold">Spécification technique :</small>
+                                    <small class="d-block text-dark fw-semibold">Référentiel Normatif :</small>
                                     <span class="small text-muted" id="resp-norme-text">-</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Test d'étanchéité -->
+                    <!-- Fit Check -->
                     <hr class="my-4">
-                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-circle-check me-2 text-success"></i>Le "Fit-Check" obligatoire (Avant chaque entrée en zone)</h5>
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-square-check me-2 text-success"></i>Contrôle obligatoire : Réaliser son "Fit-Check" d'étanchéité</h5>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="p-3 border rounded h-100 resp-step">
-                                <h6><span class="step-number">P-</span><strong>Test en pression positive :</strong></h6>
-                                <p class="text-muted small mb-0">Obstruez la valve d'exhalation avec la paume de votre main et expirez doucement. Le masque doit légèrement se gonfler sans que l'air ne s'échappe par les bords.</p>
+                                <h6><span class="step-number">P-</span><strong>Test d'étanchéité en pression négative :</strong></h6>
+                                <p class="text-muted small mb-0">Obstruez l'entrée des filtres avec la paume des mains, inhalez doucement. Le masque doit s'aspirer et s'affaisser vers le visage sans fuite d'air périphérique.</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="p-3 border rounded h-100 resp-step">
-                                <h6><span class="step-number">P+</span><strong>Test en pression négative :</strong></h6>
-                                <p class="text-muted small mb-0">Obstruez les cartouches filtrantes avec vos mains et inhalez profondément. Le masque doit s'affaisser légèrement vers votre visage et aucune fuite d'air extérieure ne doit être ressentie.</p>
+                                <h6><span class="step-number">P+</span><strong>Test d'étanchéité en pression positive :</strong></h6>
+                                <p class="text-muted small mb-0">Obstruez la valve d'expiration, expirez doucement. Une légère surpression doit se créer dans le masque sans qu'aucun filet d'air ne s'échappe vers vos yeux ou vos joues.</p>
                             </div>
                         </div>
                     </div>
@@ -318,16 +289,38 @@
         </div>
 
     </div>
+
 </div>
 
 <script>
 /**
- * Logique de calcul dynamique pour la protection des mains (Gants)
+ * Fonctions de bascule d'affichage pour tes boutons distincts
+ */
+function afficherModuleGants() {
+    document.getElementById('module-gants').classList.remove('d-none');
+    document.getElementById('module-respiratoire').classList.add('d-none');
+    // Scroll automatique fluide vers le module ouvert
+    document.getElementById('module-gants').scrollIntoView({ behavior: 'smooth' });
+}
+
+function afficherModuleRespiratoire() {
+    document.getElementById('module-respiratoire').classList.remove('d-none');
+    document.getElementById('module-gants').classList.add('d-none');
+    // Scroll automatique fluide vers le module ouvert
+    document.getElementById('module-respiratoire').scrollIntoView({ behavior: 'smooth' });
+}
+
+function fermerModules() {
+    document.getElementById('module-gants').classList.add('d-none');
+    document.getElementById('module-respiratoire').classList.add('d-none');
+}
+
+/**
+ * Moteur de calcul dynamique - Gants
  */
 function calculerProtectionGants() {
     const activite = document.getElementById('gant-activite').value;
     const duree = document.querySelector('input[name="gant-duree"]:checked').value;
-    
     const divVide = document.getElementById('gant-resultat-vide');
     const divResultat = document.getElementById('gant-resultat');
     
@@ -340,89 +333,78 @@ function calculerProtectionGants() {
     divVide.classList.add('d-none');
     divResultat.classList.remove('d-none');
 
-    let matiere = "";
-    let desc = "";
-    let normes = [];
-    let alertes = [];
+    let matiere = "", desc = "", normes = [], alertes = [];
 
     switch(activite) {
         case 'mecanique':
-            matiere = duree === 'court' ? "Polyuréthane (PU) sur support tricot" : "Nitrile épais texturé ou Cuir fleur de bovin";
-            desc = "Idéal pour la manipulation de pièces sèches ou légèrement huileuses. Offre une excellente dextérité.";
+            matiere = duree === 'court' ? "Polyuréthane (PU) sur support tricot" : "Nitrile lourd enduit ou Cuir fleur de bovin";
+            desc = "Idéal pour la manipulation de pièces sèches ou modérément huileuses. Très haute résistance mécanique.";
             normes = [
-                "<strong>EN 388 :</strong> Protection contre les risques mécaniques (Ablation, Coupures, Déchirures, Perforation).",
-                "Privilégier un indice de coupure élevé (marquage TDM niveau C à F) si manipulation d'objets tranchants."
+                "<strong>EN 388 :</strong> Protection contre les agressions mécaniques (Abrasion, Coupure, Déchirure, Perforation).",
+                "Pour la manipulation d'objets hautement tranchants, exigez le marquage de coupure TDM de niveau C à F."
             ];
             alertes = [
-                "Ne pas utiliser au contact direct de produits chimiques liquides.",
-                "Interdiction stricte d'utilisation près de machines en rotation (risque d'enroulement)."
+                "Zéro protection étanche : ne pas utiliser au contact de produits chimiques liquides.",
+                "Interdiction formelle à proximité d'arbres ou de machines en rotation (risque d'entraînement de la main)."
             ];
             break;
-            
         case 'chimique_leger':
-            matiere = "Nitrile jetable (épaisseur minimale 0.12mm) ou Néoprène";
-            desc = "Adapté pour les projections accidentelles lors du nettoyage ou de la désinfection des surfaces.";
+            matiere = "Nitrile jetable (épaisseur min 0.12mm) ou Néoprène fin";
+            desc = "Destiné à la protection contre les projections fines accidentelles lors des opérations de brossage ou de bio-nettoyage.";
             normes = [
-                "<strong>EN ISO 374-1 (Type B ou C) :</strong> Résistance à la perméation des produits chimiques légers.",
-                "<strong>EN ISO 374-5 :</strong> Protection contre les agents biologiques (virus/bactéries)."
+                "<strong>EN ISO 374-1 (Type B ou C) :</strong> Étanchéité minimale aux produits chimiques dilués.",
+                "<strong>EN ISO 374-5 :</strong> Barrière certifiée contre les micro-organismes et agents biologiques."
             ];
             alertes = [
-                "Gant à usage unique : Changer immédiatement le gant en cas de projection importante.",
-                "Le vinyle est à proscrire pour la protection chimique."
+                "Usage unique strict : remplacez immédiatement le gant après une projection directe majeure.",
+                "Le vinyle (PVC jetable) est interdit pour une protection chimique fiable."
             ];
             break;
-
         case 'chimique_fort':
-            matiere = duree === 'court' ? "Nitrile lourd ou Néoprène épais" : "Fluoropolymère (Viton) ou Butyle (selon FDS)";
-            desc = "Indispensable pour la manipulation intensive ou l'immersion partielle. Le choix précis doit valider le code lettre de la Fiche de Données de Sécurité (FDS).";
+            matiere = duree === 'court' ? "Nitrile lourd à manchette" : "Fluoropolymère (Viton) ou Butyle épais (selon FDS)";
+            desc = "Recommandé pour les manipulations répétitives ou immersions partielles. Le choix final dépend scrupuleusement de la Fiche de Données de Sécurité (FDS) du produit.";
             normes = [
-                "<strong>EN ISO 374-1 (Type A) :</strong> Protection haute performance (Temps de passage > 30 min sur au moins 6 produits chimiques).",
-                "Vérifier les lettres de marquage correspondantes aux produits manipulés."
+                "<strong>EN ISO 374-1 (Type A) :</strong> Haute performance (Temps de perméation > 30 minutes sur au moins 6 substances de la liste normalisée)."
             ];
             alertes = [
-                "Le latex et le PU classique sont détruits instantanément par la plupart des solvants agressifs.",
-                "Surveiller la sueur à l'intérieur du gant qui peut accélérer le passage percutané de certains toxiques."
+                "Le latex standard et le polyuréthane sont instantanément dégradés par la majorité des solvants.",
+                "Surveillez l'apparition de sueur interne, elle accélère le passage percutané de certains composants chimiques."
             ];
             break;
-
         case 'thermique_chaud':
-            matiere = "Cuir croûte de bovin avec doublure isolante (Kevlar/Nomex)";
-            desc = "Résistant aux projections de métal en fusion, aux étincelles et à la chaleur de contact.";
+            matiere = "Cuir croûte de bovin avec barrière isolante Kevlar ou Nomex";
+            desc = "Haute performance contre les projections incandescentes, les scories de soudage et la chaleur de contact.";
             normes = [
-                "<strong>EN 407 :</strong> Protection contre les risques thermiques (Chaleur et/ou feu). Exiger le niveau 2 au moins pour la chaleur de contact.",
-                "<strong>EN 388 :</strong> Doit également présenter une bonne résistance à la déchirure."
+                "<strong>EN 407 :</strong> Risques thermiques (Feu et chaleur). Exiger un indice minimal de niveau 2 pour la chaleur de contact."
             ];
             alertes = [
-                "Ne jamais utiliser un gant thermique humide ou gras (risque de brûlure par transfert de vapeur).",
-                "Pas d'étanchéité chimique."
+                "Ne jamais manipuler d'éléments chauds avec un gant humide (le transfert de vapeur cause des brûlures graves).",
+                "Ce gant n'est pas étanche aux huiles ou aux solvants."
             ];
             break;
-
         case 'thermique_froid':
-            matiere = "Support tricoté bouclé avec enduction Nitrile ou PVC souple spécial froid";
-            desc = "Conserve sa souplesse même à très basse température tout en bloquant l'humidité.";
+            matiere = "Doublure tricot bouclé avec enduction de surface en PVC souple spécial grand froid";
+            desc = "Maintient l'agilité des doigts par basse température tout en empêchant l'infiltration de l'humidité.";
             normes = [
-                "<strong>EN 511 :</strong> Protection contre le froid (Froid de convection, Froid de contact, Imperméabilité à l'eau)."
+                "<strong>EN 511 :</strong> Protection contre le froid résiduel (Froid convectif, Froid de contact et Imperméabilité)."
             ];
             alertes = [
-                "Si le gant prend l'eau (test EN 511 indice 0), l'effet isolant tombe à zéro."
+                "Si l'humidité pénètre (test EN 511 validé à 0), la capacité d'isolation thermique s'effondre instantanément."
             ];
             break;
-
         case 'electrique':
-            matiere = "Latex élastomère diélectrique (Classe 00 à 4 selon la tension)";
-            desc = "Gants isolants spécifiques pour les électriciens habilités.";
+            matiere = "Latex élastomère pur diélectrique (Classe 00 à 4 selon la tension du réseau)";
+            desc = "Gants isolants de sécurité obligatoires pour l'exécution d'opérations d'ordre électrique.";
             normes = [
-                "<strong>EN 60903 / CEI 60903 :</strong> Travaux sous tension - Gants en matériau isolant."
+                "<strong>EN 60903 / CEI 60903 :</strong> Travaux sous tension - Spécifications des matériaux isolants."
             ];
             alertes = [
-                "Obligation d'utiliser des sur-gants en cuir pour protéger le gant isolant contre les coupures ou perforations.",
-                "Vérification visuelle et test de gonflage obligatoire à l'air avant chaque utilisation."
+                "Obligation d'associer des sur-gants en cuir pour protéger la membrane en latex des risques de perforation.",
+                "Contrôle de l'étanchéité par gonflage d'air manuel obligatoire avant chaque prise de poste."
             ];
             break;
     }
 
-    // Remplissage du DOM
     document.getElementById('gant-matiere').innerText = matiere;
     document.getElementById('gant-description').innerText = desc;
     
@@ -432,16 +414,15 @@ function calculerProtectionGants() {
 
     let htmlAlertes = "";
     alertes.forEach(a => { htmlAlertes += `<li>${a}</li>`; });
-    document.getElementById('gant-alertes').innerHTML = htmlAlertes || "<li>Aucune contre-indication majeure trouvée, veillez à respecter les tailles.</li>";
+    document.getElementById('gant-alertes').innerHTML = htmlAlertes;
 }
 
 /**
- * Logique de calcul dynamique pour la protection respiratoire
+ * Moteur de calcul dynamique - Protection Respiratoire
  */
 function calculerProtectionResp() {
     const polluant = document.getElementById('resp-polluant').value;
     const espace = document.getElementById('resp-espace').value;
-    
     const divVide = document.getElementById('resp-resultat-vide');
     const divResultat = document.getElementById('resp-resultat');
     
@@ -454,81 +435,68 @@ function calculerProtectionResp() {
     divVide.classList.add('d-none');
     divResultat.classList.remove('d-none');
 
-    let appareil = "";
-    let desc = "";
-    let filtreBadge = "";
-    let couleurText = "";
-    let couleurHex = "";
-    let normeText = "";
+    let appareil = "", desc = "", filtreBadge = "", couleurText = "", couleurHex = "", normeText = "";
 
-    // Sécurité absolue espace confiné
     if (espace === 'confine') {
-        appareil = "Appareil Respiratoire Isolant (ARI) obligatoire";
-        desc = "L'espace étant confiné/non ventilé, il y a un risque critique d'anoxie (manque d'oxygène) ou d'accumulation de gaz à effet flash. Un masque filtrant classique est INUTILE et DANGEREUX.";
+        appareil = "Appareil Respiratoire Isolant (ARI) Autonome Obligatoire";
+        desc = "Milieu confiné sans ventilation permanente : risque critique de dé-oxygénation rapide ou d'atmosphère IDLH (immédiatement dangereuse pour la vie). Tout système filtrant passif est inefficace et dangereux.";
         filtreBadge = "ISOLANT";
-        couleurText = "ALIMENTATION D'AIR CHRONO";
+        couleurText = "ALIMENTATION AIR EXTERNE";
         couleurHex = "#dc3545";
-        normeText = "EN 137 / EN 14593 - Matériel de protection de type adduction d'air pur ou bouteille autonome.";
+        normeText = "EN 137 / EN 14593 - Équipement à adduction d'air pur ou bouteilles d'air comprimé.";
     } else {
-        // Mode filtrant classique
         switch(polluant) {
             case 'poussiere_inerte':
                 appareil = "Demi-masque jetable FFP2";
-                desc = "Convient pour les travaux de second œuvre générant des particules grossières non toxiques.";
+                desc = "Indiqué pour les travaux de manutention poussiéreuse et découpures de matériaux non toxiques.";
                 filtreBadge = "P2";
                 couleurText = "BLANC";
                 couleurHex = "#6c757d";
-                normeText = "EN 149:2001+A1:2009 - Demi-masques filtrants contre les particules.";
+                normeText = "EN 149 - Demi-masques filtrants contre les aérosols particulaires.";
                 break;
-                
             case 'poussiere_dangereuse':
-                appareil = "Demi-masque réutilisable ou jetable FFP3 à valve";
-                desc = "Obligatoire pour les poussières alvéolaires dures (silice cristalline, silice de chantier, amiante résiduelle). La présence de la valve facilite l'expiration.";
-                filtreBadge = "P3 (Haute efficacité)";
+                appareil = "Demi-masque réutilisable à cartouches ou Jetable FFP3 avec valve";
+                desc = "Exigé pour faire face aux poussières alvéolaires agressives (silice cristalline de chantier, quartz, fumées de soudage). La valve évacue l'humidité de l'expiration.";
+                filtreBadge = "P3 (Très haute efficacité)";
                 couleurText = "BLANC";
                 couleurHex = "#6c757d";
-                normeText = "EN 143 (pour les filtres à cartouches) ou EN 149 FFP3. Arrête au minimum 99% des aérosols solides et liquides.";
+                normeText = "EN 143 ou EN 149 FFP3. Capacité d'arrêt de 99% des particules en suspension.";
                 break;
-
             case 'amiante':
-                appareil = "Masque complet à ventilation assistée (TM3P)";
-                desc = "Pour les chantiers amiante SS4. Le moteur soulage l'effort respiratoire et garantit une surpression constante à l'intérieur de la pièce faciale intégrale.";
-                filtreBadge = "TMP3 / P3 R";
+                appareil = "Masque complet étanche à ventilation assistée (Classe TM3P)";
+                desc = "Obligatoire pour les interventions sur chantiers Amiante SS4. Le flux motorisé apporte de l'air filtré en continu, annulant l'effort pulmonaire et évitant l'infiltration latérale.";
+                filtreBadge = "TMP3 / P3 R (Réutilisable)";
                 couleurText = "BLANC";
                 couleurHex = "#6c757d";
-                normeText = "EN 12942 - Appareils de filtration à ventilation assistée intégrant des masques complets.";
+                normeText = "EN 12942 - Appareils de filtration motorisés intégrant un masque facial complet.";
                 break;
-
             case 'vapeur_organique':
-                appareil = "Demi-masque avec cartouches interchangeables";
-                desc = "Protège des solvants volatils présents dans les peintures, colles, vernis et dégraissants automobiles.";
-                filtreBadge = "Type A (Classe 1 ou 2)";
+                appareil = "Demi-masque bi-cartouches filtrantes";
+                desc = "Bloque efficacement l'inhalation de vapeurs de solvants, liants, vernis, colles et hydrocarbures.";
+                filtreBadge = "Type A (Classe 1 ou 2 selon teneur)";
                 couleurText = "MARRON";
                 couleurHex = "#8B4513";
-                normeText = "EN 14387 - Filtres contre les gaz et filtres combinés. Spécificité points d'ébullition > 65°C.";
+                normeText = "EN 14387 - Filtres antigaz et combinés. Dédié aux solvants à point d'ébullition > 65°C.";
                 break;
-
             case 'gaz_acide':
-                appareil = "Demi-masque ou Masque Complet (selon concentration)";
-                desc = "Utilisé pour la désinfection lourde en milieu agroalimentaire ou le traitement chimique de surface.";
+                appareil = "Demi-masque ou Masque intégral d'atelier";
+                desc = "Recommandé pour les applications d'agents acides concentrés ou décapants chimiques industriels.";
                 filtreBadge = "Type E";
                 couleurText = "JAUNE";
                 couleurHex = "#ffc107";
-                normeText = "EN 14387 - Filtres spécifiques pour le dioxyde de soufre, l'acide chlorhydrique et les gaz acides.";
+                normeText = "EN 14387 - Protection contre le dioxyde de soufre et vapeurs acides.";
                 break;
-
             case 'multi_gaz':
-                appareil = "Masque Complet bi-cartouches";
-                desc = "Idéal pour les équipes de maintenance polyvalentes faisant face à des risques chimiques changeants ou mixtes (gaz + poussières).";
-                filtreBadge = "ABEK1 P3 ou ABEK2 P3";
+                appareil = "Masque complet bi-cartouches de maintenance";
+                desc = "Parfait pour les interventions de maintenance polyvalente où les émanations de gaz et de particules sont imbriquées ou variables d'une zone à l'autre.";
+                filtreBadge = "ABEK1 P3 / ABEK2 P3";
                 couleurText = "Marron / Gris / Jaune / Vert / Blanc";
                 couleurHex = "#198754";
-                normeText = "EN 14387 Polyvalent - Assure la filtration combinée des gaz organiques, inorganiques, acides, ammoniac et des particules nocives.";
+                normeText = "EN 14387 - Filtre combiné universel (vapeurs organiques, inorganiques, gaz acides, ammoniac et poussières).";
                 break;
         }
     }
 
-    // Remplissage du DOM
     document.getElementById('resp-appareil').innerText = appareil;
     document.getElementById('resp-description').innerText = desc;
     document.getElementById('resp-filtre-badge').innerText = filtreBadge;
@@ -536,7 +504,6 @@ function calculerProtectionResp() {
     const badgeCouleur = document.getElementById('resp-couleur-badge');
     badgeCouleur.innerText = couleurText;
     badgeCouleur.style.backgroundColor = couleurHex;
-    // Ajustement de la couleur du texte si le fond est jaune pour lisibilité
     badgeCouleur.style.color = (couleurHex === '#ffc107') ? '#000' : '#fff';
 
     document.getElementById('resp-norme-text').innerText = normeText;
