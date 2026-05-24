@@ -36,16 +36,12 @@
     --shadow-lg: 0 16px 32px rgba(30, 68, 117, 0.12);
 }
 
-/* Styles dédiés à la section prévention dynamique des EPI */
+/* Styles dédiés à l'aide au choix des EPI */
 .epi-card {
     border: none;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
-    transition: transform 0.2s;
     background: #fff;
-}
-.epi-card:hover {
-    transform: translateY(-2px);
 }
 .epi-header-gants {
     background: linear-gradient(135deg, var(--r-blue) 0%, var(--r-blue-dark) 100%);
@@ -65,17 +61,15 @@
     padding: 12px;
     border-radius: 4px;
 }
-.success-box {
-    background-color: #f0fdf4;
-    border-left: 4px solid #198754;
-    padding: 12px;
-    border-radius: 4px;
+.use-table th {
+    background-color: #f8f9fa;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-.nav-pills .nav-link.active.btn-gants {
-    background-color: var(--r-blue);
-}
-.nav-pills .nav-link.active.btn-resp {
-    background-color: var(--r-purple);
+.use-table td {
+    font-size: 0.85rem;
+    vertical-align: middle;
 }
 </style>
 </head>
@@ -83,131 +77,135 @@
 
 <div class="container my-5">
     
-    <!-- SECTION PRÉVENTION DYNAMIQUE EPI -->
+    <!-- SECTION GUIDE DE SÉLECTION DYNAMIQUE EPI -->
     <section id="prevention-epi" class="mb-5">
         <div class="text-center mb-4">
-            <h2 class="fw-bold" style="color: var(--r-blue-dark);"><i class="fa-solid fa-shield-halved me-2"></i>Guide de Prévention Dynamique des EPI</h2>
-            <p class="text-muted">Sensibilisez vos adhérents aux risques majeurs et aux bonnes pratiques indispensables sur le terrain.</p>
+            <h2 class="fw-bold" style="color: var(--r-blue-dark);"><i class="fa-solid fa-graduation-cap me-2"></i>Guide d'Aide au Choix : Gants & Masques</h2>
+            <p class="text-muted">Informations dynamiques pour associer le bon équipement au bon usage et comprendre les risques associés.</p>
         </div>
 
         <div class="row g-4">
             
-            <!-- BLOC 1 : PROTECTION DES MAINS (GANTS) -->
-            <div class="col-md-6">
+            <!-- BLOC 1 : TYPES DE GANTS SELON UTILISATION -->
+            <div class="col-lg-6">
                 <div class="card epi-card h-100">
                     <div class="card-header epi-header-gants p-3 d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0 fs-5"><i class="fa-solid fa-hands me-2"></i>Protection des Mains & Gants</h4>
-                        <span class="badge bg-white text-dark text-uppercase fw-bold" style="font-size: 0.75rem;">Norme EN 388 / EN 374</span>
+                        <h4 class="mb-0 fs-5"><i class="fa-solid fa-hands me-2"></i>Aide au choix : Les Gants de Protection</h4>
+                        <span class="badge bg-white text-dark fw-bold" style="font-size: 0.75rem;">Normes EN 388 / 374</span>
                     </div>
                     <div class="card-body">
                         
-                        <!-- Onglets dynamiques -->
-                        <ul class="nav nav-pills mb-3 justify-content-center" id="pills-gants-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active btn-gants btn-sm me-2" id="gants-risques-tab" data-bs-toggle="pill" data-bs-target="#gants-risques" type="button" role="tab"><i class="fa-solid fa-triangle-exclamation me-1"></i>Les Risques</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link btn-gants btn-sm" id="gants-regles-tab" data-bs-toggle="pill" data-bs-target="#gants-regles" type="button" role="tab"><i class="fa-solid fa-circle-check me-1"></i>Bonne Utilisation</button>
-                            </li>
-                        </ul>
-                        
-                        <div class="tab-content" id="pills-gants-content">
-                            <!-- Onglet Risques -->
-                            <div class="tab-pane fade show active" id="gants-risques" role="tabpanel">
-                                <div class="danger-box mb-3">
-                                    <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-skull-crossbones me-2"></i>En cas d'absence de gants :</h6>
-                                    <ul class="mb-0 ps-3 text-secondary small">
-                                        <li><strong>Risques chimiques :</strong> Brûlures immédiates, dermatoses chroniques (eczéma professionnel) et passage de toxiques dans le sang.</li>
-                                        <li><strong>Risques mécaniques :</strong> Coupures, perforations, écrasements et infections graves suite à une simple plaie négligée.</li>
-                                        <li><strong>Risques thermiques :</strong> Gelures ou brûlures irréversibles au contact de surfaces extrêmes.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Onglet Règles -->
-                            <div class="tab-pane fade" id="gants-regles" role="tabpanel">
-                                <div class="success-box mb-3">
-                                    <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-handshake-angle me-2"></i>Les Bons Réflexes :</h6>
-                                    <ul class="mb-0 ps-3 text-secondary small">
-                                        <li><strong>Le bon choix :</strong> Adapter le gant au risque (Nitrile pour le chimique, Cuir/Kevlar pour la coupure).</li>
-                                        <li><strong>Avant usage :</strong> Vérifier l'absence de fissures ou de micro-trous en soufflant légèrement dedans.</li>
-                                        <li><strong>Le retrait sûr :</strong> Retirer les gants en les "enroulant" pour ne jamais toucher l'extérieur souillé avec la peau nue.</li>
-                                        <li><strong>Hygiène :</strong> Se laver les mains après chaque retrait et appliquer une crème réparatrice.</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="danger-box mb-3 small">
+                            <strong><i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> Risque d'un mauvais choix :</strong> Utiliser un gant inadapté (ex: du latex avec des solvants) crée une fausse sécurité. Le produit chimique dissout le gant en quelques secondes et reste emprisonné contre la peau, aggravant la brûlure ou l'allergie.
                         </div>
 
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle use-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Matière / Type</th>
+                                        <th>Utilisation préconisée</th>
+                                        <th>Risques couverts</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Nitrile</span></td>
+                                        <td>Huiles, graisses, hydrocarbures, solvants aliphatiques. <em>(Peinture, mécanique)</em></td>
+                                        <td>Dermatoses, agressions chimiques légères à modérées.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-dark">Néoprène</span></td>
+                                        <td>Acides, bases, produits corrosifs, alcools. <em>(Nettoyage industriel)</em></td>
+                                        <td>Brûlures chimiques sévères, destruction des tissus cutanés.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">Butyle</span></td>
+                                        <td>Cétones, esters (ex: Acétone), acides très concentrés. <em>(Milieu chimique spécialisé)</em></td>
+                                        <td>Passage des toxiques hautement volatils à travers la peau.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning text-dark">Cuir / Kevlar</span></td>
+                                        <td>Manutention lourde, meulage, manipulation de pièces tranchantes.</td>
+                                        <td>Coupures, perforations, déchirures, ampoules, chaleur de contact.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- BLOC 2 : PROTECTION RESPIRATOIRE -->
-            <div class="col-md-6">
+            <!-- BLOC 2 : TYPES DE PROTECTION RESPIRATOIRE SELON UTILISATION -->
+            <div class="col-lg-6">
                 <div class="card epi-card h-100">
                     <div class="card-header epi-header-resp p-3 d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0 fs-5"><i class="fa-solid fa-head-side-mask me-2"></i>Protection Respiratoire</h4>
-                        <span class="badge bg-white text-dark text-uppercase fw-bold" style="font-size: 0.75rem;">FFP1 / FFP2 / FFP3 / Masques à gaz</span>
+                        <h4 class="mb-0 fs-5"><i class="fa-solid fa-head-side-mask me-2"></i>Aide au choix : Les Masques</h4>
+                        <span class="badge bg-white text-dark fw-bold" style="font-size: 0.75rem;">Normes EN 149 / 14387</span>
                     </div>
                     <div class="card-body">
                         
-                        <!-- Onglets dynamiques -->
-                        <ul class="nav nav-pills mb-3 justify-content-center" id="pills-resp-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active btn-resp btn-sm me-2" id="resp-risques-tab" data-bs-toggle="pill" data-bs-target="#resp-risques" type="button" role="tab"><i class="fa-solid fa-triangle-exclamation me-1"></i>Les Risques</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link btn-resp btn-sm" id="resp-regles-tab" data-bs-toggle="pill" data-bs-target="#resp-regles" type="button" role="tab"><i class="fa-solid fa-circle-check me-1"></i>Bonne Utilisation</button>
-                            </li>
-                        </ul>
-                        
-                        <div class="tab-content" id="pills-resp-content">
-                            <!-- Onglet Risques -->
-                            <div class="tab-pane fade show active" id="resp-risques" role="tabpanel">
-                                <div class="danger-box mb-3">
-                                    <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-lungs-virus me-2"></i>En cas d'absence de masque :</h6>
-                                    <ul class="mb-0 ps-3 text-secondary small">
-                                        <li><strong>Risques immédiats :</strong> Irritations de la gorge, maux de tête, vertiges, voire asphyxie ou perte de connaissance instantanée.</li>
-                                        <li><strong>Risques invisibles à long terme :</strong> Fibroses pulmonaires, silicose, asthme professionnel invalidant et cancers des voies respiratoires (ex: Amiante, poussières de bois).</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Onglet Règles -->
-                            <div class="tab-pane fade" id="resp-regles" role="tabpanel">
-                                <div class="success-box mb-3">
-                                    <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-shield-virus me-2"></i>Les Bons Réflexes :</h6>
-                                    <ul class="mb-0 ps-3 text-secondary small">
-                                        <li><strong>L'étanchéité d'abord :</strong> Un masque mal ajusté ou porté sur une barbe naissante perd jusqu'à 90% de son efficacité.</li>
-                                        <li><strong>Test de pression :</strong> Obstruer les filtres et inspirer : le masque doit se plaquer légèrement sur le visage.</li>
-                                        <li><strong>Remplacement des filtres :</strong> Changer les filtres dès qu'une odeur passe (filtres à gaz) ou que la respiration devient difficile (filtres à particules).</li>
-                                        <li><strong>Stockage :</strong> Ranger le masque réutilisable dans une boîte hermétique propre, hors de la zone contaminée.</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="danger-box mb-3 small">
+                            <strong><i class="fa-solid fa-lungs-virus text-danger me-1"></i> Risque d'un mauvais choix :</strong> Un masque en tissu ou un masque jetable blanc (FFP) n'arrête <strong>jamais</strong> les gaz ou les vapeurs chimiques. Sans filtre à charbon actif adapté, les solvants pénètrent directement dans vos poumons, causant des vertiges immédiats et des risques de cancers à long terme.
                         </div>
 
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle use-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Type de Filtre</th>
+                                        <th>Utilisation préconisée</th>
+                                        <th>Risques couverts</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-info text-dark">Particules FFP2</span></td>
+                                        <td>Poussières de bois tendre, ponçage, béton, verre, virus, épidémies.</td>
+                                        <td>Irritations, allergies respiratoires, altération de la capacité pulmonaire.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">Particules FFP3</span></td>
+                                        <td>Amiante (courte durée), poussières de silice, plomb, fumées de soudage.</td>
+                                        <td>Silicose, fibrose pulmonaire, cancers des voies respiratoires.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge" style="background-color: #8B4513;">Cartouche A (Marron)</span></td>
+                                        <td>Vapeurs organiques, solvants, peintures au pistolet, colles, vernis.</td>
+                                        <td>Maux de tête, toxicité hépatique, effets neurotoxiques chroniques.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">Cartouche E / K</span></td>
+                                        <td>Gaz acides, Chlore, Ammoniac et dérivés chimiques spécifiques.</td>
+                                        <td>Œdème pulmonaire aigu, brûlures internes des voies aériennes, asphyxie.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- MODULE DYNAMIQUE INTERACTIF : CALCULATEUR DE DANGER SIMPLIFIÉ -->
+        <!-- MODULE INTERACTIF : VALIDATEUR RAPIDE DE SITUATION -->
         <div class="card epi-card mt-4 p-4 border-start border-warning border-4">
-            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-wand-magic-sparkles me-2 text-warning"></i>Simulateur d'impact en temps réel</h5>
-            <p class="small text-muted mb-3">Sélectionnez une situation de travail pour évaluer instantanément les risques et votre protection :</p>
+            <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-wand-magic-sparkles me-2 text-yellow"></i>Quel EPI pour quel métier ?</h5>
+            <p class="small text-muted mb-3">Sélectionnez une activité pour obtenir immédiatement la combinaison réglementaire Matériau/Filtre et comprendre le danger :</p>
             
             <div class="row g-3 align-items-center">
                 <div class="col-md-4">
-                    <select id="select-situation" class="form-select form-select-sm" onchange="mettreAJourSimulation()">
-                        <option value="0">-- Choisir une situation --</option>
-                        <option value="solvant">Manipulation de solvants / Peinture</option>
-                        <option value="meulage">Meulage / Découpe de béton (Poussières)</option>
-                        <option value="acide">Manipulation de produits acides / corrosifs</option>
+                    <select id="select-usage" class="form-select" onchange="analyserUsage()">
+                        <option value="">-- Choisir une activité terrain --</option>
+                        <option value="peinture">Application de Peintures & Solvants</option>
+                        <option value="maconnerie">Découpe de dalles béton / Maçonnerie</option>
+                        <option value="batterie">Manipulation d'Acides de batteries / Décapants</option>
+                        <option value="manutention">Logistique, tri et manutention de palettes</option>
                     </select>
                 </div>
                 <div class="col-md-8">
-                    <div id="simulation-result" class="p-3 bg-light rounded text-secondary small d-none">
-                        <!-- Rempli dynamiquement par JS -->
+                    <div id="usage-result" class="p-3 bg-light rounded text-secondary small d-none">
+                        <!-- Rempli dynamiquement par la fonction JS ci-dessous -->
                     </div>
                 </div>
             </div>
@@ -218,12 +216,12 @@
 </div>
 
 <script>
-// Logique javascript autonome pour le simulateur de prévention dynamique EPI
-function mettreAJourSimulation() {
-    const situation = document.getElementById('select-situation').value;
-    const resultBox = document.getElementById('simulation-result');
+// Logique javascript autonome pour analyser l'utilisation et recommander les bons types d'EPI
+function analyserUsage() {
+    const usage = document.getElementById('select-usage').value;
+    const resultBox = document.getElementById('usage-result');
     
-    if(situation === "0") {
+    if(!usage) {
         resultBox.classList.add('d-none');
         return;
     }
@@ -231,34 +229,68 @@ function mettreAJourSimulation() {
     resultBox.classList.remove('d-none');
     let htmlContent = "";
     
-    switch(situation) {
-        case "solvant":
+    switch(usage) {
+        case "peinture":
             htmlContent = `
-                <div class="d-flex align-items-start gap-2">
-                    <span class="badge bg-danger mt-1">Danger Principal</span>
-                    <div>
-                        <strong>Inhalation de COV & passage percutané.</strong> Risque de vertiges immédiats et d'atteintes hépatiques/rénales à long terme.<br>
-                        <span class="text-success fw-bold"><i class="fa-solid fa-check-double me-1"></i>Solution :</span> Masque équipé de cartouches A2 (marron) + Gants en Nitrile épais (pas de latex !).
+                <div class="row">
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-primary"><i class="fa-solid fa-hands me-1"></i> Gant requis : NITRILE</span>
+                        <span class="text-muted">Fait barrière aux solvants de peinture sans se dissoudre immédiatement.</span>
+                    </div>
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-purple"><i class="fa-solid fa-head-side-mask me-1"></i> Masque requis : CARTOUCHE A (Marron)</span>
+                        <span class="text-muted">Filtre à charbon actif indispensable contre les vapeurs organiques invisibles.</span>
+                    </div>
+                    <div class="col-12 mt-1 border-top pt-2 text-danger fw-bold text-xs">
+                        <i class="fa-solid fa-circle-exclamation me-1"></i> Danger en cas d'oubli : Passage des solvants dans le sang, vertiges, et risques neurologiques à long terme.
                     </div>
                 </div>`;
             break;
-        case "meulage":
+        case "maconnerie":
             htmlContent = `
-                <div class="d-flex align-items-start gap-2">
-                    <span class="badge bg-danger mt-1">Danger Principal</span>
-                    <div>
-                        <strong>Poussières alvéolaires de Silice Cristalline.</strong> Provoque la silicose (maladie pulmonaire incurable) et des lésions cutanées par abrasion.<br>
-                        <span class="text-success fw-bold"><i class="fa-solid fa-check-double me-1"></i>Solution :</span> Masque jetable ou réutilisable FFP3 obligatoire + Gants anti-coupures de protection mécanique (EN 388).
+                <div class="row">
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-primary"><i class="fa-solid fa-hands me-1"></i> Gant requis : CUIR OU KEVLAR (EN 388)</span>
+                        <span class="text-muted">Haute résistance à l'abrasion des blocs et aux coupures des disques.</span>
+                    </div>
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-purple"><i class="fa-solid fa-head-side-mask me-1"></i> Masque requis : JETABLE OU REUTILISABLE FFP3</span>
+                        <span class="text-muted">Seul niveau de filtration capable de bloquer les poussières de silice alvéolaire très fines.</span>
+                    </div>
+                    <div class="col-12 mt-1 border-top pt-2 text-danger fw-bold text-xs">
+                        <i class="fa-solid fa-circle-exclamation me-1"></i> Danger en cas d'oubli : Silicose (maladie pulmonaire irréversible) et plaies profondes aux mains.
                     </div>
                 </div>`;
             break;
-        case "acide":
+        case "batterie":
             htmlContent = `
-                <div class="d-flex align-items-start gap-2">
-                    <span class="badge bg-danger mt-1">Danger Principal</span>
-                    <div>
-                        <strong>Nécrose des tissus et projections oculaires/cutanées.</strong> Brûlures chimiques graves en quelques secondes.<br>
-                        <span class="text-success fw-bold"><i class="fa-solid fa-check-double me-1"></i>Solution :</span> Gants longs étanches en PVC, Néoprène ou Butyle certifiés EN 374 + Lunettes étanches ou visière faciale complète.
+                <div class="row">
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-primary"><i class="fa-solid fa-hands me-1"></i> Gant requis : NÉOPRÈNE MANCHETTE LONGUE</span>
+                        <span class="text-muted">Excellente tenue face aux acides denses. La manchette protège l'avant-bras.</span>
+                    </div>
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-purple"><i class="fa-solid fa-head-side-mask me-1"></i> Masque requis : CARTOUCHE E OU K (Selon l'acide)</span>
+                        <span class="text-muted">Filtre spécifiquement les gaz acides et vapeurs corrosives.</span>
+                    </div>
+                    <div class="col-12 mt-1 border-top pt-2 text-danger fw-bold text-xs">
+                        <i class="fa-solid fa-circle-exclamation me-1"></i> Danger en cas d'oubli : Brûlures chimiques immédiates cutanées et destruction sévère des muqueuses respiratoires.
+                    </div>
+                </div>`;
+            break;
+        case "manutention":
+            htmlContent = `
+                <div class="row">
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-primary"><i class="fa-solid fa-hands me-1"></i> Gant requis : TRICOT ENDUIT EN PAUME (EN 388)</span>
+                        <span class="text-muted">Offre un excellent "grip" (antidérapant) tout en protégeant des échardes de bois.</span>
+                    </div>
+                    <div class="col-sm-6 mb-2">
+                        <span class="d-block fw-bold text-success"><i class="fa-solid fa-head-side-mask me-1"></i> Masque requis : PAS NÉCESSAIRE</span>
+                        <span class="text-muted">Sauf en cas d'environnement particulièrement poussiéreux (déchargement de conteneurs pulvérulents).</span>
+                    </div>
+                    <div class="col-12 mt-1 border-top pt-2 text-danger fw-bold text-xs">
+                        <i class="fa-solid fa-circle-exclamation me-1"></i> Danger en cas d'oubli : Échardes infectées, écrasements légers répétés, dermatoses liées à la saleté des colis.
                     </div>
                 </div>`;
             break;
