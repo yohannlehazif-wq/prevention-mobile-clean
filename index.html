@@ -503,47 +503,109 @@
     <button class="btn btn-outline-secondary w-100 mt-2 py-2.5" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
 </div>
 
-<!-- PAGE COMBO MASQUES & FILTRES -->
+<!-- PAGE COMBO MASQUES & FILTRES (VERSION EXPERTE DYNAMIQUE) -->
 <div id="page-masques" class="app-page">
     <h5 class="fw-bold mb-3"><i class="fa-solid fa-head-side-mask me-2" style="color:#ef4444"></i>Combo Masques & Cartouches</h5>
 
     <div class="card-custom mb-4" style="border-left: 4px solid #ef4444;">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="fw-bold text-danger mb-0"><i class="fa-solid fa-mask-ventilator me-2"></i>Configuration Filtres</h6>
+            <h6 class="fw-bold text-danger mb-0"><i class="fa-solid fa-mask-ventilator me-2"></i>Configuration Norme EN 14387</h6>
             <button class="btn btn-xs btn-outline-danger py-1 px-2 fw-bold" style="font-size: 0.7rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
                 <i class="fa-solid fa-clock me-1"></i> Durée & Infos
             </button>
         </div>
-        <p class="small text-muted mb-3">Alerte : <b>Si l'on sent une odeur, il est déjà trop tard !</b> Identifiez le type de polluant pour configurer la bonne cartouche (Norme EN 14387).</p>
+        <p class="small text-muted mb-3">Sélectionnez le type de polluant et l'architecture de votre pièce faciale pour évaluer l'étanchéité réelle.</p>
         
-        <div class="mb-3">
-            <select id="epi-mask-pollutant" class="form-select fw-bold" onchange="updateMaskDiagnostic()">
-                <option value="A">Gaz/Vapeurs Organiques (Solvants, Peintures) -&gt; [Type A]</option>
-                <option value="B">Gaz Inorganiques (Chlore, Hydrogène sulfuré) -&gt; [Type B]</option>
-                <option value="E">Gaz Acides (Dioxyde de soufre, HCl) -&gt; [Type E]</option>
-                <option value="K">Ammoniac et dérivés aminés -&gt; [Type K]</option>
-                <option value="P">Poussières, Silice, Amiante, Aérosols -&gt; [Type P3]</option>
+        <!-- Sélection du Polluant principal -->
+        <div class="mb-2">
+            <label class="small fw-bold text-secondary mb-1">1. Nature du contaminant</label>
+            <select id="epi-mask-pollutant" class="form-select fw-bold mb-2" onchange="updateMaskDiagnostic()">
+                <option value="A">Gaz/Vapeurs Organiques (Solvants, Peintures) -> [Type A]</option>
+                <option value="B">Gaz Inorganiques (Chlore, Hydrogène sulfuré) -> [Type B]</option>
+                <option value="E">Gaz Acides (Dioxyde de soufre, HCl) -> [Type E]</option>
+                <option value="K">Ammoniac et dérivés aminés -> [Type K]</option>
+                <option value="P">Poussières fines, Silice, Amiante, Plâtre -> [Type P3]</option>
+                <option value="ABEKP">Polyvalent Atelier (Maintenance) -> [Type ABEK2P3]</option>
             </select>
         </div>
 
-        <div id="cartridge-color-bar" class="p-3 rounded-3 text-white text-center mb-2 fw-bold tracking-wide" style="background-color: #a16207; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
-            MARQUAGE : BANDEAU BRUN (Type A)
+        <!-- Sélection de la Classe/Performance -->
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <label class="small fw-bold text-secondary mb-1">2. Classe du filtre</label>
+                <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                    <option value="1">Classe 1 (Capacité < 0.1%)</option>
+                    <option value="2" selected>Classe 2 (Capacité < 0.5%)</option>
+                    <option value="3">Classe 3 (Capacité < 1.0%)</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="small fw-bold text-secondary mb-1">3. Pièce faciale</label>
+                <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                    <option value="demi">Demi-masque joint silicone</option>
+                    <option value="complet" selected>Masque Complet (Intégral)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- AFFICHAGE GRAPHIQUE 3D DU FILTRE NORMALISÉ -->
+        <div class="cartridge-3d-display text-white text-center mb-3">
+            <div class="small opacity-50 mb-2 text-uppercase tracking-wider" style="font-size:0.65rem">Aperçu de la cartouche requise</div>
+            <div id="cartridge-sticker" class="cartridge-sticker">
+                MARQUAGE EN COURS...
+            </div>
+        </div>
+
+        <!-- METRIQUES EXPERTES REELLES -->
+        <div class="row g-2 text-white mb-3">
+            <div class="col-6">
+                <div class="expert-metric-badge">
+                    <div class="small fw-semibold" style="font-size:0.7rem; color:#94a3b8">Indice FPN (Étanchéité)</div>
+                    <div id="metric-fpn" class="expert-metric-value">1000</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="expert-metric-badge">
+                    <div class="small fw-semibold" style="font-size:0.7rem; color:#94a3b8">Seuil Max Polluant</div>
+                    <div id="metric-ppm" class="expert-metric-value">5000 ppm</div>
+                </div>
+            </div>
         </div>
         
+        <!-- TEXTE CONSEIL ADAPTATIF -->
         <div class="p-3 bg-light rounded-3 border mb-3">
-            <div class="small mb-1"><strong>Type de Masque requis :</strong> <span id="mask-type-required" class="text-danger fw-bold">Demi-masque ou Masque complet</span></div>
-            <p id="cartridge-advice" class="small text-muted mb-0">Utiliser un filtre A2 (classe 2 pour capacité moyenne).</p>
+            <div class="small mb-1"><strong>Diagnostic RESTEV :</strong></div>
+            <p id="cartridge-advice" class="small text-muted mb-0">-</p>
+        </div>
+
+        <!-- SIMULATEUR DE CLAQUAGE DE CARTOUCHE -->
+        <div class="p-3 rounded-3 border bg-white mb-3">
+            <h6 class="fw-bold text-dark small mb-2"><i class="fa-solid fa-gauge-high text-danger me-2"></i>Simulateur terrain : Facteurs de saturation</h6>
+            <div class="mb-2">
+                <label class="small text-muted d-flex justify-content-between mb-1">
+                    <span>Effort physique / Débit d'air :</span>
+                    <span id="lbl-effort" class="fw-bold text-danger">Modéré (30 L/min)</span>
+                </label>
+                <input type="range" id="rng-effort" min="1" max="3" value="2" class="form-range range-premium" oninput="simulerClaquage()">
+            </div>
+            <div>
+                <label class="small text-muted d-flex justify-content-between mb-1">
+                    <span>Humidité relative de l'air :</span>
+                    <span id="lbl-humidity" class="fw-bold text-primary">Normale (50%)</span>
+                </label>
+                <input type="range" id="rng-humidity" min="20" max="90" value="50" step="5" class="form-range range-premium" oninput="simulerClaquage()">
+            </div>
+            <div id="box-breakthrough" class="alert alert-warning small p-2 text-center mb-0 mt-2 fw-bold" style="display:none">
+                ⚠️ Facteurs critiques : Durée de vie estimée de la cartouche divisée par 2.5 !
+            </div>
         </div>
 
         <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm small">
             <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-shield-halved me-1"></i>Règles d'or (Masques)</h6>
             <ul class="text-muted ps-3 mb-0">
-                <li class="mb-1 text-danger fw-bold"><i class="fa-solid fa-circle-exclamation me-1"></i>Alerte Odeur : Si vous percevez l'odeur du produit à l'intérieur du masque, la cartouche est saturée ou le masque mal ajusté. Le risque d'intoxication est immédiat !</li>
+                <li class="mb-1 text-danger fw-bold"><i class="fa-solid fa-circle-exclamation me-1"></i>Alerte : Si vous percevez l'odeur du produit, le charbon actif est saturé. Le risque est immédiat !</li>
                 <li class="mb-1"><b>Barbe :</b> Une barbe brise l'étanchéité du joint facial et laisse s'infiltrer l'air pollué.</li>
-                <li class="mb-1"><b>Test d'étanchéité :</b> Obstruez les cartouches avec les paumes et inspirez pour tester la pression négative.</li>
-                <li><b>Taux d'Oxygène :</b> Interdiction absolue d'utiliser un filtre si le taux d'O₂ est inférieur à <b>17%</b>.</li>
-                <li class="mb-1"><b>Ouverture des filtres :</b> Une fois sortie de son emballage étanche, une cartouche de gaz se dégrade naturellement. Notez la <b>date d'ouverture</b> dessus ; jetée sous 6 mois max.</li>
-                <li class="mb-1"><b>Stockage des EPI :</b> Rangez votre masque dans une boîte hermétique propre après nettoyage.</li>
+                <li class="mb-1"><b>Ouverture :</b> Sortie de son emballage sous vide, une cartouche de gaz se dégrade naturellement. Date d'ouverture obligatoire dessus ; jetée sous 6 mois max.</li>
             </ul>
         </div>
     </div>
@@ -551,44 +613,6 @@
     <button class="btn btn-outline-secondary w-100 mt-2 py-2.5" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
 </div>
 
-<!-- PAGE COMPATIBILITÉ STOCKAGE -->
-<div id="page-storage" class="app-page">
-    <h5 class="fw-bold mb-3"><i class="fa-solid fa-warehouse me-2" style="color:var(--r-yellow)"></i>Compatibilité de Stockage</h5>
-
-    <!-- SIMULATEUR DE CROISEMENT PAR PICTOGRAMMES (INRS) -->
-    <div class="card-custom mb-4" style="border-left-color: var(--r-yellow);">
-        <h6 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-code-branch me-2 text-warning"></i>Simulateur de co-stockage (INRS)</h6>
-        <p class="small text-muted mb-3">Croisez les classes de danger ou les pictogrammes de deux produits pour vérifier s'ils peuvent être stockés sur la même rétention.</p>
-        
-        <div class="mb-3">
-            <label class="form-label small fw-bold text-secondary">Produit A (ou premier picto) :</label>
-            <select id="storage-prod-a" class="form-select fw-bold" onchange="verifierCompatibiliteStockage()">
-                <option value="GHS02">🔥 Inflammable (GHS02)</option>
-                <option value="GHS03">⚡ Comburant (GHS03)</option>
-                <option value="GHS05">💥 Corrosif / Acide (GHS05 - Acide)</option>
-                <option value="GHS05_B">🧼 Corrosif / Base (GHS05 - Base)</option>
-                <option value="GHS06">💀 Toxique aigu (GHS06)</option>
-                <option value="GHS08">👤 Danger santé / CMR (GHS08)</option>
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label class="form-label small fw-bold text-secondary">Produit B (ou deuxième picto) :</label>
-            <select id="storage-prod-b" class="form-select fw-bold" onchange="verifierCompatibiliteStockage()">
-                <option value="GHS02">🔥 Inflammable (GHS02)</option>
-                <option value="GHS03" selected>⚡ Comburant (GHS03)</option>
-                <option value="GHS05">💥 Corrosif / Acide (GHS05 - Acide)</option>
-                <option value="GHS05_B">🧼 Corrosif / Base (GHS05 - Base)</option>
-                <option value="GHS06">💀 Toxique aigu (GHS06)</option>
-                <option value="GHS08">👤 Danger santé / CMR (GHS08)</option>
-            </select>
-        </div>
-
-        <div id="storage-result-box" class="p-3 rounded-3 border border-2 text-center mb-2" style="background-color: #f8fafc;">
-            <div class="fs-4 mb-1">🔍 <strong id="storage-status-title">Calcul...</strong></div>
-            <p id="storage-status-desc" class="small text-muted mb-0">Sélectionnez les produits pour analyser le risque.</p>
-        </div>
-    </div>
 
     <!-- REGLES D'OR DE LA RETENTION -->
     <div class="card-custom bg-white border-0 shadow-sm small mt-4" style="border-left: 5px solid var(--r-blue) !important;">
@@ -1138,28 +1162,96 @@ function updateGloveDiagnostic() {
     }
 }
 
+// LOGIQUE EXPERTE MISE À JOUR DYNAMIQUE : COMBO RESPIRATOIRE
 function updateMaskDiagnostic() {
-    const val = document.getElementById('epi-mask-pollutant').value;
-    const bar = document.getElementById('cartridge-color-bar');
-    const maskReq = document.getElementById('mask-type-required');
-    const advice = document.getElementById('cartridge-advice');
-    
-    const data = {
-        A: { bg: "#63422d", text: "MARQUAGE : BANDEAU BRUN (Type A)", mask: "Demi-masque ou Masque complet", adv: "Filtre A2 conseillé. Pour vapeurs de peinture, associez systématiquement un préfiltre P3." },
-        B: { bg: "#475569", text: "MARQUAGE : BANDEAU GRIS (Type B)", mask: "Masque Complet impératif", adv: "Gaz inorganiques. Remplacement requis après chaque exposition." },
-        E: { bg: "#e6a00f", text: "MARQUAGE : BANDEAU JAUNE (Type E)", mask: "Demi-masque ou Masque complet", adv: "Protège contre le dioxyde de soufre et vapeurs d'acides." },
-        K: { bg: "#16a34a", text: "MARQUAGE : BANDEAU VERT (Type K)", mask: "Masque Complet recommandé", adv: "Spécifique pour l'Ammoniac et dérivés aminés." },
-        P: { bg: "#cbd5e1", text: "MARQUAGE : BANDEAU BLANC (Type P3)", mask: "Demi-masque minimum / FFP3", adv: "Haute efficacité d'arrêt (99,97%). Requis pour Silice, Poussières de bois et Amiante." }
+    const pollutant = document.getElementById('epi-mask-pollutant').value;
+    const cl = document.getElementById('epi-mask-class').value;
+    const device = document.getElementById('epi-mask-device').value;
+
+    const sticker = document.getElementById('cartridge-sticker');
+    const fpnEl = document.getElementById('metric-fpn');
+    const ppmEl = document.getElementById('metric-ppm');
+    const adviceEl = document.getElementById('cartridge-advice');
+
+    if(!sticker || !fpnEl || !ppmEl || !adviceEl) return;
+
+    // 1. Calcul du FPN réel selon la géométrie du masque retenue (Norme EN 529)
+    let fpn = 50; 
+    if (pollutant === 'P') {
+        fpn = (device === 'complet') ? 1000 : 50;
+    } else {
+        fpn = (device === 'complet') ? 400 : 50;
+    }
+    fpnEl.innerText = fpn;
+
+    // 2. Gestion des seuils de concentration (ppm) de la norme EN 14387
+    let maxPpm = "1000 ppm";
+    if(cl === "2") maxPpm = "5000 ppm";
+    if(cl === "3") maxPpm = "10000 ppm";
+    if(pollutant === 'P') maxPpm = "N/A (Particules)";
+    ppmEl.innerText = maxPpm;
+
+    // 3. Mise à jour de l'étiquette normalisée (Marquage Réaliste)
+    const configurations = {
+        A: { text: `A${cl}`, style: "background: linear-gradient(180deg, #63422d 0%, #452a1c 100%); color: #fff;" },
+        B: { text: `B${cl}`, style: "background: linear-gradient(180deg, #64748b 0%, #475569 100%); color: #fff;" },
+        E: { text: `E${cl}`, style: "background: linear-gradient(180deg, #e6a00f 0%, #b47b05 100%); color: #fff;" },
+        K: { text: `K${cl}`, style: "background: linear-gradient(180deg, #16a34a 0%, #15803d 100%); color: #fff;" },
+        P: { text: "P3", style: "background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 100%); color: #1e293b; border: 1px solid #94a3b8;" },
+        ABEKP: { text: `ABEK${cl} P3`, style: "background: linear-gradient(90deg, #63422d 20%, #64748b 20%, #64748b 40%, #e6a00f 40%, #e6a00f 60%, #16a34a 60%, #16a34a 80%, #f1f5f9 80%); color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.9);" }
     };
-    
-    if(data[val] && bar && maskReq && advice) {
-        bar.style.backgroundColor = data[val].bg;
-        bar.innerText = data[val].text;
-        bar.style.color = (val === 'P') ? '#1e293b' : 'white';
-        maskReq.innerText = data[val].mask;
-        advice.innerText = data[val].adv;
+
+    const activeConfig = configurations[pollutant];
+    sticker.style = activeConfig.style;
+    sticker.innerText = `MARQUAGE : ${activeConfig.text}`;
+
+    // 4. Génération de la préconisation d'expert adaptative
+    let baseAdvice = "";
+    switch(pollutant) {
+        case "A": baseAdvice = `Pour vapeurs organiques. Idéal ateliers de peinture. Assurez-vous d'un taux d'O₂ > 17%.`; break;
+        case "B": baseAdvice = `Gaz inorganiques. Utilisation sur de courtes durées. Évacuation immédiate si résistance respiratoire accrue.`; break;
+        case "E": baseAdvice = `Spécifique gaz acides. Attention aux irritations cutanées périphériques si demi-masque utilisé.`; break;
+        case "K": baseAdvice = `Ammoniac et dérivés aminés. Changement impératif de la cartouche dès suspicion de passage.`; break;
+        case "P": baseAdvice = `Filtre mécanique très haute efficacité. Recommandé pour poussières de silice et bois.`; break;
+        case "ABEKP": baseAdvice = `Cartouche universelle de maintenance. Plus lourde à porter, sature plus vite à cause du spectre d'absorption élargi.`; break;
+    }
+
+    if(device === 'demi' && (pollutant === 'B' || pollutant === 'ABEKP')) {
+        baseAdvice += ` <br><span class="text-danger fw-bold">⚠️ Alerte Métier :</span> L'usage d'un masque complet est vivement conseillé pour protéger les yeux des gaz agressifs ou irritants.`;
+    }
+
+    adviceEl.innerHTML = baseAdvice;
+    simulerClaquage();
+}
+
+// SIMULATEUR INTELLIGENT DE PARAMÈTRES TERRAIN
+function simulerClaquage() {
+    const effort = parseInt(document.getElementById('rng-effort').value);
+    const humidity = parseInt(document.getElementById('rng-humidity').value);
+    const box = document.getElementById('box-breakthrough');
+    const lblEffort = document.getElementById('lbl-effort');
+    const lblHumidity = document.getElementById('lbl-humidity');
+
+    if(!box || !lblEffort || !lblHumidity) return;
+
+    const effortsText = ["Faible (15 L/min)", "Modéré (30 L/min)", "Intense (60 L/min)"];
+    lblEffort.innerText = effortsText[effort - 1];
+    lblHumidity.innerText = `${humidity}%`;
+
+    if(effort === 3 || humidity > 70) {
+        box.style.display = "block";
+        if(effort === 3 && humidity > 70) {
+            box.className = "alert alert-danger small p-2 text-center mb-0 mt-2 fw-bold";
+            box.innerText = "🚨 Saturation critique : Débit forcé + humidité extrême. Changez les filtres à chaque mi-poste !";
+        } else {
+            box.className = "alert alert-warning small p-2 text-center mb-0 mt-2 fw-bold";
+            box.innerText = "⚠️ Facteurs aggravants : Durée de vie du charbon actif fortement réduite.";
+        }
+    } else {
+        box.style.display = "none";
     }
 }
+
 
 function verifierCompatibiliteStockage() {
     const prodA = document.getElementById('storage-prod-a').value;
