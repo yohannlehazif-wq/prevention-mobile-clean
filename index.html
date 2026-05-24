@@ -1,386 +1,330 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RESTEV 85 - Expert Prévention</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RESTEV 85 - Expert Prévention</title>
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#3065a8">
-    <link rel="icon" type="image/png" href="logo_restev_carre.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3065a8">
+<link rel="icon" type="image/png" href="logo_restev_carre.png">
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="RESTEV 85">
-    <link rel="apple-touch-icon" href="logo_restev_carre.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RESTEV 85">
+<link class="apple-touch-icon" href="logo_restev_carre.png">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
-    :root { 
-        --r-blue: #3065a8; 
-        --r-blue-dark: #1e4475;
-        --r-teal: #75bba8; 
-        --r-purple: #ae227d; 
-        --r-yellow: #e6a00f; 
-        --r-light: #f4f7fa; 
-        --shadow-sm: 0 2px 8px rgba(48, 101, 168, 0.05);
-        --shadow-md: 0 8px 24px rgba(48, 101, 168, 0.08);
-        --shadow-lg: 0 16px 32px rgba(30, 68, 117, 0.12);
-        --radius-sm: 10px;
-        --radius-md: 16px;
-        --radius-lg: 24px;
-    }
+<style>
+:root { 
+    --r-blue: #3065a8; 
+    --r-blue-dark: #1e4475;
+    --r-teal: #75bba8; 
+    --r-purple: #ae227d; 
+    --r-yellow: #e6a00f; 
+    --r-light: #f4f7fa; 
+    --shadow-sm: 0 2px 8px rgba(48, 101, 168, 0.05);
+    --shadow-md: 0 8px 24px rgba(48, 101, 168, 0.08);
+    --shadow-lg: 0 16px 32px rgba(30, 68, 117, 0.12);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+}
 
-    body { 
-        background-color: var(--r-light); 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        margin-bottom: 110px; 
-        overflow-x: hidden; 
-        user-select: none; 
-        color: #334155;
-        -webkit-font-smoothing: antialiased;
-    }
+body { 
+    background-color: var(--r-light); 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    margin-bottom: 110px; 
+    overflow-x: hidden; 
+    user-select: none; 
+    color: #334155;
+    -webkit-font-smoothing: antialiased;
+}
 
-    #splash { 
-        position: fixed; 
-        inset: 0; 
-        z-index: 9999; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        background: radial-gradient(circle at center, #254d80 0%, #112237 100%);
-        transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1); 
-        overflow: hidden;
-    }
+/* Splash Screen */
+#splash { 
+    position: fixed; 
+    inset: 0; 
+    z-index: 9999; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: radial-gradient(circle at center, #254d80 0%, #112237 100%);
+    transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1); 
+    overflow: hidden;
+}
 
-    #splash::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
-                          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-        background-size: 20px 20px;
-        background-position: center;
-        mask-image: radial-gradient(circle, black 40%, transparent 80%);
-        -webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
-    }
+#splash::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
+    mask-image: radial-gradient(circle, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
+}
 
-    .logo-wrapper {
-        position: relative;
-        display: inline-block;
-        transform: scale(0) rotate(-15deg);
-        animation: logoPopIn 1s cubic-bezier(0.34, 1.7, 0.64, 1) 0.2s forwards;
-        margin-bottom: 25px;
-    }
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+    transform: scale(0) rotate(-15deg);
+    animation: logoPopIn 1s cubic-bezier(0.34, 1.7, 0.64, 1) 0.2s forwards;
+    margin-bottom: 25px;
+}
 
-    .splash-logo {
-        width: 120px;
-        height: 120px;
-        border-radius: var(--radius-md);
-        background: white;
-        padding: 12px;
-        position: relative;
-        z-index: 2;
-        box-shadow: 0 0 30px rgba(48, 101, 168, 0.4);
-    }
+.splash-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-md);
+    background: white;
+    padding: 12px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 30px rgba(48, 101, 168, 0.4);
+}
 
-    .logo-pulse-ring {
-        position: absolute;
-        inset: -5px;
-        border: 2px solid var(--r-teal);
-        border-radius: 20px;
-        z-index: 1;
-        opacity: 0;
-        animation: ringPulse 2.5s ease-out infinite 1.2s;
-    }
+.logo-pulse-ring {
+    position: absolute;
+    inset: -5px;
+    border: 2px solid var(--r-teal);
+    border-radius: 20px;
+    z-index: 1;
+    opacity: 0;
+    animation: ringPulse 2.5s ease-out infinite 1.2s;
+}
 
-    .scan-line {
-        position: absolute;
-        left: 0; right: 0; top: 0;
-        height: 4px;
-        background: linear-gradient(90deg, transparent, var(--r-yellow), transparent);
-        box-shadow: 0 0 12px var(--r-yellow);
-        z-index: 3;
-        opacity: 0.8;
-        animation: laserScan 3s ease-in-out infinite 1.5s;
-        pointer-events: none;
-    }
+.scan-line {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--r-yellow), transparent);
+    box-shadow: 0 0 12px var(--r-yellow);
+    z-index: 3;
+    opacity: 0.8;
+    animation: laserScan 3s ease-in-out infinite 1.5s;
+    pointer-events: none;
+}
 
-    .app-title-reveal {
-        font-size: 2.2rem;
-        font-weight: 900;
-        letter-spacing: 4px;
-        background: linear-gradient(45deg, #ffffff, #93c5fd);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        opacity: 0;
-        transform: translateY(15px);
-        animation: textSlideUp 0.6s ease-out 0.8s forwards;
-    }
+.app-title-reveal {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(45deg, #ffffff, #93c5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: textSlideUp 0.6s ease-out 0.8s forwards;
+}
 
-    .splash-subtitle-animated {
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--r-teal);
-        opacity: 0;
-        transform: translateY(10px);
-        animation: textSlideUp 0.6s ease-out 1s forwards;
-        margin-top: 5px;
-    }
+.splash-subtitle-animated {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--r-teal);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: textSlideUp 0.6s ease-out 1s forwards;
+    margin-top: 5px;
+}
 
-    .ecg-container-premium {
-        width: 180px;
-        margin: 20px auto;
-        opacity: 0;
-        animation: fadeInECG 0.8s ease-out 1.2s forwards;
-    }
+.ecg-container-premium {
+    width: 180px;
+    margin: 20px auto;
+    opacity: 0;
+    animation: fadeInECG 0.8s ease-out 1.2s forwards;
+}
 
-    .ecg-line-premium {
-        fill: none;
-        stroke: #ef4444; 
-        stroke-width: 3;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-dasharray: 400;
-        stroke-dashoffset: 400;
-        animation: heartbeatStream 2.5s linear infinite;
-    }
+.ecg-line-premium {
+    fill: none;
+    stroke: #ef4444; 
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: heartbeatStream 2.5s linear infinite;
+}
 
-    .btn-enter-premium {
-        position: relative;
-        background: white;
-        color: var(--r-blue-dark);
-        border: none;
-        padding: 14px 40px;
-        border-radius: 50px;
-        font-weight: 800;
-        font-size: 0.95rem;
-        letter-spacing: 1.5px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        opacity: 0;
-        transform: scale(0.9);
-        animation: btnReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.4s forwards, breathing 3s ease-in-out infinite 2s;
-        transition: all 0.2s ease;
-    }
+.btn-enter-premium {
+    position: relative;
+    background: white;
+    color: var(--r-blue-dark);
+    border: none;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: scale(0.9);
+    animation: btnReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.4s forwards, breathing 3s ease-in-out infinite 2s;
+    transition: all 0.2s ease;
+}
 
-    .btn-enter-premium span {
-        position: relative;
-        z-index: 2;
-    }
+.btn-enter-premium span { position: relative; z-index: 2; }
 
-    .btn-enter-premium::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, transparent, rgba(117, 187, 168, 0.3), transparent);
-        transform: translateX(-100%);
-        transition: transform 0.5s;
-        z-index: 1;
-    }
+@keyframes logoPopIn {
+    0% { transform: scale(0) rotate(-25deg); filter: blur(5px); }
+    70% { transform: scale(1.15) rotate(5deg); filter: blur(0); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes ringPulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { opacity: 0.4; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
+@keyframes laserScan {
+    0%, 100% { top: 0%; opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { top: 100%; opacity: 1; }
+}
+@keyframes textSlideUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInECG { to { opacity: 0.7; } }
+@keyframes heartbeatStream {
+    0% { stroke-dashoffset: 400; }
+    60% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -400; }
+}
+@keyframes btnReveal { to { opacity: 1; transform: scale(1); } }
+@keyframes breathing {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+    50% { transform: scale(1.03); box-shadow: 0 12px 35px rgba(117, 187, 168, 0.4); }
+}
 
-    .btn-enter-premium:active {
-        transform: scale(0.95) !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
+/* Header & Info Ticker */
+.info-banner { 
+    background: #e0f2fe; 
+    color: #0369a1; 
+    padding: 6px 0; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    font-weight: 600; 
+    font-size: 0.75rem; 
+    border-bottom: 1px solid #bae6fd; 
+}
+.ticker { 
+    display: inline-block; 
+    animation: ticker 45s linear infinite; 
+}
+.ticker span { padding-right: 60px; }
 
-    @keyframes logoPopIn {
-        0% { transform: scale(0) rotate(-25deg); filter: blur(5px); }
-        70% { transform: scale(1.15) rotate(5deg); filter: blur(0); }
-        100% { transform: scale(1) rotate(0deg); }
-    }
+@keyframes ticker {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+}
 
-    @keyframes ringPulse {
-        0% { transform: scale(0.95); opacity: 0.8; }
-        50% { opacity: 0.4; }
-        100% { transform: scale(1.3); opacity: 0; }
-    }
+/* Navigation Basse */
+.nav-bottom { 
+    position: fixed; 
+    bottom: 20px; 
+    left: 15px; 
+    right: 15px; 
+    background: rgba(255, 255, 255, 0.92); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    display: flex; 
+    justify-content: space-around; 
+    padding: 10px 5px; 
+    border-radius: var(--radius-lg); 
+    box-shadow: var(--shadow-lg); 
+    z-index: 1000; 
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.nav-item { 
+    border: none; 
+    background: none; 
+    color: #64748b; 
+    font-size: 0.62rem; 
+    font-weight: 700; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    flex: 1; 
+    text-decoration: none; 
+    outline: none; 
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-md);
+    padding: 6px 0;
+}
+.nav-item:active {
+    transform: scale(0.9);
+    background: rgba(48, 101, 168, 0.05);
+}
+.nav-item.active { color: var(--r-blue); }
+.nav-item i { font-size: 1.35rem; margin-bottom: 4px; transition: transform 0.2s ease; }
+.nav-item.active i { transform: translateY(-2px); }
 
-    @keyframes laserScan {
-        0%, 100% { top: 0%; opacity: 0; }
-        10%, 90% { opacity: 1; }
-        50% { top: 100%; opacity: 1; }
-    }
+/* Pages & Cartes */
+.app-page { display: none; padding: 22px 16px; animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.active-page { display: block !important; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes textSlideUp {
-        to { opacity: 1; transform: translateY(0); }
-    }
+.card-custom { 
+    background: white; 
+    border-radius: var(--radius-md); 
+    padding: 20px; 
+    margin-bottom: 16px; 
+    border: none;
+    border-left: 5px solid var(--r-blue); 
+    box-shadow: var(--shadow-md); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-custom:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-sm);
+}
 
-    @keyframes fadeInECG {
-        to { opacity: 0.7; }
-    }
+#page-home .row > div { transition: transform 0.15s ease; }
+#page-home .row > div:active { transform: scale(0.96); }
+#page-home .card-custom {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    @keyframes heartbeatStream {
-        0% { stroke-dashoffset: 400; }
-        60% { stroke-dashoffset: 0; }
-        100% { stroke-dashoffset: -400; }
-    }
+.form-select, .form-control {
+    border: 1.5px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    color: #1e293b;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+}
+.form-select:focus, .form-control:focus {
+    border-color: var(--r-blue);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(48, 101, 168, 0.15);
+}
 
-    @keyframes btnReveal {
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes breathing {
-        0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
-        50% { transform: scale(1.03); box-shadow: 0 12px 35px rgba(117, 187, 168, 0.4); }
-    }
-
-    .app-header { 
-        background: white; 
-        padding: 14px; 
-        text-align: center; 
-        border-bottom: 3px solid var(--r-yellow); 
-        position: sticky; 
-        top: 0; 
-        z-index: 1000; 
-        box-shadow: var(--shadow-sm);
-    }
-
-    .info-banner { 
-        background: #e0f2fe; 
-        color: #0369a1; 
-        padding: 6px 0; 
-        overflow: hidden; 
-        white-space: nowrap; 
-        font-weight: 600; 
-        font-size: 0.75rem; 
-        border-bottom: 1px solid #bae6fd; 
-    }
-
-    .ticker { 
-        display: inline-block; 
-        animation: ticker 45s linear infinite; 
-    }
-
-    .ticker span { padding-right: 60px; }
-
-    @keyframes ticker {
-        0% { transform: translateX(100vw); }
-        100% { transform: translateX(-100%); }
-    }
-
-    .nav-bottom { 
-        position: fixed; 
-        bottom: 20px; 
-        left: 15px; 
-        right: 15px; 
-        background: rgba(255, 255, 255, 0.92); 
-        backdrop-filter: blur(12px); 
-        -webkit-backdrop-filter: blur(12px);
-        display: flex; 
-        justify-content: space-around; 
-        padding: 10px 5px; 
-        border-radius: var(--radius-lg); 
-        box-shadow: var(--shadow-lg); 
-        z-index: 1000; 
-        border: 1px solid rgba(255, 255, 255, 0.6);
-    }
-
-    .nav-item { 
-        border: none; 
-        background: none; 
-        color: #64748b; 
-        font-size: 0.62rem; 
-        font-weight: 700; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        flex: 1; 
-        text-decoration: none; 
-        outline: none; 
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: var(--radius-md);
-        padding: 6px 0;
-    }
-
-    .nav-item:active {
-        transform: scale(0.9);
-        background: rgba(48, 101, 168, 0.05);
-    }
-
-    .nav-item.active { color: var(--r-blue); }
-    .nav-item i { font-size: 1.35rem; margin-bottom: 4px; transition: transform 0.2s ease; }
-    .nav-item.active i { transform: translateY(-2px); }
-
-    .app-page { display: none; padding: 22px 16px; animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
-    .active-page { display: block !important; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-    .card-custom { 
-        background: white; 
-        border-radius: var(--radius-md); 
-        padding: 20px; 
-        margin-bottom: 16px; 
-        border: none;
-        border-left: 5px solid var(--r-blue); 
-        box-shadow: var(--shadow-md); 
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card-custom:active {
-        transform: translateY(1px);
-        box-shadow: var(--shadow-sm);
-    }
-
-    #page-home .row > div { transition: transform 0.15s ease; }
-    #page-home .row > div:active { transform: scale(0.96); }
-    #page-home .card-custom {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-top: 1px solid rgba(255,255,255,0.4);
-        border-right: 1px solid rgba(0,0,0,0.02);
-        border-bottom: 3px solid rgba(0,0,0,0.05);
-    }
-
-    .sgh-card { display: flex; gap: 16px; align-items: center; border-left-color: var(--r-purple) !important; cursor: pointer; }
-    .sgh-img { width: 52px; height: 52px; object-fit: contain; flex-shrink: 0; background: #fff; padding: 2px; }
-
-    .btn-excel { background: #15803d; color: white; border: none; border-radius: var(--radius-sm); width: 100%; padding: 12px 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-sm); transition: background 0.2s; }
-    .btn-excel:active { background: #166534; }
-
-    .form-select, .form-control {
-        border: 1.5px solid #cbd5e1;
-        border-radius: var(--radius-sm);
-        padding: 10px 14px;
-        font-size: 0.92rem;
-        color: #1e293b;
-        background-color: #f8fafc;
-        transition: all 0.2s ease;
-    }
-
-    .form-select:focus, .form-control:focus {
-        border-color: var(--r-blue);
-        background-color: #fff;
-        box-shadow: 0 0 0 3px rgba(48, 101, 168, 0.15);
-    }
-
-    .score-badge { font-size: 3rem; font-weight: 900; color: var(--r-blue); text-shadow: 1px 1px 0px rgba(0,0,0,0.05); }
-    .badge-service { background-color: var(--r-teal); color: white; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: inline-block; }
-    .archive-item { border-left-color: #64748b !important; background: #f8fafc !important; border: 1px solid #e2e8f0; border-left-width: 5px !important; }
-
-    .progress { background-color: #e2e8f0; border-radius: 20px; overflow: hidden; }
-    .btn-primary { background-color: var(--r-blue); border: none; }
-    .btn-primary:active, .btn-primary:hover { background-color: var(--r-blue-dark) !important; }
-    .modal-content { border-radius: var(--radius-md); border: none; overflow: hidden; box-shadow: var(--shadow-lg); }
-    .modal-header { border-bottom: none; padding-top: 20px; }
-    .modal-body { padding: 24px; color: #475569; }
-    </style>
+/* Alertes EPI Spécifiques */
+.custom-alert { border-left: 4px solid; padding: 12px; border-radius: 0 8px 8px 0; font-size: 0.875rem; margin-top: 12px; }
+.alert-warning-epi { background-color: #fffbeb; border-color: #f59e0b; color: #92400e; }
+.alert-info-epi { background-color: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+.alert-neutral-epi { background-color: #f3f4f6; border-color: #6b7280; color: #374151; }
+.alert-danger-epi { background-color: #fef2f2; border-color: #ef4444; color: #991b1b; }
+.badge-epi { font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 50px; }
+</style>
 </head>
 <body>
 
+<!-- SPLASH SCREEN -->
 <div id="splash">
     <div class="splash-content text-center text-white">
         <div class="logo-wrapper">
@@ -396,11 +340,12 @@
             </svg>
         </div>
         <button class="btn-enter-premium mt-4" onclick="Splash()">
-            <span>ENTRER</span>
+            <span>ENTRER DANS L'ESPACE</span>
         </button>
     </div>
 </div>
 
+<!-- FIL D'INFO DYNAMIQUE -->
 <div class="info-banner">
     <div class="ticker">
         <span>
@@ -411,24 +356,30 @@
             🔍 Risque Chimique : Consultez les fiches toxicologiques INRS directement via l'app.
             &nbsp;&nbsp;|&nbsp;&nbsp;
             🏗️ BTP : Profitez des conseils experts de l'OPPBTP pour vos chantiers en Vendée.
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            🌡️ Canicule / Grand Froid : Adaptez vos postes de travail avec nos fiches conseils.
         </span>
     </div>
 </div>
 
+<!-- PAGE ACCUEIL -->
 <div id="page-home" class="app-page active-page">
     <div class="card-custom text-white border-0 mb-3" style="background: linear-gradient(135deg, var(--r-blue), #1e40af);">
         <h5 class="fw-bold mb-1">RESTEV 85</h5>
-        <p id="inv-stats" class="small opacity-75 mb-0">Chargement de l'inventaire...</p>
+        <p id="inv-stats" class="small opacity-75 mb-0">Inventaire actif : 3 substances identifiées</p>
     </div>
+
+    <!-- CONFIGURATEUR TRANSVERSAL (Liaison Gants & Masques) -->
+    <div class="card-custom bg-white mb-4" style="border-left-color: var(--r-yellow);">
+        <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-shield-halved text-primary me-2"></i>Évaluation de la compatibilité EPI</h6>
+        <label class="form-label small text-muted mb-2">Sélectionnez ou scannez un produit chimique de l'inventaire :</label>
+        <select id="select-produit" onchange="simulerChangementProduit()" class="form-select fw-bold">
+            <option value="">-- Choisir un produit disponible --</option>
+            <option value="acetone">Acétone (Solvant)</option>
+            <option value="acide_chlorhydrique">Acide Chlorhydrique (30%)</option>
+            <option value="ammoniac">Ammoniac (Solution aqueuse)</option>
+        </select>
+    </div>
+
     <div class="row g-2">
-        <div class="col-12" onclick="nav('page-cmr-jobs')">
-            <div class="card-custom text-center py-3 mb-1" style="background: linear-gradient(135deg, #fef2f2 0%, #ffe4e6 100%); border-left-color: var(--r-purple);">
-                <i class="fa-solid fa-biohazard fa-2x mb-2" style="color: var(--r-purple);"></i><br>
-                <small class="fw-bold" style="font-size:0.85rem; color: #9f1239;">⚠️ ALERTE RISQUES CMR : MÉTIERS INSOLITES</small>
-            </div>
-        </div>
         <div class="col-6" onclick="nav('page-scan', document.getElementById('nav-scan'))">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #e3f2fd; border-left-color: #90caf9;"><i class="fa-solid fa-barcode fa-2x mb-2" style="color: #1e88e5;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1e40af;">SCANNER FDS</small></div>
         </div>
@@ -438,20 +389,285 @@
         <div class="col-6" onclick="nav('page-sgh')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #fff9c4; border-left-color: #fff176;"><i class="fa-solid fa-triangle-exclamation fa-2x mb-2" style="color: #fbc02d;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #827717;">LEXIQUE SGH</small></div>
         </div>
-        <div class="col-6" onclick="nav('page-gants')">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #e0f2fe; border-left-color: #3b82f6;"><i class="fa-solid fa-hand-dots fa-2x mb-2" style="color: #2563eb;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1d4ed8;">SÉLECTEUR GANTS</small></div>
+        <div class="col-6" onclick="nav('page-masks', document.getElementById('nav-masks'))">
+            <div class="card-custom text-center py-3 mb-0" style="background-color: #e2e8f0; border-left-color: #64748b;"><i class="fa-solid fa-mask-ventilator fa-2x mb-2" style="color: #475569;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1e293b;">PROT. RESPIRATOIRE</small></div>
         </div>
-        <div class="col-6" onclick="nav('page-masques')">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #fef2f2; border-left-color: #ef4444;"><i class="fa-solid fa-head-side-mask fa-2x mb-2" style="color: #dc2626;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #991b1b;">COMBO MASQUES & FILTRES</small></div>
+        <div class="col-6" onclick="nav('page-gloves', document.getElementById('nav-gloves'))">
+            <div class="card-custom text-center py-3 mb-0" style="background-color: #e0f7fa; border-left-color: #00bcd4;"><i class="fa-solid fa-mitten fa-2x mb-2" style="color: #0097a7;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #006064;">GUIDE GANTS</small></div>
         </div>
         <div class="col-6" onclick="nav('page-storage')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #fff3e0; border-left-color: #ffb74d;"><i class="fa-solid fa-warehouse fa-2x mb-2" style="color: #f57c00;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #e65100;">COMPATIBILITÉ STOCK</small></div>
         </div>
-        <div class="col-6" onclick="nav('page-list', document.getElementById('nav-list'))">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #e8f5e9; border-left-color: #a5d6a7;"><i class="fa-solid fa-boxes-stacked fa-2x mb-2" style="color: #43a047;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #1b5e20;">INVENTAIRE</small></div>
+    </div>
+</div>
+
+<!-- PAGE PROTECTION RESPIRATOIRE -->
+<div id="page-masks" class="app-page">
+    <h5 class="fw-bold mb-3"><i class="fa-solid fa-mask-ventilator me-2" style="color:var(--r-blue)"></i>Protection Respiratoire</h5>
+    
+    <div class="card-custom mb-4" style="border-left-color: #ef4444;">
+        <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-head-side-mask me-2"></i>Sélecteur Analytique de Cartouches</h6>
+        
+        <div id="zone-cartouche" class="mb-3 bg-light p-3 rounded-3 border text-center">
+            <p class="text-secondary small fw-medium mb-2">Cartouche requise (via l'inventaire) :</p>
+            <div id="badge-cartouche" class="badge-epi bg-secondary text-white d-inline-block shadow-sm">
+                Aucun produit sélectionné
+            </div>
         </div>
-        <div class="col-6" onclick="nav('page-services')">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #f3e5f5; border-left-color: #ce93d8;"><i class="fa-solid fa-handshake-angle fa-2x mb-2" style="color: #8e24aa;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #4a148c;">OFFRE RESTEV</small></div>
+
+        <p class="small text-muted mb-2 pt-2 border-top">Ou déterminez manuellement par type de polluant (Norme EN 14387) :</p>
+        <div class="mb-3">
+            <select id="pollutant-select" class="form-select fw-bold" onchange="calculateMask()">
+                <option value="">-- Sélectionnez un type de polluant --</option>
+                <option value="A">Gaz/Vapeurs Organiques (Solvants, Peintures > 65°C) -> [Type A]</option>
+                <option value="B">Gaz Inorganiques (Chlore, Hydrogène sulfuré) -> [Type B]</option>
+                <option value="E">Gaz Acides (Dioxyde de soufre, HCl) -> [Type E]</option>
+                <option value="K">Ammoniac et dérivés aminés -> [Type K]</option>
+                <option value="P">Poussières, Silice, Amiante, Fibres -> [Type P3]</option>
+                <option value="AX">Composés Organiques Bas point d'ébullition (< 65°C) -> [Type AX]</option>
+            </select>
         </div>
-        <div class="col-6" onclick="nav('page-aides')">
-            <div class="card-custom text-center py-3 mb-0" style="background-color: #ffe0b2; border-left-color: #ffb74d;"><i class="fa-solid fa-piggy-bank fa
+
+        <div id="mask-result" class="p-3 rounded-3 text-center mb-2 fw-bold" style="display: none;"></div>
+
+        <div class="mt-3">
+            <div id="alerte-claquage" class="d-none custom-alert alert-info-epi">
+                <p class="mb-0"><i class="fa-solid fa-clock me-2"></i><strong>Rappel terrain :</strong> Changez immédiatement la cartouche si vous percevez l'odeur ou le goût du produit (Point de claquage atteint).</p>
+            </div>
+            <div id="alerte-barbe" class="d-none custom-alert alert-neutral-epi">
+                <p class="mb-0"><i class="fa-solid fa-user-slash me-2"></i>L'étanchéité du masque n'est plus garantie sur un visage non rasé (fuite de bord de masque).</p>
+            </div>
+            <div id="alerte-asphyxie" class="d-none custom-alert alert-danger-epi">
+                <p class="mb-0"><i class="fa-solid fa-triangle-exclamation me-2"></i><strong>ATTENTION ZONE CONFINÉE :</strong> Masque à cartouche strictement interdit si le taux d'O₂ est &lt; 19.5%. Utilisation d'un ARI obligatoire.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE GUIDE GANTS -->
+<div id="page-gloves" class="app-page">
+    <h5 class="fw-bold mb-3"><i class="fa-solid fa-mitten me-2" style="color:var(--r-teal)"></i>Guide d'Incompatibilité des Gants</h5>
+    
+    <div class="card-custom bg-white mb-4" style="border-left-color: var(--r-teal);">
+        <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-hands-mitten text-primary me-2"></i>Résistance des matériaux par produit</h6>
+        
+        <div class="d-flex flex-column gap-2 mb-3" id="zone-gants">
+            <div id="gant-nitrile" class="d-flex align-items-center justify-content-between p-3 bg-white rounded-3 border">
+                <span class="fw-semibold text-secondary">Nitrile</span>
+                <span class="badge bg-secondary text-white badge-epi">En attente...</span>
+            </div>
+            <div id="gant-latex" class="d-flex align-items-center justify-content-between p-3 bg-white rounded-3 border">
+                <span class="fw-semibold text-secondary">Latex</span>
+                <span class="badge bg-secondary text-white badge-epi">En attente...</span>
+            </div>
+            <div id="gant-neoprene" class="d-flex align-items-center justify-content-between p-3 bg-white rounded-3 border">
+                <span class="fw-semibold text-secondary">Néoprène</span>
+                <span class="badge bg-secondary text-white badge-epi">En attente...</span>
+            </div>
+            <div id="gant-butyle" class="d-flex align-items-center justify-content-between p-3 bg-white rounded-3 border">
+                <span class="fw-semibold text-secondary">Butyle</span>
+                <span class="badge bg-secondary text-white badge-epi">En attente...</span>
+            </div>
+        </div>
+
+        <div id="info-piege-gants" class="d-none custom-alert alert-warning-epi">
+            <h6 class="fw-bold mb-1"><i class="fa-solid fa-circle-exclamation me-2"></i>Temps de perméation estimé :</h6>
+            <p id="txt-permeation" class="mb-0">Sélectionnez un produit...</p>
+        </div>
+    </div>
+</div>
+
+<!-- CONFIGURATEUR DE PAGES MANQUANTES (Évite les crashs js) -->
+<div id="page-scan" class="app-page"><h5><i class="fa-solid fa-barcode me-2"></i>Scanner FDS</h5><p class="text-muted">Module de scan caméra en cours d'initialisation...</p></div>
+<div id="page-quiz" class="app-page"><h5><i class="fa-solid fa-clipboard-question me-2"></i>Auto-Diagnostic</h5><p class="text-muted">Formulaire d'évaluation HSE...</p></div>
+<div id="page-sgh" class="app-page"><h5><i class="fa-solid fa-triangle-exclamation me-2"></i>Lexique SGH</h5><p class="text-muted">Liste des pictogrammes de danger...</p></div>
+<div id="page-storage" class="app-page"><h5><i class="fa-solid fa-warehouse me-2"></i>Compatibilité Stockage</h5><p class="text-muted">Matrice d'exclusion des produits chimiques...</p></div>
+
+<!-- NAVIGATION FIXE -->
+<div class="nav-bottom">
+    <button class="nav-item active" id="nav-home" onclick="nav('page-home', this)"><i class="fa-solid fa-house"></i>Accueil</button>
+    <button class="nav-item" id="nav-masks" onclick="nav('page-masks', this)"><i class="fa-solid fa-mask-ventilator"></i>Masques</button>
+    <button class="nav-item" id="nav-gloves" onclick="nav('page-gloves', this)"><i class="fa-solid fa-mitten"></i>Gants</button>
+</div>
+
+<!-- SCRIPTS DE CONTROLE HSE -->
+<script>
+    // Base de données unifiée
+    const dbProduits = {
+        acetone: {
+            nom: "Acétone",
+            gants: { recommande: "gant-butyle", tolere: [], interdit: ["gant-nitrile", "gant-latex", "gant-neoprene"] },
+            permeation: "Butyle : ~60 minutes. Attention, le nitrile est traversé en moins de 4 minutes !",
+            cartouche: { label: "Type A (Marron) - Vapeurs Organiques", style: "background-color:#78350f;color:#ffffff;" },
+            espace_confine: false
+        },
+        acide_chlorhydrique: {
+            nom: "Acide Chlorhydrique (30%)",
+            gants: { recommande: "gant-neoprene", tolere: ["gant-nitrile", "gant-latex"], interdit: [] },
+            permeation: "Néoprène : > 480 minutes. Nitrile/Latex : Toléré uniquement pour les éclaboussures légères.",
+            cartouche: { label: "Type E (Jaune) - Gaz et vapeurs acides", style: "background-color:#eab308;color:#1e293b;" },
+            espace_confine: true
+        },
+        ammoniac: {
+            nom: "Ammoniac (Solution)",
+            gants: { recommande: "gant-butyle", tolere: ["gant-neoprene"], interdit: ["gant-nitrile", "gant-latex"] },
+            permeation: "Butyle : > 480 minutes. Néoprène : ~30 minutes d'utilisation continue maximale.",
+            cartouche: { label: "Type K (Vert) - Ammoniac et dérivés", style: "background-color:#16a34a;color:#ffffff;" },
+            espace_confine: false
+        }
+    };
+
+    // Gestion du Splash Screen
+    function Splash() {
+        const spl = document.getElementById('splash');
+        if (spl) {
+            spl.style.opacity = '0';
+            setTimeout(() => { spl.style.display = 'none'; }, 600);
+        }
+    }
+
+    // Système de routage d'onglets unifié
+    function nav(pageId, btnEl = null) {
+        document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active-page'));
+        const activePage = document.getElementById(pageId);
+        if (activePage) activePage.classList.add('active-page');
+
+        if (btnEl) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            btnEl.classList.add('active');
+        }
+    }
+
+    // Moteur d'évaluation croisée (Gants + Cartouches + Alertes de confinement)
+    function simulerChangementProduit() {
+        const select = document.getElementById('select-produit');
+        const produitId = select.value;
+
+        if (!produitId) {
+            resetInterface();
+            return;
+        }
+
+        const produit = dbProduits[produitId];
+
+        // 1. Mise à jour dynamique du comportement des gants
+        const listGants = ["gant-nitrile", "gant-latex", "gant-neoprene", "gant-butyle"];
+        listGants.forEach(id => {
+            const element = document.getElementById(id);
+            const badge = element ? element.querySelector('.badge') : null;
+            
+            if (element && badge) {
+                element.className = "d-flex align-items-center justify-content-between p-3 bg-white rounded-3 border";
+                badge.className = "badge badge-epi";
+                element.removeAttribute('style');
+
+                if (produit.gants.recommande === id) {
+                    element.style.borderColor = "#22c55e";
+                    element.style.backgroundColor = "rgba(34, 197, 94, 0.05)";
+                    badge.classList.add('bg-success');
+                    badge.innerText = "RECOMMANDÉ";
+                } else if (produit.gants.tolere.includes(id)) {
+                    element.style.borderColor = "#f59e0b";
+                    element.style.backgroundColor = "rgba(245, 158, 11, 0.03)";
+                    badge.classList.add('bg-warning', 'text-dark');
+                    badge.innerText = "USAGE COURT";
+                } else if (produit.gants.interdent && produit.gants.interdit.includes(id)) {
+                    element.style.borderColor = "#ef4444";
+                    element.style.backgroundColor = "rgba(239, 68, 68, 0.05)";
+                    badge.classList.add('bg-danger');
+                    badge.innerText = "INTERDIT";
+                } else {
+                    badge.classList.add('bg-danger');
+                    badge.innerText = "INTERDIT";
+                }
+            }
+        });
+
+        // Affichage de la notice de perméation
+        const txtPermeation = document.getElementById('txt-permeation');
+        const infoPiege = document.getElementById('info-piege-gants');
+        if (txtPermeation && infoPiege) {
+            txtPermeation.innerText = produit.permeation;
+            infoPiege.classList.remove('d-none');
+        }
+
+        // 2. Mise à jour de l'onglet de protection respiratoire lié
+        const badgeCartouche = document.getElementById('badge-cartouche');
+        if (badgeCartouche) {
+            badgeCartouche.setAttribute('style', produit.cartouche.style);
+            badgeCartouche.innerText = produit.cartouche.label;
+        }
+
+        // Activation contrôlée des rappels de sécurité
+        const alerteClaquage = document.getElementById('alerte-claquage');
+        const alerteBarbe = document.getElementById('alerte-barbe');
+        const alerteAsphyxie = document.getElementById('alerte-asphyxie');
+
+        if (alerteClaquage) alerteClaquage.classList.remove('d-none');
+        if (alerteBarbe) alerteBarbe.classList.remove('d-none');
+        
+        if (alerteAsphyxie) {
+            if (produit.espace_confine) {
+                alerteAsphyxie.classList.remove('d-none');
+            } else {
+                alerteAsphyxie.classList.add('d-none');
+            }
+        }
+    }
+
+    // Calculateur manuel subsidiaire (Formulaire de secours pour les polluants)
+    function calculateMask() {
+        const pollutant = document.getElementById('pollutant-select').value;
+        const resultBox = document.getElementById('mask-result');
+        
+        if (!pollutant || !resultBox) {
+            if (resultBox) resultBox.style.display = 'none';
+            return;
+        }
+        
+        resultBox.style.display = 'block';
+        resultBox.style.color = '#ffffff';
+        resultBox.removeAttribute('style');
+        resultBox.style.display = 'block';
+        
+        switch(pollutant) {
+            case 'A': resultBox.innerText = 'Cartouche requise : Marron (Type A)'; resultBox.style.backgroundColor = '#78350f'; resultBox.style.color = '#ffffff'; break;
+            case 'B': resultBox.innerText = 'Cartouche requise : Grise (Type B)'; resultBox.style.backgroundColor = '#4b5563'; resultBox.style.color = '#ffffff'; break;
+            case 'E': resultBox.innerText = 'Cartouche requise : Jaune (Type E)'; resultBox.style.backgroundColor = '#eab308'; resultBox.style.color = '#1e293b'; break;
+            case 'K': resultBox.innerText = 'Cartouche requise : Verte (Type K)'; resultBox.style.backgroundColor = '#16a34a'; resultBox.style.color = '#ffffff'; break;
+            case 'P': resultBox.innerText = 'Filtre requis : Blanc (Type P3)'; resultBox.style.backgroundColor = '#ffffff'; resultBox.style.color = '#1e293b'; resultBox.style.border = '2px solid #cbd5e1'; break;
+            case 'AX': resultBox.innerText = 'Cartouche à usage unique requise : Marron AX'; resultBox.style.backgroundColor = '#9a3412'; resultBox.style.color = '#ffffff'; break;
+        }
+    }
+
+    // Réinitialisation de sécurité complète
+    function resetInterface() {
+        const listGants = ["gant-nitrile", "gant-latex", "gant-neoprene", "gant-butyle"];
+        listGants.forEach(id => {
+            const element = document.getElementById(id);
+            const badge = element ? element.querySelector('.badge') : null;
+            if (element && badge) {
+                element.removeAttribute('style');
+                badge.className = "badge bg-secondary text-white badge-epi";
+                badge.innerText = "En attente...";
+            }
+        });
+
+        const infoPiege = document.getElementById('info-piege-gants');
+        if (infoPiege) infoPiege.classList.add('d-none');
+        
+        const badgeCartouche = document.getElementById('badge-cartouche');
+        if (badgeCartouche) {
+            badgeCartouche.className = "badge text-white bg-secondary badge-epi shadow-sm";
+            badgeCartouche.removeAttribute('style');
+            badgeCartouche.innerText = "Aucun produit sélectionné";
+        }
+
+        if (document.getElementById('alerte-claquage')) document.getElementById('alerte-claquage').classList.add('d-none');
+        if (document.getElementById('alerte-barbe')) document.getElementById('alerte-barbe').classList.add('d-none');
+        if (document.getElementById('alerte-asphyxie')) document.getElementById('alerte-asphyxie').classList.add('d-none');
+    }
+</script>
+
+</body>
+</html>
