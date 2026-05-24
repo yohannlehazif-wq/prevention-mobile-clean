@@ -30,322 +30,388 @@
     --r-teal: #75bba8; 
     --r-purple: #ae227d; 
     --r-yellow: #e6a00f; 
-    --r-light: #f4f7fa; 
-    --shadow-sm: 0 2px 8px rgba(48, 101, 168, 0.05);
-    --shadow-md: 0 8px 24px rgba(48, 101, 168, 0.08);
-    --shadow-lg: 0 16px 32px rgba(30, 68, 117, 0.12);
+    --r-light: #f8fafc; 
+    --shadow-sm: 0 4px 12px rgba(48, 101, 168, 0.03);
+    --shadow-md: 0 10px 30px rgba(48, 101, 168, 0.06);
+    --shadow-lg: 0 20px 40px rgba(30, 68, 117, 0.1);
+    --radius-app: 20px;
 }
 
-/* Style de l'application moderne EPI */
-.app-section-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--r-blue-dark);
+/* Base App Modernization */
+body {
+    background-color: #f1f5f9;
 }
-.app-card {
-    border: none;
-    border-radius: 16px;
-    background: #ffffff;
+
+.app-container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+/* Glassmorphism & Modern Cards */
+.app-card-wrapper {
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-app);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.app-nav-pills {
-    background: #e9ecef;
-    padding: 4px;
-    border-radius: 12px;
+
+/* Custom App Navigation Tabs */
+.modern-tab-nav {
+    background: #e2e8f0;
+    padding: 6px;
+    border-radius: 14px;
+    border: none;
 }
-.app-nav-pills .nav-link {
+.modern-tab-nav .nav-link {
     border-radius: 10px;
-    color: #5c677d;
+    color: #475569;
     font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
+    font-size: 0.88rem;
+    border: none !important;
+    padding: 10px 16px;
+    transition: all 0.25s ease;
 }
-.app-nav-pills .nav-link.active {
-    background: #ffffff;
-    color: var(--r-blue-dark);
-    box-shadow: var(--shadow-sm);
+.modern-tab-nav .nav-link.active {
+    background: #ffffff !important;
+    color: var(--r-blue-dark) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Grille interactive des types d'EPI */
-.epi-item-card {
-    background: var(--r-light);
-    border: 1px solid rgba(0,0,0,0.04);
-    border-radius: 12px;
-    padding: 16px;
+/* Grid Dashboard Items */
+.dashboard-item-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
     height: 100%;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.25s ease;
 }
-.epi-item-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-}
-.norm-badge {
-    font-size: 0.7rem;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 600;
+.dashboard-item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(48, 101, 168, 0.2);
 }
 
-/* Selecteurs tactiles (Scénarios) */
-.scenario-btn {
+/* Interactive Touch Buttons */
+.touch-action-btn {
     background: #ffffff;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
     text-align: left;
     width: 100%;
-    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.scenario-btn:hover, .scenario-btn.active {
+.touch-action-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+.touch-action-btn.active {
     border-color: var(--r-blue);
-    background: rgba(48, 101, 168, 0.04);
+    background: linear-gradient(90deg, rgba(48, 101, 168, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: inset 4px 0 0 var(--r-blue);
 }
-.scenario-btn.active .scenario-icon {
+.touch-action-btn.active .touch-avatar {
     background: var(--r-blue);
-    color: white;
+    color: #ffffff;
+    transform: scale(1.05);
 }
-.scenario-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: #f4f7fa;
+.touch-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f1f5f9;
     color: var(--r-blue-dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
-/* Panneau de résultat dynamique */
-.result-display-panel {
-    background: linear-gradient(145deg, #ffffff, #f8fafc);
-    border-radius: 16px;
-    border: 1px solid rgba(48, 101, 168, 0.1);
+/* Dynamic Panel outputs */
+.output-display-card {
+    background: #ffffff;
+    border-radius: var(--radius-app);
+    border: 1px solid #e2e8f0;
     box-shadow: var(--shadow-sm);
+    height: 100%;
+    overflow: hidden;
+}
+.output-pill-box {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid #f1f5f9;
+}
+.badge-tech {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
 }
 </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container my-4">
+<div class="app-container p-3 p-md-4">
     
-    <!-- APPLICATION INTERACTIVE EPI -->
-    <section id="app-prevention-epi" class="mb-5">
+    <!-- CONSOLE EPI SÉCURITÉ -->
+    <section id="smart-epi-console" class="mb-4">
         
-        <!-- Header minimaliste style App -->
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <span class="badge bg-primary-subtle text-primary mb-1 norm-badge">Module Intelligent v2.0</span>
-                <h2 class="app-section-title mb-0"><i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i>Assistant Équipements EPI</h2>
+        <!-- Header minimaliste épuré -->
+        <div class="row align-items-center g-3 mb-4">
+            <div class="col-12 col-md-auto me-auto">
+                <span class="badge-tech bg-dark text-white mb-2 d-inline-block"><i class="fa-solid fa-bolt me-1 text-warning"></i> Live Preview</span>
+                <h1 class="h3 fw-extrabold text-dark m-0 tracking-tight">Hub de Protection EPI</h1>
+            </div>
+            <div class="col-12 col-md-auto">
+                <!-- Selecteur d'onglets modernisé -->
+                <ul class="nav nav-pills modern-tab-nav" id="epiConsoleTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="trigger-gants" data-bs-toggle="pill" data-bs-target="#panel-gants" type="button" role="tab"><i class="fa-solid fa-hands me-2 text-primary"></i>Gants</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="trigger-masques" data-bs-toggle="pill" data-bs-target="#panel-masques" type="button" role="tab"><i class="fa-solid fa-head-side-mask me-2 text-purple"></i>Masques</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="trigger-sim" data-bs-toggle="pill" data-bs-target="#panel-sim" type="button" role="tab"><i class="fa-solid fa-shield-halved me-2 text-warning"></i>Simulateur</button>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <!-- NAVIGATION PRINCIPALE PAR ONGLET -->
-        <ul class="nav nav-pills app-nav-pills mb-4" id="appEpiTabs" role="tablist">
-            <li class="nav-item flex-fill text-center" role="presentation">
-                <button class="nav-link w-100 active" id="tab-gants" data-bs-toggle="pill" data-bs-target="#content-gants" type="button" role="tab"><i class="fa-solid fa-hands me-2 text-primary"></i>Guide Gants</button>
-            </li>
-            <li class="nav-item flex-fill text-center" role="presentation">
-                <button class="nav-link w-100" id="tab-masques" data-bs-toggle="pill" data-bs-target="#content-masques" type="button" role="tab"><i class="fa-solid fa-head-side-mask me-2 text-purple"></i>Guide Respiratoire</button>
-            </li>
-            <li class="nav-item flex-fill text-center" role="presentation">
-                <button class="nav-link w-100" id="tab-diagnostic" data-bs-toggle="pill" data-bs-target="#content-diagnostic" type="button" role="tab"><i class="fa-solid fa-shield-virus me-2 text-warning"></i>Simulateur Métier</button>
-            </li>
-        </ul>
-
-        <!-- CONTENU DES ONGLETS -->
-        <div class="tab-content" id="appEpiTabsContent">
+        <!-- CONTENUS CYGLES DE L'APPLICATION -->
+        <div class="tab-content" id="epiConsoleTabsContent">
             
-            <!-- PANEL 1 : GUIDE DES GANTS -->
-            <div class="tab-pane fade show active" id="content-gants" role="tabpanel">
-                <div class="app-card p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                        <h5 class="fw-bold m-0 text-dark">Classification selon l'usage</h5>
-                        <span class="badge bg-secondary norm-badge">Norme EN 388 / EN 374</span>
+            <!-- CONTENU 1 : MATRIX DES GANTS -->
+            <div class="tab-pane fade show active" id="panel-gants" role="tabpanel">
+                <div class="app-card-wrapper">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h4 class="h5 fw-bold text-dark m-0">Index Technologique des Matériaux</h4>
+                            <p class="text-muted small m-0">Correspondances normatives selon la nature du risque de contact.</p>
+                        </div>
                     </div>
                     
                     <div class="row g-3">
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-primary">Nitrile</span>
-                                    <i class="fa-solid fa-flask text-primary"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-primary text-white">Nitrile</span>
+                                        <i class="fa-solid fa-fill-drip text-primary fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Peintures, Vernis & Graisses</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Fait barrière aux hydrocarbures sans altération moléculaire rapide.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Peintures & Huiles</h6>
-                                <p class="text-muted small mb-2">Idéal mécanique, carrosserie, manipulation d'hydrocarbures.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-ban me-1"></i><strong>Risque :</strong> Sans lui, allergies cutanées et dermatoses sévères.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-circle-xmark me-1"></i><strong>Risque :</strong> Dermatoses corrosives chroniques.</div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-dark">Néoprène</span>
-                                    <i class="fa-solid fa-triangle-exclamation text-dark"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-dark text-white">Néoprène</span>
+                                        <i class="fa-solid fa-flask-vial text-dark fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Acides, Alcalins & Bases</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Épaisseur et formulation adaptées aux agents chimiques corrosifs.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Acides & Corrosifs</h6>
-                                <p class="text-muted small mb-2">Utilisé pour les nettoyages industriels et traitement de surfaces.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-ban me-1"></i><strong>Risque :</strong> Risque de brûlure chimique et nécrose immédiate.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-circle-xmark me-1"></i><strong>Risque :</strong> Brûlures tissulaires immédiates.</div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-secondary">Butyle</span>
-                                    <i class="fa-solid fa-vial-virus text-secondary"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-secondary text-white">Butyle</span>
+                                        <i class="fa-solid fa-biohazard text-secondary fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Cétones (Acétone, Esters)</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Évite la perméation immédiate des agents solvants très volatils.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Cétones / Acétone</h6>
-                                <p class="text-muted small mb-2">Pour les solvants très volatils et agressifs en industrie.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-ban me-1"></i><strong>Risque :</strong> Passage ultra-rapide des toxiques à travers la peau.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-circle-xmark me-1"></i><strong>Risque :</strong> Passage toxique systémique direct.</div >
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-warning text-dark">Cuir / Kevlar</span>
-                                    <i class="fa-solid fa-screwdriver-wrench text-warning"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-warning text-dark">Kevlar / Cuir</span>
+                                        <i class="fa-solid fa-shield text-warning fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Manutention & Friction</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Maillage haute performance conçu contre la coupure et l'abrasion.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Manutention & Choc</h6>
-                                <p class="text-muted small mb-2">Idéal pour le meulage, la découpe ou le déplacement de charges.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-ban me-1"></i><strong>Risque :</strong> Coupures profondes, perforations et arrachements.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-circle-xmark me-1"></i><strong>Risque :</strong> Traumatismes, plaies et arrachements.</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- PANEL 2 : GUIDE DE PROTECTION RESPIRATOIRE -->
-            <div class="tab-pane fade" id="content-masques" role="tabpanel">
-                <div class="app-card p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-                        <h5 class="fw-bold m-0 text-dark">Types de filtres selon les risques</h5>
-                        <span class="badge bg-secondary norm-badge">Norme EN 149 / EN 14387</span>
+            <!-- CONTENU 2 : MATRIX DES MASQUES -->
+            <div class="tab-pane fade" id="panel-masques" role="tabpanel">
+                <div class="app-card-wrapper">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h4 class="h5 fw-bold text-dark m-0">Index de Filtration Respiratoire</h4>
+                            <p class="text-muted small m-0">Spécification des filtres mécaniques et chimiques requis par environnement.</p>
+                        </div>
                     </div>
 
                     <div class="row g-3">
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-info text-dark">Filtre FFP2</span>
-                                    <i class="fa-solid fa-wind text-info"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-info text-dark">Filtre FFP2</span>
+                                        <i class="fa-solid fa-box-tissue text-info fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Poussières & Ponçage</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Filtre les particules solides de bois et de plâtre en suspension.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Poussières de Bois</h6>
-                                <p class="text-muted small mb-2">Menuiserie, ponçage léger, poussières de chantier classiques.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>Risque :</strong> Asthme pro et opacification des poumons.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation me-1"></i><strong>Risque :</strong> Irritations et asthme pro.</div >
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-danger">Filtre FFP3</span>
-                                    <i class="fa-solid fa-biohazard text-danger"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-danger text-white">Filtre FFP3</span>
+                                        <i class="fa-solid fa-lungs text-danger fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Béton, Silice & Amiante</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Haute étanchéité contre les poussières minérales micrométriques.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Silice & Amiante</h6>
-                                <p class="text-muted small mb-2">Idéal maçonnerie, découpe de béton ou travaux à haute toxicité.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>Risque :</strong> Silicose et cancers broncho-pulmonaires.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation me-1"></i><strong>Risque :</strong> Silicose pulmonaire incurable.</div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge" style="background-color: #8B4513; color: white;">Cartouche A</span>
-                                    <i class="fa-solid fa-spray-can text-warning"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech text-white" style="background-color: #8B4513;">Filtre A (Marron)</span>
+                                        <i class="fa-solid fa-spray-can-sparkles text-dark fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Vapeurs Chimiques</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Charbon actif capturant les solvants organiques et COV.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Solvants / Vernis</h6>
-                                <p class="text-muted small mb-2">Essentiel pour l'application de peintures liquides ou de colles.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>Alerte :</strong> Un masque blanc FFP jetable ne filtre PAS ces gaz !</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation me-1"></i><strong>Alerte :</strong> Un masque blanc FFP est inutile ici !</div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="epi-item-card">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-success">Cartouche E / K</span>
-                                    <i class="fa-solid fa-cloud-showers-water text-success"></i>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="dashboard-item-card d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge-tech bg-success text-white">Filtre E / K</span>
+                                        <i class="fa-solid fa-mask-ventilator text-success fs-5"></i>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">Gaz Acides & Ammoniac</h6>
+                                    <p class="text-muted style-xs" style="font-size: 0.8rem;">Protection ciblée pour milieux industriels et chimiques denses.</p>
                                 </div>
-                                <h6 class="fw-bold mb-1">Gaz Acides / Ammoniac</h6>
-                                <p class="text-muted small mb-2">Utilisé en chimie lourde ou nettoyage haute performance.</p>
-                                <div class="text-danger border-top pt-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>Risque :</strong> Brûlures immédiates des voies respiratoires.</div>
+                                <div class="text-danger border-top pt-2 mt-2" style="font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation me-1"></i><strong>Risque :</strong> Lésions internes irréversibles.</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- PANEL 3 : SIMULATEUR DYNAMIQUE VERSION APPLICATION -->
-            <div class="tab-pane fade" id="content-diagnostic" role="tabpanel">
-                <div class="app-card p-4">
+            <!-- CONTENU 3 : SIMULATEUR APPLICATION INTERACTIVE -->
+            <div class="tab-pane fade" id="panel-sim" role="tabpanel">
+                <div class="app-card-wrapper">
                     <div class="row g-4">
                         
-                        <!-- Colonne Gauche : Boutons tactiles -->
-                        <div class="col-md-5">
-                            <h6 class="fw-bold text-secondary mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.5px;">Sélectionnez une activité :</h6>
+                        <!-- Actions de sélection tactiles -->
+                        <div class="col-12 col-md-5">
+                            <h5 class="h6 fw-bold text-secondary text-uppercase mb-3 tracking-wider" style="font-size: 0.75rem;">Fiches d'activité terrain</h5>
                             <div class="d-flex flex-column gap-2">
-                                <button type="button" class="scenario-btn d-flex align-items-center gap-3" onclick="selectAppScenario(this, 'peinture')">
-                                    <div class="scenario-icon"><i class="fa-solid fa-palette"></i></div>
+                                <button type="button" class="touch-action-btn" onclick="runAppEngine(this, 'peinture')">
+                                    <div class="touch-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                                     <div>
-                                        <div class="fw-bold text-dark small">Peinture & Solvants</div>
-                                        <span class="text-muted style-xs" style="font-size: 0.75rem;">Application / Nettoyage d'outils</span>
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">Peinture & Solvants</div>
+                                        <span class="text-muted" style="font-size: 0.78rem;">Revêtements et nettoyage chimique</span>
                                     </div>
                                 </button>
-                                <button type="button" class="scenario-btn d-flex align-items-center gap-3" onclick="selectAppScenario(this, 'maconnerie')">
-                                    <div class="scenario-icon"><i class="fa-solid fa-trowel-bricks"></i></div>
+                                <button type="button" class="touch-action-btn" onclick="runAppEngine(this, 'maconnerie')">
+                                    <div class="touch-avatar"><i class="fa-solid fa-hammer"></i></div>
                                     <div>
-                                        <div class="fw-bold text-dark small">Maçonnerie / Meulage</div>
-                                        <span class="text-muted style-xs" style="font-size: 0.75rem;">Découpe béton, briques et dalles</span>
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">Maçonnerie & Meulage</div>
+                                        <span class="text-muted" style="font-size: 0.78rem;">Sciage et surfaçage de béton</span>
                                     </div>
                                 </button>
-                                <button type="button" class="scenario-btn d-flex align-items-center gap-3" onclick="selectAppScenario(this, 'chimie')">
-                                    <div class="scenario-icon"><i class="fa-solid fa-pills"></i></div>
+                                <button type="button" class="touch-action-btn" onclick="runAppEngine(this, 'chimie')">
+                                    <div class="touch-avatar"><i class="fa-solid fa-skull"></i></div>
                                     <div>
-                                        <div class="fw-bold text-dark small">Produits Acides / Décapants</div>
-                                        <span class="text-muted style-xs" style="font-size: 0.75rem;">Maintenance et chimie</span>
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">Acides Forts & Décapants</div>
+                                        <span class="text-muted" style="font-size: 0.78rem;">Maintenance industrielle lourde</span>
                                     </div>
                                 </button>
-                                <button type="button" class="scenario-btn d-flex align-items-center gap-3" onclick="selectAppScenario(this, 'tri')">
-                                    <div class="scenario-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                                <button type="button" class="touch-action-btn" onclick="runAppEngine(this, 'tri')">
+                                    <div class="touch-avatar"><i class="fa-solid fa-dolly"></i></div>
                                     <div>
-                                        <div class="fw-bold text-dark small">Manutention Logistique</div>
-                                        <span class="text-muted style-xs" style="font-size: 0.75rem;">Manipulation colis et palettes</span>
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">Manutention & Logistique</div>
+                                        <span class="text-muted" style="font-size: 0.78rem;">Tri de colis et manutention de charges</span>
                                     </div>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Colonne Droite : Rendu d'application -->
-                        <div class="col-md-7">
-                            <div id="app-result-placeholder" class="h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 bg-light rounded-3 border border-dashed">
-                                <i class="fa-solid fa-hand-pointer text-muted mb-2 fs-3"></i>
-                                <span class="text-muted small">Cliquez sur une activité à gauche pour afficher l'analyse des équipements requis.</span>
-                            </div>
-
-                            <div id="app-result-panel" class="result-display-panel p-4 h-100 d-none">
-                                <h6 class="fw-bold text-dark mb-3 d-flex align-items-center"><i class="fa-solid fa-shield-halved text-success me-2"></i>Configuration EPI Recommandée</h6>
+                        <!-- Affichage intelligent des résultats -->
+                        <div class="col-12 col-md-7">
+                            <div class="output-display-card p-4">
                                 
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <div class="p-3 rounded-3" style="background: rgba(48, 101, 168, 0.05);">
-                                            <span class="text-uppercase text-primary fw-bold d-block mb-1" style="font-size: 0.75rem;"><i class="fa-solid fa-hands me-1"></i>Type de Gant</span>
-                                            <span id="res-gant-name" class="h6 fw-bold text-dark d-block mb-1">-</span>
-                                            <span id="res-gant-desc" class="text-muted style-xs d-block" style="font-size: 0.8rem;">-</span>
+                                <!-- Placeholder d'attente -->
+                                <div id="ui-placeholder" class="h-100 d-flex flex-column align-items-center justify-content-center text-center py-5">
+                                    <div class="mb-3 p-3 bg-light rounded-circle text-muted"><i class="fa-solid fa-fingerprint fs-3"></i></div>
+                                    <h6 class="fw-bold text-dark mb-1">Moteur d'analyse en attente</h6>
+                                    <p class="text-muted small px-4">Sélectionnez une activité à gauche pour générer la configuration de protection idéale.</p>
+                                </div>
+
+                                <!-- Panneau actif masqué par défaut -->
+                                <div id="ui-results-wrapper" class="d-none animate fade-in">
+                                    <div class="d-flex align-items-center gap-2 mb-4">
+                                        <span class="p-2 bg-success-subtle text-success rounded-3 small"><i class="fa-solid fa-square-check"></i></span>
+                                        <h6 class="fw-bold text-dark m-0">Configuration d'EPI Validée</h6>
+                                    </div>
+                                    
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-12 col-sm-6">
+                                            <div class="output-pill-box">
+                                                <span class="text-uppercase text-primary fw-bold d-block mb-1" style="font-size: 0.7rem;"><i class="fa-solid fa-hands me-1"></i>Protection Mains</span>
+                                                <span id="out-gant" class="fw-bold text-dark d-block mb-1 fs-6">-</span>
+                                                <p id="out-gant-desc" class="text-muted m-0 small" style="line-height: 1.3;">-</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="output-pill-box">
+                                                <span class="text-uppercase text-purple fw-bold d-block mb-1" style="font-size: 0.7rem;"><i class="fa-solid fa-head-side-mask me-1"></i>Protection Voies Resp.</span>
+                                                <span id="out-masque" class="fw-bold text-dark d-block mb-1 fs-6">-</span>
+                                                <p id="out-masque-desc" class="text-muted m-0 small" style="line-height: 1.3;">-</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="p-3 rounded-3" style="background: rgba(174, 34, 125, 0.05);">
-                                            <span class="text-uppercase text-purple fw-bold d-block mb-1" style="font-size: 0.75rem;"><i class="fa-solid fa-head-side-mask me-1"></i>Type de Filtre</span>
-                                            <span id="res-masque-name" class="h6 fw-bold text-dark d-block mb-1">-</span>
-                                            <span id="res-masque-desc" class="text-muted style-xs d-block" style="font-size: 0.8rem;">-</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="p-3 bg-danger-subtle text-danger rounded-3 border-start border-danger border-3">
-                                            <span class="fw-bold d-block mb-1" style="font-size: 0.8rem;"><i class="fa-solid fa-skull-crossbones me-1"></i>Danger si non porté :</span>
-                                            <span id="res-danger-text" class="small text-dark">-</span>
+
+                                    <div class="p-3 bg-danger-subtle text-danger rounded-3 border-start border-danger border-4 d-flex gap-3">
+                                        <i class="fa-solid fa-triangle-exclamation fs-5 mt-1"></i>
+                                        <div>
+                                            <span class="fw-bold d-block small mb-1">Matrice de risque (Non-port de l'EPI)</span>
+                                            <p id="out-danger" class="m-0 text-dark small" style="line-height: 1.3;">-</p>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -358,57 +424,56 @@
 </div>
 
 <script>
-// Gestion de la simulation dynamique style Application
-function selectAppScenario(btn, scenario) {
-    // Changement d'état actif visuel des boutons
-    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+// Logique dynamique de l'application
+function runAppEngine(element, segment) {
+    // Gestion de l'état actif sur les sélecteurs tactiles
+    document.querySelectorAll('.touch-action-btn').forEach(button => button.classList.remove('active'));
+    element.classList.add('active');
 
-    // Bascule des conteneurs de résultats
-    document.getElementById('app-result-placeholder').classList.add('d-none');
-    const panel = document.getElementById('app-result-panel');
-    panel.classList.remove('d-none');
+    // Switch des vues de l'interface de résultat
+    document.getElementById('ui-placeholder').classList.add('d-none');
+    document.getElementById('ui-results-wrapper').classList.remove('d-none');
 
-    // Objets de données
-    const data = {
+    // Data-Store Localisé des configurations métiers
+    const database = {
         peinture: {
-            gant: 'NITRILE',
-            gantDesc: 'Excellente barrière contre les solvants organiques liquides.',
-            masque: 'CARTOUCHE A (Marron)',
-            masqueDesc: 'Filtre au charbon actif spécifique pour retenir les gaz et vapeurs.',
-            danger: 'Absorption cutanée et inhalation des solvants. Risques de vertiges immédiats et d\'atteinte du système nerveux central.'
+            gant: 'Gants d\'enduction Nitrile',
+            gantDesc: 'Barrière imperméable absolue face aux solvants organiques lourds liquides.',
+            masque: 'Masque à Cartouche Type A (Marron)',
+            masqueDesc: 'Lit de charbon actif technique filtrant les COV et émanations toxiques gazeuses.',
+            danger: 'Inhalation et pénétration transcutanée des solvants. Entraîne des céphalées directes, vertiges et risques neurotoxiques lourds sur la durée.'
         },
         maconnerie: {
-            gant: 'CUIR / KEVLAR',
-            gantDesc: 'Protection mécanique renforcée contre l\'abrasion et la coupure.',
-            masque: 'FFP3 (Haute efficacité)',
-            masqueDesc: 'Obligatoire pour bloquer les micro-poussières de silice du béton.',
-            danger: 'Inhalation de poussières de silice alvéolaire conduisant à la silicose (maladie pulmonaire incurable) et risques de coupures graves.'
+            gant: 'Gants composites Cuir & Kevlar',
+            gantDesc: 'Forte résistance mécanique certifiée EN 388 contre l\'abrasion et le cisaillement.',
+            masque: 'Masque d\'Étanchéité FFP3',
+            masqueDesc: 'Seul niveau de capture particulaire capable d\'arrêter les poussières de silice.',
+            danger: 'Destruction lente des alvéoles pulmonaires par la silice cristalline (silicose irréversible), plaies de chantiers profondes exposées aux infections.'
         },
         chimie: {
-            gant: 'NÉOPRÈNE (Manchette longue)',
-            gantDesc: 'Résiste aux acides corrosifs sans se désintégrer.',
-            masque: 'CARTOUCHE E ou K',
-            masqueDesc: 'Dédiée à la neutralisation des émanations acides ou d\'ammoniac.',
-            danger: 'Destruction instantanée des tissus de la peau par brûlure chimique et lésions irréversibles des muqueuses pulmonaires.'
+            gant: 'Gants longs en Néoprène pur',
+            gantDesc: 'Structure polymère résistante aux acides concentrés et bases. Protège l\'avant-bras.',
+            masque: 'Masque à Cartouche Type E ou K',
+            masqueDesc: 'Neutralisation chimique instantanée des flux gazeux acides ou ammoniacaux.',
+            danger: 'Nécrose cutanée profonde par projection d\'acide fort et œdème pulmonaire aigu lié à la respiration de gaz hautement corrosifs.'
         },
         tri: {
-            gant: 'TRICOT ENDUIT POLYURÉTHANE',
-            gantDesc: 'Grip antidérapant supérieur avec une bonne respirabilité.',
-            masque: 'NON REQUIS',
-            masqueDesc: 'Sauf cas spécifique de manipulation de palettes très poussiéreuses.',
-            danger: 'Échardes, échauffement de la peau, ampoules et micro-coupures répétées sujettes aux infections de chantier.'
+            gant: 'Gants tricotés à enduction Polyuréthane',
+            gantDesc: 'Grip antidérapant de précision optimisé sans perte de dextérité manuelle.',
+            masque: 'Protection standard non requise',
+            masqueDesc: 'Évaluation requise uniquement en environnement confiné très pulvérulent.',
+            danger: 'Apparition d\'ampoules de frottement, échardes de bois infectées et micro-coupures cutanées répétées réduisant la capacité de travail.'
         }
     };
 
-    // Injection dynamique dans les composants de l'application
-    const selection = data[scenario];
-    if(selection) {
-        document.getElementById('res-gant-name').innerText = selection.gant;
-        document.getElementById('res-gant-desc').innerText = selection.gantDesc;
-        document.getElementById('res-masque-name').innerText = selection.masque;
-        document.getElementById('res-masque-desc').innerText = selection.masqueDesc;
-        document.getElementById('res-danger-text').innerText = selection.danger;
+    // Rendu dynamique synchrone
+    const config = database[segment];
+    if(config) {
+        document.getElementById('out-gant').innerText = config.gant;
+        document.getElementById('out-gant-desc').innerText = config.gantDesc;
+        document.getElementById('out-masque').innerText = config.masque;
+        document.getElementById('out-masque-desc').innerText = config.masqueDesc;
+        document.getElementById('out-danger').innerText = config.danger;
     }
 }
 </script>
