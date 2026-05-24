@@ -592,7 +592,10 @@
         <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm small">
             <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-shield-halved me-1"></i>Règles d'or (Masques)</h6>
             <ul class="text-muted ps-3 mb-0">
-                <li class="mb-1 text-danger fw-bold"><i class="fa-solid fa-circle-exclamation me-1"></i>Alerte : Si vous percevez l'odeur du produit, le charbon actif est saturé. Le risque is immédiat !</li>
+                <li class="mb-2 text-danger fw-bold">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i> 
+                    Règle absolue : N'attendez JAMAIS de sentir l'odeur du produit pour changer votre filtre ! Si l'odeur passe, le filtre est saturé et le travailleur respire déjà le toxique.
+                </li>
                 <li class="mb-1"><b>Barbe :</b> Une barbe brise l'étanchéité du joint facial et laisse s'infiltrer l'air pollué.</li>
                 <li class="mb-1"><b>Ouverture :</b> Sortie de son emballage sous vide, une cartouche de gaz se dégrade naturellement. Date d'ouverture obligatoire dessus ; jetée sous 6 mois max.</li>
             </ul>
@@ -916,12 +919,16 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="font-size: 0.88rem;">
-                <div class="alert alert-danger d-flex align-items-start border-0 shadow-sm p-3 mb-3">
-                    <i class="fa-solid fa-triangle-exclamation fs-4 me-3 mt-1 text-danger"></i>
-                    <div>
-                        <strong class="text-danger">REGLE ABSOLUE DE SÉCURITÉ :</strong><br>
-                        <b>Si l'on sent l'odeur du produit inside le masque, il est déjà trop tard.</b> La cartouche a dépassé son point de claquage (saturation complète du charbon actif) et vous inhalez directement le toxique. Évacuez la zone immédiatement.
+                <div class="alert alert-danger border-0 shadow-sm p-3 mb-3">
+                    <div class="d-flex align-items-start mb-2">
+                        <i class="fa-solid fa-triangle-exclamation fs-4 me-3 mt-1 text-danger"></i>
+                        <div>
+                            <strong class="text-danger">RÈGLE CONCRÈTE DE SÉCURITÉ :</strong><br>
+                            <b>N'attendez jamais de sentir l'odeur du produit pour remplacer vos filtres !</b>
+                        </div>
                     </div>
+                    <p class="mb-0 small text-dark">Si une odeur pénètre à l'intérieur de la pièce faciale, c'est que le charbon actif a franchi son point de claquage (saturation totale). Le produit est alors inhalé en continu. <b>Quittez immédiatement la zone.</b></p>
+                    <p class="mb-0 mt-2 small text-dark fw-bold">⚠️ Piège fatal : Certains toxiques majeurs sont totalement inodores. Fiez-vous uniquement au planning de changement défini lors de l'évaluation des risques.</p>
                 </div>
                 
                 <h6 class="fw-bold text-dark mb-2">Facteurs influençant la durée de vie d'un filtre :</h6>
@@ -1171,7 +1178,6 @@ function updateGloveDiagnostic() {
     }
 }
 
-// LOGIQUE EXPERTE MISE À JOUR DYNAMIQUE : COMBO RESPIRATOIRE
 function updateMaskDiagnostic() {
     const pollutant = document.getElementById('epi-mask-pollutant').value;
     const cl = document.getElementById('epi-mask-class').value;
@@ -1184,7 +1190,6 @@ function updateMaskDiagnostic() {
 
     if(!sticker || !fpnEl || !ppmEl || !adviceEl) return;
 
-    // 1. Calcul du FPN réel selon la géométrie du masque retenue (Norme EN 529)
     let fpn = 50; 
     if (pollutant === 'P') {
         fpn = (device === 'complet') ? 1000 : 50;
@@ -1193,14 +1198,12 @@ function updateMaskDiagnostic() {
     }
     fpnEl.innerText = fpn;
 
-    // 2. Gestion des seuils de concentration (ppm) de la norme EN 14387
     let maxPpm = "1000 ppm";
     if(cl === "2") maxPpm = "5000 ppm";
     if(cl === "3") maxPpm = "10000 ppm";
     if(pollutant === 'P') maxPpm = "N/A (Particules)";
     ppmEl.innerText = maxPpm;
 
-    // 3. Mise à jour de l'étiquette normalisée (Marquage Réaliste)
     const configurations = {
         A: { text: `A${cl}`, style: "background: linear-gradient(180deg, #63422d 0%, #452a1c 100%); color: #fff;" },
         B: { text: `B${cl}`, style: "background: linear-gradient(180deg, #64748b 0%, #475569 100%); color: #fff;" },
@@ -1214,7 +1217,6 @@ function updateMaskDiagnostic() {
     sticker.style = activeConfig.style;
     sticker.innerText = `MARQUAGE : ${activeConfig.text}`;
 
-    // 4. Génération de la préconisation d'expert adaptative
     let baseAdvice = "";
     switch(pollutant) {
         case "A": baseAdvice = `Pour vapeurs organiques. Idéal ateliers de peinture. Assurez-vous d'un taux d'O₂ > 17%.`; break;
@@ -1233,7 +1235,6 @@ function updateMaskDiagnostic() {
     simulerClaquage();
 }
 
-// SIMULATEUR INTELLIGENT DE PARAMÈTRES TERRAIN
 function simulerClaquage() {
     const effort = parseInt(document.getElementById('rng-effort').value);
     const humidity = parseInt(document.getElementById('rng-humidity').value);
@@ -1260,7 +1261,6 @@ function simulerClaquage() {
         box.style.display = "none";
     }
 }
-
 
 function verifierCompatibiliteStockage() {
     const prodA = document.getElementById('storage-prod-a').value;
@@ -1300,7 +1300,7 @@ function verifierCompatibiliteStockage() {
         case "GHS02_GHS05_B":
             box.style.backgroundColor = "#fffbeb"; box.style.borderColor = "#fde68a";
             title.innerHTML = "<span class='text-warning'>🟡 Restrictions (Sous conditions)</span>";
-            desc.innerHTML = "Ne pas mettre sur la même rétention. Le stockage dans le même local is toléré si les armoires de sécurité sont distinctes et ventilées (Armoire spécifique pour solvants et armoire spécifique pour corrosifs).";
+            desc.innerHTML = "Ne pas mettre sur la même rétention. Le stockage dans le même local is tolerated si les armoires de sécurité sont distinctes et ventilées (Armoire spécifique pour solvants et armoire spécifique pour corrosifs).";
             break;
 
         case "GHS03_GHS05":
