@@ -464,9 +464,10 @@
             <div class="card-custom text-center py-3 mb-0" style="background-color: #eceff1; border-left-color: #cfd8dc;"><i class="fa-solid fa-file-shield fa-2x mb-2" style="color: #546e7a;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #263238;">GUIDE COMPLET FDS</small></div>
         </div>
     </div>
-</div>
+<div,>
 
-<!-- NOUVELLE PAGE RISQUES CMR PAR MÉTIERS -->
+    
+<!-- NOUVELLE PAGE RISQUES CMR PAR MÉTIERS (VERSION ENRICHIE) -->
 <div id="page-cmr-jobs" class="app-page">
     <h5 class="fw-bold mb-3"><i class="fa-solid fa-biohazard me-2" style="color:var(--r-purple)"></i>Risques CMR : Métiers Insoupçonnés</h5>
     
@@ -476,13 +477,38 @@
         
         <div class="mb-3">
             <select id="cmr-job-selector" class="form-select fw-bold" onchange="updateCmrDiagnostic()">
+                <!-- Métiers initiaux -->
                 <option value="boulange">🥖 Boulanger / Pâtissier (Pizzas, Fournil)</option>
                 <option value="mecanicien">🚗 Mécanicien Auto / Espaces Verts</option>
                 <option value="coiffure">💇 Salons de Coiffure & Esthétique</option>
                 <option value="batiment">🧱 Maçon / Carreleur (BTP)</option>
                 <option value="bois">🪚 Menuisier / Ébéniste / Scierie</option>
+                <!-- Nouveaux métiers ajoutés -->
+                <option value="soudeur">🧑‍🏭 Soudeur / Métallurgiste (Fumées)</option>
+                <option value="composite">⛵ Stratifieur / Plasturgie (Nautisme)</option>
+                <option value="nettoyage">🧹 Agent de Propreté / Décapage</option>
+                <option value="cariste">📦 Cariste / Logistique (Entrepôts fermés)</option>
+                <option value="agri">🍇 Viticulteur / Maraîcher (Traitements)</option>
             </select>
         </div>
+
+        <div id="cmr-result-box" class="p-3 rounded-3 border border-2 bg-light mb-3">
+            <h6 class="fw-bold text-danger mb-2" id="cmr-agent-title">Agent Toxique</h6>
+            <p class="small mb-2"><b>Risque Principal :</b> <span id="cmr-risk-desc" class="text-dark fw-semibold">-</span></p>
+            <div class="p-2 bg-white rounded border mb-2 small">
+                <strong>Leviers de prévention (Priorités RESTEV) :</strong>
+                <p id="cmr-prevention-text" class="text-muted mb-0 mt-1">-</p>
+            </div>
+            <div class="alert alert-warning py-1 px-2 small mb-0 d-flex align-items-center" style="font-size:0.8rem;">
+                <i class="fa-solid fa-triangle-exclamation me-2 text-warning"></i>
+                <span id="cmr-law-tip">Conseil réglementaire</span>
+            </div>
+        </div>
+    </div>
+    
+    <button class="btn btn-outline-secondary w-100 mt-2 py-2.5" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
+</div>
+    
 
         <div id="cmr-result-box" class="p-3 rounded-3 border border-2 bg-light mb-3">
             <h6 class="fw-bold text-danger mb-2" id="cmr-agent-title">Agent Toxique</h6>
