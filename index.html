@@ -564,47 +564,122 @@
         </div>
         
         <div class="p-3 bg-light rounded-3 border mb-3">
-            <div class="small mb-1"><strong>Diagnostic RESTEV :</strong></div>
-            <p id="cartridge-advice" class="small text-muted mb-0">-</p>
+<div id="page-masques" class="app-page">
+    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+        <h5 class="fw-bold m-0 text-dark">
+            <i class="fa-solid fa-head-side-mask me-2 text-danger"></i>Protection Respiratoire
+        </h5>
+        <span class="badge bg-secondary px-2 py-1 small fw-bold">Norme EN 14387</span>
+    </div>
+
+    <div class="card-custom mb-3" style="border-left: 5px solid #dc3545;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-danger m-0">
+                <i class="fa-solid fa-sliders me-2"></i>Configuration du poste
+            </h6>
+            <button class="btn btn-sm btn-outline-danger px-2.5 py-1 fw-bold text-uppercase tracking-wider" style="font-size: 0.65rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
+                <i class="fa-solid fa-clock me-1"></i> Abbaques & Seuils
+            </button>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">1. Nature du contaminant majeur</label>
+            <select id="epi-mask-pollutant" class="form-select fw-bold" onchange="updateMaskDiagnostic()">
+                <option value="A">Gaz & Vapeurs Organiques (Solvants, Peintures) ➔ [Type A]</option>
+                <option value="B">Gaz Inorganiques (Chlore, Hydrogène sulfuré) ➔ [Type B]</option>
+                <option value="E">Gaz Acides (Dioxyde de soufre, HCl) ➔ [Type E]</option>
+                <option value="K">Ammoniac et dérivés aminés ➔ [Type K]</option>
+                <option value="P">Poussières fines, Silice, Amiante, Plâtre ➔ [Type P3]</option>
+                <option value="ABEKP">Polyvalent Atelier (Maintenance / Multi-risques) ➔ [Type ABEK2P3]</option>
+            </select>
         </div>
 
-        <div class="p-3 rounded-3 border bg-white mb-3">
-            <h6 class="fw-bold text-dark small mb-2"><i class="fa-solid fa-gauge-high text-danger me-2"></i>Simulateur terrain : Facteurs de saturation</h6>
-            <div class="mb-2">
-                <label class="small text-muted d-flex justify-content-between mb-1">
-                    <span>Effort physique / Débit d'air :</span>
-                    <span id="lbl-effort" class="fw-bold text-danger">Modéré (30 L/min)</span>
-                </label>
-                <input type="range" id="rng-effort" min="1" max="3" value="2" class="form-range range-premium" oninput="simulerClaquage()">
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">2. Classe du filtre</label>
+                <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                    <option value="1">Classe 1 (Galette fine / Faible)</option>
+                    <option value="2" selected>Classe 2 (Cartouche / Moyenne)</option>
+                    <option value="3">Classe 3 (Gros volume / Haute)</option>
+                </select>
             </div>
-            <div>
-                <label class="small text-muted d-flex justify-content-between mb-1">
-                    <span>Humidité relative de l'air :</span>
-                    <span id="lbl-humidity" class="fw-bold text-primary">Normale (50%)</span>
-                </label>
-                <input type="range" id="rng-humidity" min="20" max="90" value="50" step="5" class="form-range range-premium" oninput="simulerClaquage()">
-            </div>
-            <div id="box-breakthrough" class="alert alert-warning small p-2 text-center mb-0 mt-2 fw-bold" style="display:none">
-                ⚠️ Facteurs critiques : Durée de vie estimée de la cartouche divisée par 2.5 !
+            <div class="col-6">
+                <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">3. Pièce faciale</label>
+                <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                    <option value="demi">Demi-masque (Joint silicone)</option>
+                    <option value="complet" selected>Masque Complet (Intégral)</option>
+                </select>
             </div>
         </div>
 
-        <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm small">
-            <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-shield-halved me-1"></i>Règles d'or (Masques)</h6>
-            <ul class="text-muted ps-3 mb-0">
-                <li class="mb-2 text-danger fw-bold">
-                    <i class="fa-solid fa-circle-exclamation me-1"></i> 
-                    Règle absolue : N'attendez JAMAIS de sentir l'odeur du produit pour changer votre filtre ! Si l'odeur passe, le filtre est saturé et le travailleur respire déjà le toxique.
-                </li>
-                <li class="mb-1"><b>Barbe :</b> Une barbe brise l'étanchéité du joint facial et laisse s'infiltrer l'air pollué.</li>
-                <li class="mb-1"><b>Ouverture :</b> Sortie de son emballage sous vide, une cartouche de gaz se dégrade naturellement. Date d'ouverture obligatoire dessus ; jetée sous 6 mois max.</li>
-            </ul>
+        <div class="p-3 bg-dark rounded-3 text-center mb-3 shadow-inner position-relative overflow-hidden" style="border: 1px solid #475569;">
+            <div class="small text-uppercase tracking-widest text-muted mb-2 fw-bold" style="font-size:0.6rem;">Marquage normalisé CE requis</div>
+            <div id="cartridge-sticker" class="py-2 px-3 fw-black rounded text-uppercase tracking-wider font-monospace shadow-sm" style="font-size: 0.95rem; font-weight: 800; letter-spacing: 1px;">
+                MARQUAGE EN COURS...
+            </div>
+        </div>
+
+        <div class="row g-2 mb-3 text-center">
+            <div class="col-6">
+                <div class="p-2 rounded bg-light border">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem; letter-spacing: 0.5px;">Indice FPN (Étanchéité)</div>
+                    <div id="metric-fpn" class="fw-bold text-dark fs-5 mt-1">1000</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="p-2 rounded bg-light border">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem; letter-spacing: 0.5px;">Seuil Max Toxique</div>
+                    <div id="metric-ppm" class="fw-bold text-dark fs-5 mt-1">5000 ppm</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-3 rounded-3 border bg-white mb-1 shadow-sm">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="fa-solid fa-user-shield text-primary" style="font-size: 0.85rem;"></i>
+                <span class="small fw-bold text-secondary text-uppercase tracking-wider" style="font-size:0.7rem;">Préconisation technique :</span>
+            </div>
+            <p id="cartridge-advice" class="small text-dark mb-0 fw-medium">-</p>
         </div>
     </div>
-    
-    <button class="btn btn-outline-secondary w-100 mt-2 py-2.5" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
-</div>
 
+    <div class="card-custom mb-3" style="border-left: 5px solid #f57c00;">
+        <h6 class="fw-bold text-warning mb-2 small text-uppercase tracking-wider"><i class="fa-solid fa-gauge-high me-2"></i>Simulateur de Saturation (Conditions réelles)</h6>
+        <div class="mb-2">
+            <label class="small text-muted d-flex justify-content-between mb-1">
+                <span>Intensité de l'effort physique :</span>
+                <span id="lbl-effort" class="fw-bold text-danger">Modéré (30 L/min)</span>
+            </label>
+            <input type="range" id="rng-effort" min="1" max="3" value="2" class="form-range" oninput="simulerClaquage()">
+        </div>
+        <div class="mb-2">
+            <label class="small text-muted d-flex justify-content-between mb-1">
+                <span>Humidité relative ambiante :</span>
+                <span id="lbl-humidity" class="fw-bold text-primary">Normale (50%)</span>
+            </label>
+            <input type="range" id="rng-humidity" min="20" max="90" value="50" step="5" class="form-range" oninput="simulerClaquage()">
+        </div>
+        <div id="box-breakthrough" class="alert alert-warning small p-2 text-center mb-0 mt-2 fw-bold animate__animated animate__headShake" style="display:none; font-size: 0.8rem; border-radius: var(--radius-sm);">
+            ⚠️ Facteurs critiques détectés : Durée de vie utile divisée par 2.5 !
+        </div>
+    </div>
+
+    <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm mb-4 small">
+        <h6 class="fw-bold text-danger mb-2 d-flex align-items-center"><i class="fa-solid fa-triangle-exclamation me-2"></i>Règles d'or incontournables (HSE)</h6>
+        <ul class="text-muted ps-3 mb-0" style="font-size: 0.82rem; line-height: 1.45;">
+            <li class="mb-2 text-danger fw-bold">
+                <i class="fa-solid fa-circle-exclamation me-1"></i> Le piège olfactif : N'attendez JAMAIS de percevoir l'odeur du produit pour remplacer vos filtres. Si l'odeur passe, la barrière est saturée et le produit est inhalé.
+            </li>
+            <li class="mb-2"><b>Étanchéité & Barbe :</b> Le port de la barbe (même de 3 jours) rompt l'étanchéité du joint facial et annule l'efficacité théorique du masque (infiltration directe de l'air pollué).</li>
+            <li><b>Délai de péremption :</b> Sortie de son emballage scellé, une cartouche de gaz s'autodégrade avec l'humidité de l'air. Notez systématiquement la date d'ouverture dessus. **Maximum 6 mois d'utilisation**.</li>
+        </ul>
+    </div>
+    
+    <button class="btn btn-outline-secondary w-100 py-2.5 font-weight-bold" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm); font-size:0.85rem; font-weight:700;">
+        <i class="fa-solid fa-arrow-left me-2"></i>Retour au tableau de bord
+    </button>
+</div>
+            
 <div id="page-storage" class="app-page">
     <h5 class="fw-bold mb-3"><i class="fa-solid fa-warehouse me-2" style="color:#f57c00"></i>Compatibilité des Stockages</h5>
     
