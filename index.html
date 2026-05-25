@@ -817,6 +817,39 @@
     </div>
 </div>
 
+<div class="container my-4">
+    <div id="weather-risk-module" class="weather-card risk-low">
+        <div class="weather-header">
+            <div>
+                <h4 class="mb-1" style="color: var(--r-blue-dark); font-weight: 600;">
+                    <i class="fa-solid fa-cloud-sun me-2"></i>Météo & Vigilance SST
+                </h4>
+                <small class="text-muted" id="weather-location">Chargement de la position...</small>
+            </div>
+            <span id="risk-level-badge" class="risk-badge">Analyse...</span>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                <div class="weather-info justify-content-center justify-content-md-start">
+                    <i id="weather-icon" class="fa-solid fa-temperature-half fa-2x text-muted"></i>
+                    <span id="weather-temp-display" class="weather-temp">--°C</span>
+                </div>
+                <div class="text-muted small mt-1" id="weather-humidity">Humidité : --%</div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="inrs-reco-box">
+                    <h5><i class="fa-solid fa-shield-halved"></i> Préconisations INRS / CARSAT :</h5>
+                    <ul id="inrs-recommendations" class="reco-list">
+                        <li>Chargement des seuils de vigilance en cours...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
 <div id="page-centres" class="app-page">
     <h5 class="fw-bold mb-3">Nos Centres de Santé</h5>
     <div id="centres-list"></div>
@@ -1486,6 +1519,73 @@ function showQuizResult() {
         advice.innerText = "Votre niveau de risque réglementaire et technique est élevé. Une mise à niveau de votre DUERP et un accompagnement terrain RESTEV sont vivement recommandés.";
     }
 }
+        /* ==========================================================================
+           MODULE : MÉTÉO DES RISQUES (CHAUD/FROID) - INRS / CARSAT
+           ========================================================================== */
+        .weather-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border-left: 8px solid #cbd5e1;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+        .weather-card.risk-low { border-left-color: #2e7d32; }
+        .weather-card.risk-moderate { border-left-color: var(--r-yellow); }
+        .weather-card.risk-high { border-left-color: #d32f2f; }
+        .weather-card.risk-extreme { border-left-color: var(--r-purple); }
+
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .weather-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .weather-temp {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--r-blue-dark);
+        }
+        .risk-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .risk-low .risk-badge { background-color: #e8f5e9; color: #2e7d32; }
+        .risk-moderate .risk-badge { background-color: #fff8e1; color: #f57f17; }
+        .risk-high .risk-badge { background-color: #ffebee; color: #c62828; }
+        .risk-extreme .risk-badge { background-color: #f3e5f5; color: var(--r-purple); }
+
+        .inrs-reco-box {
+            background-color: var(--r-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        .inrs-reco-box h5 {
+            color: var(--r-blue);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .reco-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.95rem;
+        }
+        .reco-list li { margin-bottom: 6px; }
 
 window.onload = () => {
     updateStats();
