@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -391,10 +390,10 @@
         transition: all 0.3s ease;
         margin-bottom: 24px;
     }
-    .weather-card.risk-low { border-left-color: #2e7d32; }
-    .weather-card.risk-moderate { border-left-color: var(--r-yellow); }
-    .weather-card.risk-high { border-left-color: #d32f2f; }
-    .weather-card.risk-extreme { border-left-color: var(--r-purple); }
+    .weather-card.risk-low { border-left-color: #2e7d32 !important; }
+    .weather-card.risk-moderate { border-left-color: var(--r-yellow) !important; }
+    .weather-card.risk-high { border-left-color: #d32f2f !important; }
+    .weather-card.risk-extreme { border-left-color: var(--r-purple) !important; }
 
     .weather-header {
         display: flex;
@@ -499,7 +498,7 @@
                     <h5 class="mb-0 fw-bold" style="color: var(--r-blue-dark);">
                         <i class="fa-solid fa-cloud-sun me-2 text-primary"></i>Météo & Vigilance SST
                     </h5>
-                    <small class="text-muted" id="weather-location">Détection en cours...</small>
+                    <small class="text-muted" id="weather-location">Détection de la station locale en cours...</small>
                 </div>
                 <span id="risk-level-badge" class="risk-badge">Analyse...</span>
             </div>
@@ -515,9 +514,9 @@
                 
                 <div class="col-7">
                     <div class="inrs-reco-box py-1 px-2 m-0 bg-transparent">
-                        <small class="fw-bold text-uppercase text-secondary d-block mb-1" style="font-size:0.65rem;"><i class="fa-solid fa-shield-halved"></i> Préconisations HSE :</small>
+                        <small class="fw-bold text-uppercase text-secondary d-block mb-1" style="font-size:0.65rem;"><i class="fa-solid fa-shield-halved"></i> Préconisations HSE (INRS / CARSAT / OPPBTP) :</small>
                         <ul id="inrs-recommendations" class="reco-list ps-3 mb-0 small text-muted" style="font-size:0.75rem;">
-                            <li>Calcul des seuils thermiques INRS...</li>
+                            <li>Interrogation des seuils réglementaires en cours...</li>
                         </ul>
                     </div>
                 </div>
@@ -1013,9 +1012,9 @@ function simulerClaquage() {}
 function verifierCompatibiliteStockage() {}
 
 /* ==========================================================================
-   LOGIQUE JAVASCRIPT : INITIALISATION MÉTÉO SST DU CENTRE
+   LOGIQUE JAVASCRIPT CORRIGÉE : RELEVÉ RÉEL API OPEN-METEO (SANS CLÉ / PWA FRIENDLY)
    ========================================================================== */
-function initWeatherModule() {
+async function initWeatherModule() {
     const tempDisplay = document.getElementById('weather-temp-display');
     const humDisplay = document.getElementById('weather-humidity');
     const locationDisplay = document.getElementById('weather-location');
@@ -1025,37 +1024,91 @@ function initWeatherModule() {
 
     if (!tempDisplay) return;
 
-    // Simulation de données locales basées sur les stations de Vendée
-    setTimeout(() => {
-        const fakeTemp = 19; 
-        const fakeHum = 60;
+    // Coordonnées par défaut de la station de La Roche-sur-Yon (Vendée)
+    let lat = 46.6705;
+    let lon = -1.4265;
+    locationDisplay.innerHTML = `<i class="fa-solid fa-location-crosshairs me-1"></i> La Roche-sur-Yon (Station RESTEV Siège)`;
 
-        locationDisplay.innerHTML = `<i class="fa-solid fa-location-crosshairs me-1"></i> Zone Vendée (La Roche-sur-Yon)`;
-        tempDisplay.innerText = `${fakeTemp}°C`;
-        humDisplay.innerText = `Humidité : ${fakeHum}%`;
+    // Tentative de géolocalisation de l'utilisateur terrain pour affichage précis du chantier
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                locationDisplay.innerHTML = `<i class="fa-solid fa-location-crosshairs me-1"></i> Chantier géolocalisé (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+                await fetchWeatherData(lat, lon, tempDisplay, humDisplay, badge, recoList, card);
+            },
+            async () => {
+                // Repli sur La Roche-sur-Yon si refus ou erreur GPS
+                await fetchWeatherData(lat, lon, tempDisplay, humDisplay, badge, recoList, card);
+            },
+            { timeout: 5000 }
+        );
+    } else {
+        await fetchWeatherData(lat, lon, tempDisplay, humDisplay, badge, recoList, card);
+    }
+}
 
-        // Évaluation des seuils réglementaires de vigilance (INRS / CARSAT)
-        if (fakeTemp >= 30) {
-            card.className = "weather-card risk-high shadow-sm";
-            badge.innerText = "Vigilance Chaleur";
+async function fetchWeatherData(lat, lon, tempDisplay, humDisplay, badge, recoList, card) {
+    try {
+        // API Open-Meteo publique, hautement performante et conforme aux exigences RGPD / PWA (pas de clé en clair dans le code)
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=Europe%2FParis`);
+        if (!response.ok) throw new Error("Erreur de communication API");
+        
+        const data = await response.json();
+        const currentTemp = Math.round(data.current.temperature_2m);
+        const currentHum = data.current.relative_humidity_2m;
+
+        tempDisplay.innerText = `${currentTemp}°C`;
+        humDisplay.innerText = `Humidité : ${currentHum}%`;
+
+        // Évaluation algorithmique des risques thermiques selon le Code du Travail, l'INRS, la CARSAT et l'OPPBTP
+        if (currentTemp >= 33) {
+            // Risque Extrême (Alerte Canicule critique)
+            card.className = "weather-card risk-extreme shadow-sm";
+            badge.innerText = "Seuil Critique 33°C";
             recoList.innerHTML = `
-                <li><b>Seuil INRS atteint :</b> Risque de déshydratation et coup de chaleur.</li>
-                <li>Mettre à disposition 3L d'eau fraîche par salarié et par jour.</li>
-                <li>Aménager des pauses régulières à l'ombre ou en zone ventilée.</li>`;
-        } else if (fakeTemp <= 5) {
+                <li class="text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation"></i> Danger de Mort : Évaluation immédiate de l'arrêt de travail.</li>
+                <li><b>Règle CARSAT :</b> Les ventilateurs simples deviennent inefficaces et dangereux (brassement d'air chaud).</li>
+                <li>Fournir obligatoirement 3L d'eau par jour par salarié (Art. R. 4225-2).</li>
+                <li>Interdiction absolue d'affecter des mineurs sur les chantiers extérieurs.</li>`;
+        } else if (currentTemp >= 30) {
+            // Risque Élevé (Avertissement Chaleur Postes Sédentaires)
             card.className = "weather-card risk-high shadow-sm";
-            badge.innerText = "Alerte Grand Froid";
+            badge.innerText = "Alerte SST ≥ 30°C";
+            recoList.innerHTML = `
+                <li><b>Seuil Bureaux/Ateliers atteint :</b> Aménager des pauses de 15 min toutes les heures à l'ombre.</li>
+                <li>Augmenter le taux de renouvellement d'air mécanique ou VMC (Art. R. 4222-1).</li>
+                <li>Reporter les tâches de manutention lourde à forte charge métabolique.</li>`;
+        } else if (currentTemp >= 28) {
+            // Risque Modéré (Avertissement Chaleur Activités Physiques / BTP)
+            card.className = "weather-card risk-moderate shadow-sm";
+            badge.innerText = "Seuil Pénibilité 28°C";
+            recoList.innerHTML = `
+                <li><b>Recommandation OPPBTP/INRS :</b> Seuil de vigilance pour les métiers physiques activé.</li>
+                <li>Décalage conseillé des horaires de travail (privilégier les heures fraîches du matin).</li>
+                <li>Vérification de la disponibilité des zones d'ombre ou abris de chantiers ventilés.</li>`;
+        } else if (currentTemp <= 5) {
+            // Risque Grand Froid
+            card.className = "weather-card risk-high shadow-sm";
+            badge.innerText = "Vigilance Grand Froid";
             recoList.innerHTML = `
                 <li>Risque d'engourdissement et perte de dextérité (EPI gants thermiques requis).</li>
-                <li>Limiter le travail isolé et chauffer les locaux de pause.</li>`;
+                <li>Limiter le travail isolé et chauffer obligatoirement les locaux de pause.</li>`;
         } else {
+            // Risque Faible (Plage de confort thermique nominale)
             card.className = "weather-card risk-low shadow-sm";
-            badge.innerText = "Risque Thermique Faible";
+            badge.innerText = "Risque SST Faible";
             recoList.innerHTML = `
-                <li><b>Températures conformes :</b> Poursuivre la surveillance standard des locaux.</li>
-                <li>Vérifier le bon fonctionnement des hottes et de la VMC.</li>`;
+                <li><b>Températures conformes :</b> Poursuivre la surveillance standard.</li>
+                <li>Assurer le suivi habituel du DUERP et du risque d'exposition chimique.</li>`;
         }
-    }, 1200);
+
+    } catch (error) {
+        console.error("Erreur d'initialisation du module météo:", error);
+        document.getElementById('weather-location').innerText = "Impossible de joindre le serveur météo";
+        badge.innerText = "Erreur synchro";
+    }
 }
 
 window.onload = () => {
