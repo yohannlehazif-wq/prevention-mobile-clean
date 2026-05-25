@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -955,4 +956,119 @@ function renderInventory() {
                     <b style="color:var(--r-blue)">${item.name}</b><br>
                     <small class="text-muted"><i class="fa-solid fa-barcode"></i> ${item.code || 'Saisie manuelle'}</small>
                 </div>
-                <button onclick="deleteItem(${item.id})" class
+                <button onclick="deleteItem(${item.id})" class="btn btn-sm text-danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <a href="${finalLink}" target="_blank" class="btn btn-sm btn-outline-primary w-100">Consulter la FDS</a>
+        </div>`;
+    });
+}
+
+async function saveProduct() {
+    const name = document.getElementById('prod-name').value;
+    if (!name) return alert("Nom du produit requis.");
+    const newProduct = { id: Date.now(), name, code: "", fdsUrl: "" };
+    inventory.push(newProduct);
+    localStorage.setItem('restev_inventory_v3', JSON.stringify(inventory));
+    document.getElementById('prod-name').value = '';
+    updateStats();
+    nav('page-list', document.getElementById('nav-list'));
+}
+
+function deleteItem(id) {
+    if(confirm("Supprimer ?")) {
+        inventory = inventory.filter(i => i.id !== id);
+        localStorage.setItem('restev_inventory_v3', JSON.stringify(inventory));
+        renderInventory(); updateStats();
+    }
+}
+
+function updateGloveDiagnostic() {
+    const val = document.getElementById('epi-chemical').value;
+    const badge = document.getElementById('glove-badge');
+    const material = document.getElementById('glove-material');
+    const text = document.getElementById('glove-text');
+    if(!badge || !material || !text) return;
+
+    if(val === 'acet') {
+        badge.innerText = "Butyle Impératif";
+        material.innerText = "Recommandé / Spécifique";
+        text.innerText = "Le Nitrile et le Latex fondent ou se détériorent rapidement au contact direct de l'acétone.";
+    } else {
+        badge.innerText = "Nitrile";
+        material.innerText = "Conseillé (Épaisseur > 0.4mm)";
+        text.innerText = "Bonne résistance générale pour cette famille de produit.";
+    }
+}
+
+function updateMaskDiagnostic() {
+    const pollutant = document.getElementById('epi-mask-pollutant').value;
+    const cl = document.getElementById('epi-mask-class').value;
+    const sticker = document.getElementById('cartridge-sticker');
+    if(sticker) {
+        sticker.innerText = `MARQUAGE : ${pollutant}${cl}`;
+    }
+}
+
+function simulerClaquage() {}
+function verifierCompatibiliteStockage() {}
+
+/* ==========================================================================
+   LOGIQUE JAVASCRIPT : INITIALISATION MÉTÉO SST DU CENTRE
+   ========================================================================== */
+function initWeatherModule() {
+    const tempDisplay = document.getElementById('weather-temp-display');
+    const humDisplay = document.getElementById('weather-humidity');
+    const locationDisplay = document.getElementById('weather-location');
+    const badge = document.getElementById('risk-level-badge');
+    const recoList = document.getElementById('inrs-recommendations');
+    const card = document.getElementById('weather-risk-module');
+
+    if (!tempDisplay) return;
+
+    // Simulation de données locales basées sur les stations de Vendée
+    setTimeout(() => {
+        const fakeTemp = 19; 
+        const fakeHum = 60;
+
+        locationDisplay.innerHTML = `<i class="fa-solid fa-location-crosshairs me-1"></i> Zone Vendée (La Roche-sur-Yon)`;
+        tempDisplay.innerText = `${fakeTemp}°C`;
+        humDisplay.innerText = `Humidité : ${fakeHum}%`;
+
+        // Évaluation des seuils réglementaires de vigilance (INRS / CARSAT)
+        if (fakeTemp >= 30) {
+            card.className = "weather-card risk-high shadow-sm";
+            badge.innerText = "Vigilance Chaleur";
+            recoList.innerHTML = `
+                <li><b>Seuil INRS atteint :</b> Risque de déshydratation et coup de chaleur.</li>
+                <li>Mettre à disposition 3L d'eau fraîche par salarié et par jour.</li>
+                <li>Aménager des pauses régulières à l'ombre ou en zone ventilée.</li>`;
+        } else if (fakeTemp <= 5) {
+            card.className = "weather-card risk-high shadow-sm";
+            badge.innerText = "Alerte Grand Froid";
+            recoList.innerHTML = `
+                <li>Risque d'engourdissement et perte de dextérité (EPI gants thermiques requis).</li>
+                <li>Limiter le travail isolé et chauffer les locaux de pause.</li>`;
+        } else {
+            card.className = "weather-card risk-low shadow-sm";
+            badge.innerText = "Risque Thermique Faible";
+            recoList.innerHTML = `
+                <li><b>Températures conformes :</b> Poursuivre la surveillance standard des locaux.</li>
+                <li>Vérifier le bon fonctionnement des hottes et de la VMC.</li>`;
+        }
+    }, 1200);
+}
+
+window.onload = () => {
+    updateStats();
+    initWeatherModule();
+    
+    const chkRecond = document.getElementById('chk-reconditionne');
+    if(chkRecond) {
+        chkRecond.addEventListener('change', function() {
+            document.getElementById('recond-alert').style.display = this.checked ? 'block' : 'none';
+        });
+    }
+};
+</script>
+</body>
+</html>
