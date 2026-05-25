@@ -44,9 +44,14 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
         margin-bottom: 110px; 
         overflow-x: hidden; 
-        user-select: none; 
         color: #334155;
         -webkit-font-smoothing: antialiased;
+    }
+
+    /* Optionnel : Empêcher la sélection uniquement sur les boutons et composants UI pour éviter les comportements natifs désagréables sur mobile */
+    .nav-bottom, .btn-enter-premium, .card-custom {
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     #splash { 
@@ -829,7 +834,7 @@
     <h5 class="fw-bold mb-3">Ajouter un produit</h5>
     <div class="card-custom">
         <div id="reader" style="width:100%; border-radius: var(--radius-md); overflow: hidden; background: #000; min-height: 250px; box-shadow: inset 0 0 20px rgba(0,0,0,0.6);"></div>
-        <button class="btn btn-dark w-100 mt-3 mb-4 py-2.5 fw-bold" style="border-radius:var(--radius-sm)" onclick="startScanner()"><i class="fa-solid fa-camera me-2"></i>ACTIVER LA CAMÉRA</button>
+        <button id="btn-toggle-camera" class="btn btn-dark w-100 mt-3 mb-4 py-2.5 fw-bold" style="border-radius:var(--radius-sm)" onclick="toggleScanner()"><i class="fa-solid fa-camera me-2"></i>ACTIVER LA CAMÉRA</button>
         
         <div class="mb-3">
             <label class="small fw-bold text-muted mb-1">Nom du produit</label>
@@ -1081,12 +1086,13 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let inventory = JSON.parse(localStorage.getItem('restev_inventory_v3')) || [];
+let html5QrcodeScanner = null; // Instance unique globale pour le scanner
 
 const centres = [
-    { n: "La Roche-sur-Yon (Siège)", t: "0251370668", a: "Impasse Newton, 85000 La Roche-sur-Yon", g: "https://maps.google.com/?q=Impasse+Newton+La+Roche-sur-Yon" },
-    { n: "Montaigu-Vendée", t: "0251942014", a: "44 rue du 8 mai 1945, 85600 Montaigu-Vendée", g: "https://maps.google.com/?q=44+rue+du+8+mai+1945+Montaigu-Vendee" },
-    { n: "Les Herbiers", t: "0251671203", a: "18 rue Olivier de Serres, 85500 Les Herbiers", g: "https://maps.google.com/?q=18+rue+Olivier+de+Serres+Les+Herbiers" },
-    { n: "Les Essarts-en-Bocage", t: "0251080601", a: "Rue Louis Lumière, 85140 Les Essarts-en-Bocage", g: "https://maps.google.com/?q=Rue+Louis+Lumiere+Les+Essarts-en-Bocage" }
+    { n: "La Roche-sur-Yon (Siège)", t: "0251370668", a: "Impasse Newton, 85000 La Roche-sur-Yon", g: "https://maps.google.com/?q=Impasse+Newton,+85000+La+Roche-sur-Yon" },
+    { n: "Montaigu-Vendée", t: "0251942014", a: "44 rue du 8 mai 1945, 85600 Montaigu-Vendée", g: "https://maps.google.com/?q=44+rue+du+8+mai+1945,+85600+Montaigu-Vend%C3%A9e" },
+    { n: "Les Herbiers", t: "0251671203", a: "18 rue Olivier de Serres, 85500 Les Herbiers", g: "https://maps.google.com/?q=18+rue+Olivier+de+Serres,+85500+Les+Herbiers" },
+    { n: "Les Essarts-en-Bocage", t: "0251080601", a: "Rue Louis Lumière, 85140 Les Essarts-en-Bocage", g: "https://maps.google.com/?q=Rue+Louis+Lumi%C3%A8re,+85140+Les+Essarts-en-Bocage" }
 ];
 
 const sghData = [
@@ -1122,7 +1128,7 @@ const questions = [
     "Les accidents ou 'presque accidents' sont-ils tracés et analysés ?",
     "Les salariés connaissent-ils les gestes de premiers secours ?",
     "Les produits chimiques sont-ils tous identifiés par une étiquette ?",
-    "Le matériel de sécurité (douche de sécurité, kit anti-pollution) is-il testé ?",
+    "Le matériel de sécurité (douche de sécurité, kit anti-pollution) est-il testé ?",
     "La prévention est-elle discutée lors de réunions régulières ?"
 ];
 
@@ -1141,8 +1147,12 @@ function updateStats() {
     if(statsEl) statsEl.innerText = `${inventory.length} produit(s) dans l'inventaire`;
 }
 
-// Fonction de Navigation unifiée et nettoyée
 function nav(id, el) {
+    // Éteindre proprement la caméra si on change de page
+    if (id !== 'page-scan') {
+        stopScanner();
+    }
+
     document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     
@@ -1153,7 +1163,6 @@ function nav(id, el) {
         el.classList.add('active');
     }
     
-    // Switch de chargement à l'affichage des pages
     if(id === 'page-list') renderInventory();
     if(id === 'page-sgh') renderSGH();
     if(id === 'page-centres') renderCentres();
@@ -1207,7 +1216,7 @@ async function saveProduct() {
 
     try {
         await sb.from('inventaire_utilisateurs').insert([{ nom_produit: name, code_barres: code, url_fds: fdsUrl }]);
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("Sauvegarde cloud échouée, conservation locale active :", e); }
 
     document.getElementById('prod-name').value = '';
     document.getElementById('prod-code').value = '';
@@ -1220,11 +1229,12 @@ async function saveProduct() {
     }
 
     updateStats();
+    alert("Produit enregistré avec succès !");
     nav('page-list', document.getElementById('nav-list'));
 }
 
 function deleteItem(id) {
-    if(confirm("Supprimer ?")) {
+    if(confirm("Supprimer ce produit de l'inventaire ?")) {
         inventory = inventory.filter(i => i.id !== id);
         localStorage.setItem('restev_inventory_v3', JSON.stringify(inventory));
         renderInventory(); updateStats();
@@ -1256,19 +1266,56 @@ async function searchBarcodeDB() {
     } catch(e) { alert("Erreur lors de la vérification."); }
 }
 
+function toggleScanner() {
+    const btn = document.getElementById('btn-toggle-camera');
+    if (html5QrcodeScanner && html5QrcodeScanner.getState() === 2) { 
+        stopScanner();
+    } else {
+        startScanner();
+    }
+}
+
 function startScanner() {
-    const scanner = new Html5Qrcode("reader");
-    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, async (text) => {
-        document.getElementById('prod-code').value = text;
-        scanner.stop();
-        try {
-            const { data } = await sb.from('inventaire_utilisateurs').select('*').eq('code_barres', text).limit(1);
-            if(data && data.length > 0) {
-                document.getElementById('prod-name').value = data[0].nom_produit;
-                document.getElementById('prod-url').value = data[0].url_fds;
-            }
-        } catch(e){}
-    }).catch(e => console.error(e));
+    const btn = document.getElementById('btn-toggle-camera');
+    if(!html5QrcodeScanner) {
+        html5QrcodeScanner = new Html5Qrcode("reader");
+    }
+    
+    btn.innerHTML = `<i class="fa-solid fa-stop me-2"></i>ARRÊTER LA CAMÉRA`;
+    btn.className = "btn btn-danger w-100 mt-3 mb-4 py-2.5 fw-bold";
+
+    html5QrcodeScanner.start(
+        { facingMode: "environment" }, 
+        { fps: 10, qrbox: 250 }, 
+        async (text) => {
+            document.getElementById('prod-code').value = text;
+            stopScanner();
+            try {
+                const { data } = await sb.from('inventaire_utilisateurs').select('*').eq('code_barres', text).limit(1);
+                if(data && data.length > 0) {
+                    document.getElementById('prod-name').value = data[0].nom_produit;
+                    document.getElementById('prod-url').value = data[0].url_fds;
+                }
+            } catch(e){}
+        }
+    ).catch(e => {
+        console.error(e);
+        stopScanner();
+    });
+}
+
+function stopScanner() {
+    const btn = document.getElementById('btn-toggle-camera');
+    if (html5QrcodeScanner) {
+        if (html5QrcodeScanner.getState() === 2) { 
+            html5QrcodeScanner.stop().then(() => {
+                if(btn) {
+                    btn.innerHTML = `<i class="fa-solid fa-camera me-2"></i>ACTIVER LA CAMÉRA`;
+                    btn.className = "btn btn-dark w-100 mt-3 mb-4 py-2.5 fw-bold";
+                }
+            }).catch(err => console.error("Erreur lors du stop scanner:", err));
+        }
+    }
 }
 
 function updateGloveDiagnostic() {
@@ -1439,7 +1486,7 @@ function verifierCompatibiliteStockage() {
 
 function exportToCSV() {
     if(inventory.length === 0) return alert("Inventaire vide.");
-    let csv = "Nom,Code,URL_FDS\n";
+    let csv = "\uFEFFNom,Code,URL_FDS\n"; // Ajout du BOM pour Excel FR
     inventory.forEach(i => csv += `"${i.name}","${i.code}","${i.fdsUrl}"\n`);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
@@ -1508,7 +1555,7 @@ function renderAttestations(){
                     <small class="text-muted">${a.date}</small><br>
                     <small class="text-primary">${a.products} produit(s)</small>
                 </div>
-                <span class="badge bg-secondary text-white p-2" style="font-size:0.75rem;"><i class="fa-solid fa-file-pdf"></i> Généré</span>
+                <span class="badge bg-secondary text-white p-2" style="font-size:0.75rem;"><i class="fa-solid fa-file-pdf"></i> Génré</span>
             </div>
         </div>`).join('');
 }
@@ -1532,7 +1579,7 @@ function renderSGH() {
                 <div class="modal-content">
                     <div class="modal-header bg-dark text-white py-3">
                         <h6 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>SGH - ${s.title}</h6>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-disabled="modal"></button>
                     </div>
                     <div class="modal-body small">
                         <div class="text-center mb-3"><img src="${s.img}" style="width:70px" onerror="this.src='https://placehold.co/70?text=SGH'"></div>
@@ -1552,7 +1599,7 @@ function renderCentres() {
             <p class="small text-muted mb-2"><i class="fa-solid fa-location-dot text-secondary me-1"></i> ${c.a}</p>
             <div class="d-flex gap-2">
                 <a href="tel:${c.t}" class="btn btn-sm btn-outline-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px;"><i class="fa-solid fa-phone me-1"></i> Appeler</a>
-                <a href="${c.g}" target="_blank" class="btn btn-sm btn-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px; background-color: var(--r-teal);"><i class="fa-solid fa-map-pin me-1"></i> Itinéraire</a>
+                <a href="${c.g}" target="_blank" rel="noopener" class="btn btn-sm btn-primary flex-fill fw-bold" style="font-size:0.75rem; border-radius:6px; background-color: var(--r-teal);"><i class="fa-solid fa-map-pin me-1"></i> Itinéraire</a>
             </div>
         </div>`).join('');
 }
