@@ -1780,6 +1780,18 @@ function getWeatherDescription(code) {
     if (code >= 95 && code <= 99) return "Orageux (Risque Foudre)";
     return "Conditions variables";
 }
+// Exemple d'intégration dans votre flux fetch météo actuel :
+fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+        // ... Votre code actuel qui affiche la température et l'icône ...
+        
+        // On lance la vérification des alertes HSE
+        checkWeatherAlerts(data);
+    })
+    .catch(err => {
+        console.error("Erreur météo", err);
+    });
 
 window.onload = () => {
     updateStats();
