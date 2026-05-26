@@ -1188,86 +1188,81 @@ function nav(id, el) {
     window.scrollTo(0, 0);
 }
     
-function checkWeatherAlerts(weatherData) {
+function checkWeatherAlerts(current) {
     const alertBox = document.getElementById('weather-alert-box');
+    if (!alertBox) return;
+
     const alertIcon = document.getElementById('weather-alert-icon');
     const alertTitle = document.getElementById('weather-alert-title');
     const alertText = document.getElementById('weather-alert-text');
     const alertHse = document.getElementById('weather-alert-hse');
 
-    if (!alertBox) return;
+    // Reset
+    alertBox.className = "alert d-none mb-4 border-2 shadow-sm";
 
-    // Réinitialisation par défaut
-    alertBox.className = "alert d-none mb-4 border-2 shadow-sm animate__animated animate__fadeIn";
-    
     let isAlert = false;
-    let alertType = ""; // 'canicule', 'grand-froid', 'tempete', 'orage'
-    let alertDetails = "";
+    let type = "";
+    const temp = current.temperature_2m;
+    const wind = current.wind_speed_10m;
+    const weatherCode = current.weather_code;
 
-    // Récupération des variables OpenWeather
-    const temp = weatherData.main.temp;
-    const windSpeed = weatherData.wind.speed * 3.6; // m/s en km/h
-    const weatherId = weatherData.weather[0].id;   // Code ID du type de temps
-    const weatherDesc = weatherData.weather[0].description;
-
-    // Détection des seuils critiques (Ordre de priorité : Orage > Tempête > Canicule > Froid)
-    if (weatherId >= 200 && weatherId <= 232) {
-        // Famille 2xx = Orages dans OpenWeather
+    // Orage (code Open‑Meteo)
+    if (weatherCode >= 95) {
         isAlert = true;
-        alertType = "orage";
-        alertDetails = `Activité orageuse détectée ou imminente (${weatherDesc}).`;
-    } else if (windSpeed >= 60) {
+        type = "orage";
+    } 
+    else if (wind >= 60) {
         isAlert = true;
-        alertType = "tempete";
-        alertDetails = `Rafales de vent importantes : ${windSpeed.toFixed(0)} km/h.`;
-    } else if (temp >= 34) {
+        type = "tempete";
+    } 
+    else if (temp >= 34) {
         isAlert = true;
-        alertType = "canicule";
-        alertDetails = `Forte chaleur détectée : ${temp.toFixed(1)}°C.`;
-    } else if (temp <= 2) {
+        type = "canicule";
+    } 
+    else if (temp <= 2) {
         isAlert = true;
-        alertType = "grand-froid";
-        alertDetails = `Température critique basse : ${temp.toFixed(1)}°C.`;
+        type = "froid";
     }
 
-    // Affichage et configuration du bloc si une alerte est levée
-    if (isAlert) {
-        alertBox.classList.remove('d-none');
-        
-        switch (alertType) {
-            case 'orage':
-                alertBox.classList.add('alert-danger'); // Alerte critique rouge
-                alertIcon.innerHTML = `<i class="fa-solid fa-cloud-bolt text-danger fs-1"></i>`;
-                alertTitle.innerText = "ALERTE ORAGES & RISQUE FOUDRE";
-                alertText.innerText = `${alertDetails} Risque d'électrisation, de fortes rafales soudaines et de grêle.`;
-                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Interdiction absolue des travaux en hauteur (échafaudages, nacelles) et sur les structures métalliques. Éloignez-vous des arbres et des points hauts. Mettez les équipes à l'abri dans un bâtiment en dur ou un véhicule fermé.`;
-                break;
+    if (!isAlert) return;
 
-            case 'tempete':
-                alertBox.classList.add('alert-warning'); // Orange/Jaune
-                alertIcon.innerHTML = `<i class="fa-solid fa-wind text-warning fs-1"></i>`;
-                alertTitle.innerText = "VIGILANCE VENTS VIOLENTS";
-                alertText.innerText = `${alertDetails} Risques de chutes d'objets, de bâches arrachées et de déstabilisation.`;
-                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Arrêt des travaux en hauteur. Sécurisez les éléments mobiles sur le chantier (matériels, stockages extérieurs) et redoublez de vigilance lors des manutentions.`;
-                break;
+    alertBox.classList.remove("d-none");
 
-            case 'canicule':
-                alertBox.classList.add('alert-danger');
-                alertIcon.innerHTML = `<i class="fa-solid fa-temperature-arrow-up text-danger fs-1"></i>`;
-                alertTitle.innerText = "ALERTE CANICULE / FORTE CHALEUR";
-                alertText.innerText = `${alertDetails} Risque accru de malaise et de déshydratation.`;
-                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Aménagez les horaires (privilégiez le matin), augmentez la fréquence des pauses à l'ombre, et assurez une disponibilité de 3L d'eau fraîche par salarié par jour.`;
-                break;
+    switch(type) {
+        case "orage":
+            alertBox.classList.add("alert-danger");
+            alertIcon.innerHTML = `<i class="fa-solid fa-cloud-bolt"></i>`;
+            alertTitle.innerText = "ALERTE ORAGE";
+            alertText.innerText = "Risque foudre et rafales violentes.";
+            alertHse.innerText = "Stop travaux en hauteur.";
+        break;
 
-            case 'grand-froid':
-                alertBox.classList.add('alert-info'); // Bleu pour le froid
-                alertIcon.innerHTML = `<i class="fa-solid fa-snowflake text-info fs-1"></i>`;
-                alertTitle.innerText = "VIGILANCE GRAND FROID";
-                alertText.innerText = `${alertDetails} Risques d'engourdissement, de perte de dextérité et d'hypothermie.`;
-                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Limitez le travail statique prolongé. Fournissez des boissons chaudes et assurez le port d'EPI adaptés (gants thermiques, sous-vêtements techniques, bonnet).`;
-                break;
-        }
+        case "tempete":
+            alertBox.classList.add("alert-warning");
+            alertIcon.innerHTML = `<i class="fa-solid fa-wind"></i>`;
+            alertTitle.innerText = "VENT FORT";
+            alertText.innerText = "Risque chute objets.";
+            alertHse.innerText = "Sécuriser les zones.";
+        break;
+
+        case "canicule":
+            alertBox.classList.add("alert-danger");
+            alertIcon.innerHTML = `<i class="fa-solid fa-temperature-high"></i>`;
+            alertTitle.innerText = "FORTE CHALEUR";
+            alertText.innerText = `${temp}°C`;
+            alertHse.innerText = "Hydratation + pauses.";
+        break;
+
+        case "froid":
+            alertBox.classList.add("alert-info");
+            alertIcon.innerHTML = `<i class="fa-solid fa-snowflake"></i>`;
+            alertTitle.innerText = "GRAND FROID";
+            alertText.innerText = `${temp}°C`;
+            alertHse.innerText = "EPI thermique.";
+        break;
     }
+}
+
             
     
 function renderInventory() {
