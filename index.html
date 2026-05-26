@@ -1,3 +1,7 @@
+Voici votre code HTML modifié. J'ai ajouté une **fenêtre modale Bootstrap d'alerte météo dynamique** qui s'ouvre automatiquement dès l'arrivée sur la page d'accueil si la température détectée présente un risque (Grand Froid \le 5°C, Vigilance BTP \ge 28°C, Alerte Bureaux \ge 30°C, ou Danger Critique \ge 33°C).
+Pour que cela fonctionne parfaitement de manière centralisée, le script appelle désormais l'évaluation météo dès l'ouverture de l'application (juste après le Splash screen), permettant de prévenir immédiatement l'utilisateur.
+Voici le code complet prêt à l'emploi :
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -48,7 +52,6 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* Optionnel : Empêcher la sélection uniquement sur les boutons et composants UI pour éviter les comportements natifs désagréables sur mobile */
     .nav-bottom, .btn-enter-premium, .card-custom {
         user-select: none;
         -webkit-user-select: none;
@@ -410,13 +413,13 @@
     <div class="ticker">
         <span>
             📝 Mise à jour du DUERP : Votre centre RESTEV vous accompagne dans l'évaluation de vos risques.
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+              |  
             💰 Aides CARSAT : Des subventions disponibles pour vos équipements de protection (TPE/PME).
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+              |  
             🔍 Risque Chimique : Consultez les fiches toxicologiques INRS directement via l'app.
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+              |  
             🏗️ BTP : Profitez des conseils experts de l'OPPBTP pour vos chantiers en Vendée.
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+              |  
             🌡️ Canicule / Grand Froid : Adaptez vos postes de travail avec nos fiches conseils.
         </span>
     </div>
@@ -460,6 +463,26 @@
         </div>
         <div class="col-12" onclick="nav('page-fds-guide')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #eceff1; border-left-color: #cfd8dc;"><i class="fa-solid fa-file-shield fa-2x mb-2" style="color: #546e7a;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #263238;">GUIDE COMPLET FDS</small></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-alert-meteo-auto" tabindex="-1" aria-hidden="true" style="z-index: 10050;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div id="popup-meteo-header" class="modal-header text-white py-3">
+                <h5 class="modal-title fw-bold" id="popup-meteo-title"><i class="fa-solid fa-triangle-exclamation me-2"></i>Vigilance Météo SST</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <div class="mb-3" id="popup-meteo-icon-box"></div>
+                <h5 class="fw-bold text-dark mb-2" id="popup-meteo-subtitle">Alerte Thermique</h5>
+                <p class="small text-muted mb-3" id="popup-meteo-desc"></p>
+                <div class="p-3 rounded-3 bg-light text-start border small mb-0" id="popup-meteo-advice"></div>
+            </div>
+            <div class="modal-footer bg-light border-0 pt-0">
+                <button type="button" class="btn btn-sm btn-secondary w-100 py-2 fw-bold" data-bs-dismiss="modal">Prendre connaissance</button>
+            </div>
         </div>
     </div>
 </div>
@@ -891,7 +914,7 @@
                 <h6 class="fw-bold text-secondary mb-1" id="geo-status"><i class="fa-solid fa-location-dot me-2 text-danger"></i>Localisation en cours...</h6>
                 <p class="text-muted small mb-0" id="weather-time">Mis à jour en temps réel</p>
             </div>
-            <button class="btn btn-sm btn-outline-primary border-0" onclick="initWeatherModule()" title="Actualiser la position">
+            <button class="btn btn-sm btn-outline-primary border-0" onclick="initWeatherModule(false)" title="Actualiser la position">
                 <i class="fa-solid fa-arrows-rotate"></i>
             </button>
         </div>
@@ -1011,13 +1034,13 @@
                             <td class="fw-bold text-dark">Nitrile</td>
                             <td class="text-warning">Moyen</td>
                             <td class="text-success">Excellent</td>
-                            <td class="text-danger">Immédiat (&lt; 2 min)</td>
+                            <td class="text-danger">Immédiat (< 2 min)</td>
                         </tr>
                         <tr>
                             <td class="fw-bold text-dark">Butyle</td>
                             <td class="text-success">Excellent</td>
                             <td class="text-danger">Faible</td>
-                            <td class="text-success">Excellent (&gt; 480 min)</td>
+                            <td class="text-success">Excellent (> 480 min)</td>
                         </tr>
                         <tr>
                             <td class="fw-bold text-dark">Néoprène</td>
@@ -1056,7 +1079,7 @@
                 <h6 class="fw-bold text-dark mb-2">Facteurs influençant la durée de vie d'un filtre :</h6>
                 <ul class="text-muted ps-3 mb-3">
                     <li class="mb-1"><b>Concentration du polluant :</b> Plus l'atmosphère est chargée, plus la cartouche sature vite.</li>
-                    <li class="mb-1"><b>Rythme respiratoire :</b> Un travailleur à l'effort inhale un volume d'air plus important (augmentation du débit d'air pollué à travers le filtre).</li>
+                    <li class="mb-1"><b>Rythme respiratoire :</b> Un travailleur à l'effort incline un volume d'air plus important (augmentation du débit d'air pollué à travers le filtre).</li>
                     <li class="mb-1"><b>Humidité ambiante :</b> L'eau présente dans l'air colonise les sites de fixation du charbon actif au détriment des molécules de solvant.</li>
                 </ul>
                 <hr>
@@ -1080,13 +1103,12 @@
 </nav>
 
 <script>
-// --- LOGIQUE CORE GLOBALE DE L'APP ---
 const SUPABASE_URL = 'https://nklarbzamffhiwasxoph.supabase.co'; 
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rbGFyYnphbWZmaGl3YXN4b3BoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzI5MzQsImV4cCI6MjA5MzQwODkzNH0.Tjy3Z9Yf9FOn47yKqlqQNC9Xfmy_tMMLkfa4UUFdf6k'; 
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let inventory = JSON.parse(localStorage.getItem('restev_inventory_v3')) || [];
-let html5QrcodeScanner = null; // Instance unique globale pour le scanner
+let html5QrcodeScanner = null; 
 
 const centres = [
     { n: "La Roche-sur-Yon (Siège)", t: "0251370668", a: "Impasse Newton, 85000 La Roche-sur-Yon", g: "https://maps.google.com/?q=Impasse+Newton,+85000+La+Roche-sur-Yon" },
@@ -1138,7 +1160,11 @@ function Splash() {
     const splash = document.getElementById('splash');
     if (splash) {
         splash.style.opacity = '0';
-        setTimeout(() => { splash.style.display = 'none'; }, 800);
+        setTimeout(() => { 
+            splash.style.display = 'none'; 
+            // Lancement automatique du calcul météo à l'ouverture pour déclencher l'alerte d'accueil
+            initWeatherModule(true);
+        }, 800);
     }
 }
 
@@ -1148,7 +1174,6 @@ function updateStats() {
 }
 
 function nav(id, el) {
-    // Éteindre proprement la caméra si on change de page
     if (id !== 'page-scan') {
         stopScanner();
     }
@@ -1169,7 +1194,7 @@ function nav(id, el) {
     if(id === 'page-quiz') resetQuiz();
     if(id === 'page-gants') updateGloveDiagnostic();
     if(id === 'page-masques') updateMaskDiagnostic();
-    if(id === 'page-meteo') initWeatherModule();
+    if(id === 'page-meteo') initWeatherModule(false);
     
     window.scrollTo(0, 0);
 }
@@ -1267,7 +1292,6 @@ async function searchBarcodeDB() {
 }
 
 function toggleScanner() {
-    const btn = document.getElementById('btn-toggle-camera');
     if (html5QrcodeScanner && html5QrcodeScanner.getState() === 2) { 
         stopScanner();
     } else {
@@ -1486,7 +1510,7 @@ function verifierCompatibiliteStockage() {
 
 function exportToCSV() {
     if(inventory.length === 0) return alert("Inventaire vide.");
-    let csv = "\uFEFFNom,Code,URL_FDS\n"; // Ajout du BOM pour Excel FR
+    let csv = "\uFEFFNom,Code,URL_FDS\n"; 
     inventory.forEach(i => csv += `"${i.name}","${i.code}","${i.fdsUrl}"\n`);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
@@ -1579,7 +1603,7 @@ function renderSGH() {
                 <div class="modal-content">
                     <div class="modal-header bg-dark text-white py-3">
                         <h6 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>SGH - ${s.title}</h6>
-                        <button type="button" class="btn-close btn-close-white" data-bs-disabled="modal"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body small">
                         <div class="text-center mb-3"><img src="${s.img}" style="width:70px" onerror="this.src='https://placehold.co/70?text=SGH'"></div>
@@ -1650,106 +1674,181 @@ function showQuizResult() {
     }
 }
 
-// --- LOGIQUE SPÉCIFIQUE MODULE MÉTÉO ---
-function initWeatherModule() {
+// --- LOGIQUE SPÉCIFIQUE MODULE MÉTÉO MODIFIÉE ---
+function initWeatherModule(triggerPopupOnRisk = false) {
     const geoStatus = document.getElementById('geo-status');
     if (!navigator.geolocation) {
         if(geoStatus) geoStatus.innerHTML = "<i class='fa-solid fa-circle-xmark text-danger me-2'></i>Géolocalisation non supportée";
-        fallbackToLaRocheSurYon();
+        fallbackToLaRocheSurYon(triggerPopupOnRisk);
         return;
     }
     navigator.geolocation.getCurrentPosition(
         (position) => {
-            fetchWeatherData(position.coords.latitude, position.coords.longitude, "Position Géolocalisée");
+            fetchWeatherData(position.coords.latitude, position.coords.longitude, "Position Géolocalisée", triggerPopupOnRisk);
         },
         (error) => {
             console.warn("Erreur géo, repli La Roche-sur-Yon : ", error.message);
-            fallbackToLaRocheSurYon();
+            fallbackToLaRocheSurYon(triggerPopupOnRisk);
         },
         { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
     );
 }
 
-function fallbackToLaRocheSurYon() {
-    fetchWeatherData(46.6705, -1.4265, "La Roche-sur-Yon (RESTEV 85)");
+function fallbackToLaRocheSurYon(triggerPopupOnRisk) {
+    fetchWeatherData(46.6705, -1.4265, "La Roche-sur-Yon (RESTEV 85)", triggerPopupOnRisk);
 }
 
-function fetchWeatherData(lat, lon, locationLabel) {
+function fetchWeatherData(lat, lon, locationLabel, triggerPopupOnRisk) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&timezone=auto`;
     fetch(url)
         .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-        .then(data => { if (data && data.current) updateWeatherUI(data.current, locationLabel); })
+        .then(data => { if (data && data.current) updateWeatherUI(data.current, locationLabel, triggerPopupOnRisk); })
         .catch(() => {
             const el = document.getElementById('geo-status');
             if(el) el.innerHTML = "<i class='fa-solid fa-triangle-exclamation text-danger me-2'></i>Erreur API Météo";
         });
 }
 
-function updateWeatherUI(current, locationLabel) {
+function updateWeatherUI(current, locationLabel, triggerPopupOnRisk) {
     const temp = Math.round(current.temperature_2m);
-    document.getElementById('geo-status').innerHTML = `<i class='fa-solid fa-location-dot text-danger me-2'></i>${locationLabel}`;
-    document.getElementById('weather-temp').textContent = `${temp}°C`;
-    document.getElementById('weather-humidity').textContent = current.relative_humidity_2m;
-    document.getElementById('weather-wind').textContent = Math.round(current.wind_speed_10m);
-    document.getElementById('weather-clouds').textContent = current.cloud_cover;
-    document.getElementById('weather-desc').textContent = getWeatherDescription(current.weather_code);
-    document.getElementById('weather-time').textContent = `Mis à jour à ${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}`;
-    processSSTVigilance(temp);
+    
+    // Protection si l'élément n'existe pas encore sur la page active
+    if(document.getElementById('geo-status')) {
+        document.getElementById('geo-status').innerHTML = `<i class='fa-solid fa-location-dot text-danger me-2'></i>${locationLabel}`;
+        document.getElementById('weather-temp').textContent = `${temp}°C`;
+        document.getElementById('weather-humidity').textContent = current.relative_humidity_2m;
+        document.getElementById('weather-wind').textContent = Math.round(current.wind_speed_10m);
+        document.getElementById('weather-clouds').textContent = current.cloud_cover;
+        document.getElementById('weather-desc').textContent = getWeatherDescription(current.weather_code);
+        document.getElementById('weather-time').textContent = `Mis à jour à ${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}`;
+    }
+    
+    processSSTVigilance(temp, triggerPopupOnRisk);
 }
 
-function processSSTVigilance(temp) {
+function processSSTVigilance(temp, triggerPopupOnRisk) {
     const wCard = document.getElementById('weather-card');
     const sstCard = document.getElementById('sst-risk-card');
     const sstBadge = document.getElementById('sst-risk-badge');
     const sstTitle = document.getElementById('sst-risk-title');
     const sstDesc = document.getElementById('sst-risk-desc');
-    if(!wCard || !sstCard) return;
+    
+    // Variables pour l'éventuelle modale automatique
+    let mustPopup = false;
+    let popHeaderBg = "bg-primary";
+    let popTitle = "Alerte Thermique";
+    let popSubtitle = "";
+    let popDesc = "";
+    let popAdvice = "";
+    let popIcon = "";
 
     document.querySelectorAll('[id^="row-threshold-"]').forEach(row => row.style.backgroundColor = "transparent");
-    sstCard.classList.remove('d-none');
+    
+    if (sstCard) sstCard.classList.remove('d-none');
     
     if (temp <= 5) {
-        wCard.style.borderLeft = "5px solid #06b6d4";
-        sstCard.className = "card-custom mb-3 text-center bg-info text-white";
-        sstBadge.className = "badge bg-white text-info mb-1";
-        sstTitle.textContent = "ALERTE VIGILANCE GRAND FROID";
-        sstDesc.textContent = "Seuil critique ≤ 5°C atteint. Risques d'hypothermie. Chauffage obligatoire.";
-        document.getElementById('row-threshold-5').style.backgroundColor = "rgba(6, 182, 212, 0.15)";
+        if(wCard) wCard.style.borderLeft = "5px solid #06b6d4";
+        if(sstCard) {
+            sstCard.className = "card-custom mb-3 text-center bg-info text-white";
+            sstBadge.className = "badge bg-white text-info mb-1";
+            sstTitle.textContent = "ALERTE VIGILANCE GRAND FROID";
+            sstDesc.textContent = "Seuil critique ≤ 5°C atteint. Risques d'hypothermie. Chauffage obligatoire.";
+            document.getElementById('row-threshold-5').style.backgroundColor = "rgba(6, 182, 212, 0.15)";
+        }
         setVentilationStatus(true);
+        
+        mustPopup = true;
+        popHeaderBg = "bg-info text-white";
+        popIcon = "<i class='fa-solid fa-snowflake text-info fa-4x mb-2'></i>";
+        popTitle = "<i class='fa-solid fa-snowflake me-2'></i>Alerte Grand Froid";
+        popSubtitle = `Risque Thermique Détecté : ${temp}°C`;
+        popDesc = "Les températures actuelles exposent vos salariés à un risque accru d'engourdissement et d'hypothermie.";
+        popAdvice = "<ul><li>Assurez le chauffage adéquat des locaux de travail fixes.</li><li>Mettez à disposition des boissons chaudes.</li><li>Fournissez des EPI adaptés grand froid et limitez le travail isolé.</li></ul>";
+
     } else if (temp >= 33) {
-        wCard.style.borderLeft = "5px solid var(--r-purple)";
-        sstCard.className = "card-custom mb-3 text-center bg-danger text-white fw-bold";
-        sstBadge.className = "badge bg-white text-danger mb-1";
-        sstTitle.innerHTML = "<i class='fa-solid fa-skull-crossbones me-2'></i>DANGER GRAVE & IMMINENT";
-        sstDesc.textContent = "Température extrême ≥ 33°C. Risque de coup de chaleur. Évaluez l'arrêt des travaux.";
-        document.getElementById('row-threshold-33').style.backgroundColor = "rgba(220, 38, 38, 0.2)";
+        if(wCard) wCard.style.borderLeft = "5px solid var(--r-purple)";
+        if(sstCard) {
+            sstCard.className = "card-custom mb-3 text-center bg-danger text-white fw-bold";
+            sstBadge.className = "badge bg-white text-danger mb-1";
+            sstTitle.innerHTML = "<i class='fa-solid fa-skull-crossbones me-2'></i>DANGER GRAVE & IMMINENT";
+            sstDesc.textContent = "Température extrême ≥ 33°C. Risque de coup de chaleur. Évaluez l'arrêt des travaux.";
+            document.getElementById('row-threshold-33').style.backgroundColor = "rgba(220, 38, 38, 0.2)";
+        }
         setVentilationStatus(false);
+
+        mustPopup = true;
+        popHeaderBg = "bg-danger text-white";
+        popIcon = "<i class='fa-solid fa-triangle-exclamation text-danger fa-4x mb-2'></i>";
+        popTitle = "<i class='fa-solid fa-fire-flame-curved me-2'></i>Danger Thermique Critique";
+        popSubtitle = `Seuil d'Arrêt ou Droit de Retrait : ${temp}°C`;
+        popDesc = "La température atteint ou dépasse 33°C. Le risque de coup de chaleur (pronostic vital engagé) est majeur.";
+        popAdvice = "<strong>Directives HSE urgentes :</strong><br><ul><li><strong>INTERDICTION FORMELLE</strong> d'utiliser des ventilateurs (ils aggravent le stress thermique cutané à ce stade).</li><li>Évaluez immédiatement l'arrêt ou le report des tâches physiques lourdes.</li></ul>";
+
     } else if (temp >= 30) {
-        wCard.style.borderLeft = "5px solid #e6a00f";
-        sstCard.className = "card-custom mb-3 text-center bg-warning text-dark";
-        sstBadge.className = "badge bg-dark text-white mb-1";
-        sstTitle.textContent = "VIGILANCE CHALEUR - POSTES FIXES";
-        sstDesc.textContent = "Température ambiante ≥ 30°C. Seuil d'alerte INRS pour ateliers et bureaux.";
-        document.getElementById('row-threshold-30').style.backgroundColor = "rgba(230, 160, 15, 0.2)";
+        if(wCard) wCard.style.borderLeft = "5px solid #e6a00f";
+        if(sstCard) {
+            sstCard.className = "card-custom mb-3 text-center bg-warning text-dark";
+            sstBadge.className = "badge bg-dark text-white mb-1";
+            sstTitle.textContent = "VIGILANCE CHALEUR - POSTES FIXES";
+            sstDesc.textContent = "Température ambiante ≥ 30°C. Seuil d'alerte INRS pour ateliers et bureaux.";
+            document.getElementById('row-threshold-30').style.backgroundColor = "rgba(230, 160, 15, 0.2)";
+        }
         setVentilationStatus(true);
+
+        mustPopup = true;
+        popHeaderBg = "bg-warning text-dark";
+        popTitle = "<i class='fa-solid fa-temperature-high me-2'></i>Vigilance Chaleur Ateliers & Bureaux";
+        popIcon = "<i class='fa-solid fa-temperature-high text-warning fa-4x mb-2'></i>";
+        popSubtitle = `Seuil d'Alerte Fixe : ${temp}°C`;
+        popDesc = "Le thermomètre dépasse le seuil de confort et de sécurité recommandé par l'INRS en milieu fermé.";
+        popAdvice = "<ul><li>Aménagez les horaires pour éviter les heures les plus chaudes.</li><li>Augmentez la fréquence des pauses de récupération dans un local frais.</li><li>Vérifiez le bon renouvellement de l'air mécanique.</li></ul>";
+
     } else if (temp >= 28) {
-        wCard.style.borderLeft = "5px solid #f59e0b";
-        sstCard.className = "card-custom mb-3 text-center style-warning text-dark";
-        sstCard.style.backgroundColor = "#fef3c7";
-        sstBadge.className = "badge bg-warning text-dark mb-1";
-        sstTitle.textContent = "VIGILANCE CHALEUR - BTP & EXTÉRIEUR";
-        sstDesc.textContent = "Seuil CARSAT de 28°C. Fourniture obligatoire de 3L d'eau fraîche par jour/homme.";
-        document.getElementById('row-threshold-28').style.backgroundColor = "rgba(245, 158, 11, 0.15)";
+        if(wCard) wCard.style.borderLeft = "5px solid #f59e0b";
+        if(sstCard) {
+            sstCard.className = "card-custom mb-3 text-center style-warning text-dark";
+            sstCard.style.backgroundColor = "#fef3c7";
+            sstBadge.className = "badge bg-warning text-dark mb-1";
+            sstTitle.textContent = "VIGILANCE CHALEUR - BTP & EXTÉRIEUR";
+            sstDesc.textContent = "Seuil CARSAT de 28°C. Fourniture obligatoire de 3L d'eau fraîche par jour/homme.";
+            document.getElementById('row-threshold-28').style.backgroundColor = "rgba(245, 158, 11, 0.15)";
+        }
         setVentilationStatus(true);
+
+        mustPopup = true;
+        popHeaderBg = "bg-warning text-dark";
+        popIcon = "<i class='fa-solid fa-helmet-safety text-warning fa-4x mb-2'></i>";
+        popTitle = "<i class='fa-solid fa-sun me-2'></i>Alerte Chaleur - Chantiers & Extérieur";
+        popSubtitle = `Seuil CARSAT Vendée Atteint : ${temp}°C`;
+        popDesc = "Vigilance accrue requise pour les travaux en extérieur et sur les chantiers.";
+        popAdvice = "<ul><li><strong>Obligation Légale :</strong> Fournir a minima 3 litres d'eau fraîche par salarié et par jour.</li><li>Mettez en place des zones d'ombre ou des abris climatisés pour les pauses.</li></ul>";
+
     } else {
-        wCard.style.borderLeft = "5px solid var(--r-teal)";
-        sstCard.className = "card-custom mb-3 text-center bg-white text-dark";
-        sstBadge.className = "badge-service mb-1";
-        sstTitle.className = "fw-bold h4 mb-2 text-success";
-        sstTitle.textContent = "Situation Thermique Normale";
-        sstDesc.textContent = "La température actuelle ne présente aucun risque thermique identifié pour la santé.";
-        document.getElementById('row-threshold-normal').style.backgroundColor = "rgba(117, 187, 168, 0.15)";
+        if(wCard) wCard.style.borderLeft = "5px solid var(--r-teal)";
+        if(sstCard) {
+            sstCard.className = "card-custom mb-3 text-center bg-white text-dark";
+            sstBadge.className = "badge-service mb-1";
+            sstTitle.className = "fw-bold h4 mb-2 text-success";
+            sstTitle.textContent = "Situation Thermique Normale";
+            sstDesc.textContent = "La température actuelle ne présente aucun risque thermique identifié pour la santé.";
+            document.getElementById('row-threshold-normal').style.backgroundColor = "rgba(117, 187, 168, 0.15)";
+        }
         setVentilationStatus(true);
+        mustPopup = false;
+    }
+
+    // Déclenchement de la fenêtre d'accueil en cas de risque météo détecté
+    if (triggerPopupOnRisk && mustPopup) {
+        document.getElementById('popup-meteo-header').className = "modal-header " + popHeaderBg;
+        document.getElementById('popup-meteo-title').innerHTML = popTitle;
+        document.getElementById('popup-meteo-icon-box').innerHTML = popIcon;
+        document.getElementById('popup-meteo-subtitle').textContent = popSubtitle;
+        document.getElementById('popup-meteo-desc').textContent = popDesc;
+        document.getElementById('popup-meteo-advice').innerHTML = popAdvice;
+
+        // Affichage physique de la modale d'alerte Bootstrap
+        const myModal = new bootstrap.Modal(document.getElementById('modal-alert-meteo-auto'));
+        myModal.show();
     }
 }
 
@@ -1780,18 +1879,6 @@ function getWeatherDescription(code) {
     if (code >= 95 && code <= 99) return "Orageux (Risque Foudre)";
     return "Conditions variables";
 }
-// Exemple d'intégration dans votre flux fetch météo actuel :
-fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-        // ... Votre code actuel qui affiche la température et l'icône ...
-        
-        // On lance la vérification des alertes HSE
-        checkWeatherAlerts(data);
-    })
-    .catch(err => {
-        console.error("Erreur météo", err);
-    });
 
 window.onload = () => {
     updateStats();
@@ -1801,10 +1888,9 @@ window.onload = () => {
             document.getElementById('recond-alert').style.display = this.checked ? 'block' : 'none';
         });
     }
-    if(document.getElementById('page-meteo').classList.contains('active-page')) {
-        initWeatherModule();
-    }
 };
 </script>
 </body>
 </html>
+
+```
