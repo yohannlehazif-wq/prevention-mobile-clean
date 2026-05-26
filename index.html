@@ -600,26 +600,15 @@
         </div>
     </div>
 
-    <div class="card-custom mb-3" style="border-left: 5px solid #f57c00;">
-        <h6 class="fw-bold text-warning mb-2 small text-uppercase tracking-wider"><i class="fa-solid fa-gauge-high me-2"></i>Simulateur de Saturation (Conditions réelles)</h6>
-        <div class="mb-2">
-            <label class="small text-muted d-flex justify-content-between mb-1">
-                <span>Intensité de l'effort physique :</span>
-                <span id="lbl-effort" class="fw-bold text-danger">Modéré (30 L/min)</span>
-            </label>
-            <input type="range" id="rng-effort" min="1" max="3" value="2" class="form-range" oninput="simulerClaquage()">
-        </div>
-        <div class="mb-2">
-            <label class="small text-muted d-flex justify-content-between mb-1">
-                <span>Humidité relative ambiante :</span>
-                <span id="lbl-humidity" class="fw-bold text-primary">Normale (50%)</span>
-            </label>
-            <input type="range" id="rng-humidity" min="20" max="90" value="50" step="5" class="form-range" oninput="simulerClaquage()">
-        </div>
-        <div id="box-breakthrough" class="alert alert-warning small p-2 text-center mb-0 mt-2 fw-bold" style="display:none; font-size: 0.8rem; border-radius: var(--radius-sm);">
-            ⚠️ Facteurs critiques détectés : Durée de vie utile divisée par 2.5 !
-        </div>
-    </div>
+    <div class="alert alert-warning small mt-3">
+    ⚠️ <b>Attention :</b> la durée de vie d’un filtre dépend fortement :
+    <ul class="mb-0">
+        <li>de l’effort physique</li>
+        <li>de l’humidité</li>
+        <li>de la concentration du polluant</li>
+    </ul>
+    👉 En cas de doute : remplacez le filtre immédiatement.
+</div>
 
     <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm mb-4 small">
         <h6 class="fw-bold text-danger mb-2 d-flex align-items-center"><i class="fa-solid fa-triangle-exclamation me-2"></i>Règles d'or incontournables (HSE)</h6>
@@ -924,7 +913,7 @@
     </div>
 
     <div class="card-custom mb-3 text-center d-none" id="sst-risk-card">
-        <span class="badge-service mb-1" id="sst-risk-badge">Évaluation SST</span>
+        <span class="badge-service mb-1" id="sst-risk-badge">Évaluation</span>
         <div class="fw-bold h4 mb-2" id="sst-risk-title">Analyse en cours...</div>
         <p class="small text-muted mb-0" id="sst-risk-desc"></p>
     </div>
