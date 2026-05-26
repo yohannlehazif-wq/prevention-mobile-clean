@@ -1284,29 +1284,149 @@ function checkWeatherAlerts(current) {
     }
 }
 
-            
-    
-function renderInventory() {
-    const container = document.getElementById('inventory-container');
-    container.innerHTML = inventory.length ? '' : '<p class="text-center text-muted mt-4">Aucun produit enregistré.</p>';
-    inventory.forEach(item => {
-        const finalLink = item.fdsUrl || `https://www.google.com/search?q=FDS+${encodeURIComponent(item.name)}+filetype:pdf`;
-        container.innerHTML += `
-        <div class="card-custom mb-3">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-                <div>
-                    <b style="color:var(--r-blue)">${item.name}</b><br>
-                    <small class="text-muted"><i class="fa-solid fa-barcode"></i> ${item.code || 'Saisie manuelle'}</small>
-                </div>
-                <button onclick="deleteItem(${item.id})" class="btn btn-sm text-danger"><i class="fa-solid fa-trash"></i></button>
-            </div>
-            <a href="${finalLink}" target="_blank" class="btn btn-sm ${item.fdsUrl ? 'btn-danger' : 'btn-outline-primary'} w-100" style="border-radius:var(--radius-sm); padding: 8px;">
-                <i class="fa-solid ${item.fdsUrl ? 'fa-file-pdf' : 'fa-magnifying-glass'} me-1"></i> 
-                ${item.fdsUrl ? 'Consulter la FDS' : 'Chercher la FDS'}
-            </a>
-        </div>`;
-    });
+function initWeatherModule() {
+    const geoStatus = document.getElementById('geo-status');
+    geoStatus.innerHTML = `<i class="fa-solid fa-location-dot me-2 text-danger"></i>Localisation en cours...`;
+
+    if (!navigator.geolocation) {
+        fallbackToLaRocheSurYon();
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            fetchWeatherData(position.coords.latitude, position.coords.longitude, "Votre position");
+        },
+        (error) => {
+            console.warn("Géolocalisation refusée :", error);
+            fallbackToLaRocheSurYon();
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
+    );
 }
+
+function fallbackToLaRocheSurYon() {
+    fetchWeatherData(46.6705, -1.4265, "La Roche-sur-Yon (Siège RESTEV)");
+}
+
+async function fetchWeatherData(lat, lon, locationLabel) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=\( {lat}&longitude= \){lon}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&timezone=Europe/Paris`;
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("API météo inaccessible");
+        
+        const data = await res.json();
+        if (data?.current) {
+            updateWeatherUI(data.current, locationLabel);
+        }
+    } catch (e) {
+        console.error(e);
+        document.getElementById('geo-status').innerHTML = 
+            `<i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>Erreur de connexion météo`;
+        document.getElementById('weather-temp').textContent = "--°C";
+    }
+}
+
+function updateWeatherUI(current, locationLabel) {
+    const temp = Math.round(current.temperature_2m);
+
+    document.getElementById('geo-status').innerHTML = 
+        `<i class="fa-solid fa-location-dot me-2 text-success"></i>${locationLabel}`;
+    
+    document.getElementById('weather-temp').textContent = `${temp}°C`;
+    document.getElementById('weather-humidity').textContent = current.relative_humidity_2m;
+    document.getElementById('weather-wind').textContent = Math.round(current.wind_speed_10m);
+    document.getElementById('weather-clouds').textContent = current.cloud_cover;
+    document.getElementById('weather-desc').textContent = getWeatherDescription(current.weather_code);
+    document.getElementById('weather-time').textContent = 
+        `Mis à jour à ${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}`;
+
+    processSSTVigilance(temp);
+}
+
+function processSSTVigilance(temp) {
+    const sstCard = document.getElementById('sst-risk-card');
+    const sstBadge = document.getElementById('sst-risk-badge');
+    const sstTitle = document.getElementById('sst-risk-title');
+    const sstDesc = document.getElementById('sst-risk-desc');
+    const weatherCard = document.getElementById('weather-card');
+
+    sstCard.classList.remove('d-none');
+
+    if (temp <= 5) {
+        weatherCard.style.borderLeftColor = "#06b6d4";
+        sstCard.className = "card-custom mb-3 text-center bg-info text-white";
+        sstBadge.className = "badge bg-white text-info mb-1";
+        sstTitle.textContent = "❄️ GRAND FROID";
+        sstDesc.textContent = "Risque d'hypothermie. Chauffage et EPI chaud obligatoires.";
+    } else if (temp >= 33) {
+        weatherCard.style.borderLeftColor = "#dc2626";
+        sstCard.className = "card-custom mb-3 text-center bg-danger text-white";
+        sstBadge.className = "badge bg-white text-danger mb-1";
+        sstTitle.textContent = "🔥 DANGER CRITIQUE";
+        sstDesc.textContent = "≥ 33°C → Droit de retrait possible. Arrêt des travaux recommandé.";
+    } else if (temp >= 30) {
+        weatherCard.style.borderLeftColor = "#e6a00f";
+        sstCard.className = "card-custom mb-3 text-center bg-warning text-dark";
+        sstBadge.className = "badge bg-dark text-white mb-1";
+        sstTitle.textContent = "⚠️ VIGILANCE CHALEUR";
+        sstDesc.textContent = "Hydratation renforcée et aménagement des horaires.";
+    } else if (temp >= 28) {
+        weatherCard.style.borderLeftColor = "#f59e0b";
+        sstCard.className = "card-custom mb-3 text-center bg-warning text-dark";
+        sstBadge.className = "badge bg-warning text-dark mb-1";
+        sstTitle.textContent = "🌡️ ALERTE EXTÉRIEUR";
+        sstDesc.textContent = "Seuil CARSAT BTP - 3L d'eau par personne/jour minimum.";
+    } else {
+        weatherCard.style.borderLeftColor = "var(--r-teal)";
+        sstCard.className = "card-custom mb-3 text-center bg-white border";
+        sstBadge.className = "badge-service mb-1";
+        sstTitle.textContent = "✅ Situation normale";
+        sstDesc.textContent = "Aucun risque thermique particulier détecté.";
+    }
+}
+
+function getWeatherDescription(code) {
+    const desc = {
+        0: "Ciel dégagé",
+        1: "Principalement clair",
+        2: "Partiellement nuageux",
+        3: "Nuageux",
+        45: "Brouillard",
+        51: "Bruine légère",
+        61: "Pluie légère",
+        71: "Neige légère",
+        95: "Orage"
+    };
+    return desc[code] || "Conditions variables";
+}
+
+// Mise à jour de la fonction nav()
+function nav(id, el) {
+    document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active-page');
+    
+    if(el) el.classList.add('active');
+
+    if(id === 'page-meteo') {
+        setTimeout(initWeatherModule, 300); // Petit délai pour laisser la page s'afficher
+    }
+    // ... tes autres if existants ...
+}
+
+// Chargement initial
+window.onload = () => {
+    updateStats();
+    
+    // Initialisation conditionnelle
+    if(document.getElementById('page-meteo').classList.contains('active-page')) {
+        initWeatherModule();
+    }
+};
 
 async function saveProduct() {
     const name = document.getElementById('prod-name').value;
