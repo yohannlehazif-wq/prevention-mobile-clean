@@ -1284,35 +1284,14 @@ function checkWeatherAlerts(current) {
     }
 }
 
-function initWeatherModule() {
-    const geoStatus = document.getElementById('geo-status');
-    geoStatus.innerHTML = `<i class="fa-solid fa-location-dot me-2 text-danger"></i>Localisation en cours...`;
-
-    if (!navigator.geolocation) {
-        fallbackToLaRocheSurYon();
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            fetchWeatherData(position.coords.latitude, position.coords.longitude, "Votre position");
-        },
-        (error) => {
-            console.warn("Géolocalisation refusée :", error);
-            fallbackToLaRocheSurYon();
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
-    );
-}
 
 function fallbackToLaRocheSurYon() {
     fetchWeatherData(46.6705, -1.4265, "La Roche-sur-Yon (Siège RESTEV)");
 }
 
 async function fetchWeatherData(lat, lon, locationLabel) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=\( {lat}&longitude= \){lon}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&timezone=Europe/Paris`;
+   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&timezone=Europe/Paris`;
 
-    try {
         const res = await fetch(url);
         if (!res.ok) throw new Error("API météo inaccessible");
         
