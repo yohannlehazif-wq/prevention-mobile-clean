@@ -463,7 +463,21 @@
         </div>
     </div>
 </div>
-
+    
+<!-- Bloc Alerte Météo Dynamique -->
+<div id="weather-alert-box" class="alert d-none mb-4 border-2 animate__animated animate__fadeIn" role="alert">
+    <div class="d-flex align-items-center">
+        <div id="weather-alert-icon" class="fs-1 me-3"></div>
+        <div>
+            <h5 id="weather-alert-title" class="alert-heading fw-bold mb-1">Alerte Météo</h5>
+            <p id="weather-alert-text" class="mb-0 small"></p>
+        </div>
+    </div>
+    <!-- Rappel prévention HSE automatique -->
+    <hr class="my-2">
+    <div id="weather-alert-hse" class="small fw-bold"></div>
+</div>
+    
 <div id="page-gants" class="app-page">
     <h5 class="fw-bold mb-3"><i class="fa-solid fa-hand-dots me-2" style="color:#3b82f6"></i>Sélecteur de Gants Chimiques</h5>
     
@@ -1173,7 +1187,72 @@ function nav(id, el) {
     
     window.scrollTo(0, 0);
 }
+function checkWeatherAlerts(weatherData) {
+    const alertBox = document.getElementById('weather-alert-box');
+    const alertIcon = document.getElementById('weather-alert-icon');
+    const alertTitle = document.getElementById('weather-alert-title');
+    const alertText = document.getElementById('weather-alert-text');
+    const alertHse = document.getElementById('weather-alert-hse');
 
+    if (!alertBox) return;
+
+    // Réinitialisation par défaut
+    alertBox.className = "alert d-none mb-4 border-2";
+    
+    let isAlert = false;
+    let alertType = ""; // 'canicule', 'grand-froid', 'tempete'
+    let alertDetails = "";
+
+    // 1. Détection manuelle basée sur les seuils réglementaires (à adapter selon vos besoins)
+    const temp = weatherData.main.temp;
+    const windSpeed = weatherData.wind.speed * 3.6; // Conversion m/s en km/h
+
+    if (temp >= 34) {
+        isAlert = true;
+        alertType = "canicule";
+        alertDetails = `Forte chaleur détectée : ${temp.toFixed(1)}°C.`;
+    } else if (temp <= 2) {
+        isAlert = true;
+        alertType = "grand-froid";
+        alertDetails = `Température critique basse : ${temp.toFixed(1)}°C.`;
+    } else if (windSpeed >= 60) {
+        isAlert = true;
+        alertType = "tempete";
+        alertDetails = `Rafales de vent importantes : ${windSpeed.toFixed(0)} km/h.`;
+    }
+
+    // 2. Si une alerte est levée, on configure le design Bootstrap et le message HSE
+    if (isAlert) {
+        alertBox.classList.remove('d-none');
+        
+        switch (alertType) {
+            case 'canicule':
+                alertBox.classList.add('alert-danger'); // Rouge / Orange foncé
+                alertIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-danger"></i>`;
+                alertTitle.innerText = "ALERTE CANICULE / FORTE CHALEUR";
+                alertText.innerText = `${alertDetails} Risque accru de coup de chaleur et de déshydratation.`;
+                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Aménagez les horaires (privilégiez le matin), augmentez les pauses, et assurez une dispo de 3L d'eau fraîche par salarié/jour.`;
+                break;
+
+            case 'grand-froid':
+                alertBox.classList.add('alert-warning'); // Jaune / Orange
+                alertIcon.innerHTML = `<i class="fa-solid fa-snowflake text-primary"></i>`;
+                alertTitle.innerText = "VIGILANCE GRAND FROID";
+                alertText.innerText = `${alertDetails} Risques d'engourdissement et d'hypothermie.`;
+                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Limitez le travail statique prolongé en extérieur. Port d'EPI grand froid obligatoire (gants, bonnet, sous-vêtements thermiques).`;
+                break;
+
+            case 'tempete':
+                alertBox.classList.add('alert-danger');
+                alertIcon.innerHTML = `<i class="fa-solid fa-wind text-secondary"></i>`;
+                alertTitle.innerText = "ALERTE VENTS VIOLENTS";
+                alertText.innerText = `${alertDetails} Risques de chutes d'objets et de déstabilisation.`;
+                alertHse.innerHTML = `<i class="fa-solid fa-shield-halved me-1"></i> Conseil RESTEV : Interdiction stricte des travaux en hauteur (échafaudages, nacelles) et vigilance accrue lors des manutentions extérieures.`;
+                break;
+        }
+    }
+}
+    
 function renderInventory() {
     const container = document.getElementById('inventory-container');
     container.innerHTML = inventory.length ? '' : '<p class="text-center text-muted mt-4">Aucun produit enregistré.</p>';
