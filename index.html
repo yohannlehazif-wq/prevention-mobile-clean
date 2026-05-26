@@ -657,6 +657,71 @@
 
             <div class="row g-2 mb-3 text-center">
                 <div class="col-6">
+    <div id="page-masques" class="app-page">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+            <h5 class="fw-bold m-0 text-dark">
+                <i class="fa-solid fa-head-side-mask me-2 text-danger"></i>Protection Respiratoire
+            </h5>
+            <span class="badge bg-secondary px-2 py-1 small fw-bold">Norme EN 14387</span>
+        </div>
+
+        <div class="card-custom mb-3" style="border-left: 5px solid #dc3545;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-danger m-0"><i class="fa-solid fa-sliders me-2"></i>Configuration</h6>
+                <button class="btn btn-sm btn-outline-danger px-2 py-1 fw-bold" style="font-size: 0.65rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
+                    <i class="fa-solid fa-clock me-1"></i> Abaques & Seuils
+                </button>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">1. Contaminant majeur</label>
+                <select id="epi-mask-pollutant" class="form-select fw-bold" onchange="updateMaskDiagnostic()">
+                    <option value="A">Gaz & Vapeurs Organiques (Solvants, Peintures) ➔ [Type A]</option>
+                    <option value="B">Gaz Inorganiques (Chlore, H2S) ➔ [Type B]</option>
+                    <option value="E">Gaz Acides (SO2, HCl) ➔ [Type E]</option>
+                    <option value="K">Ammoniac et dérivés ➔ [Type K]</option>
+                    <option value="P">Poussières, Silice, Amiante ➔ [Type P3]</option>
+                    <option value="ABEKP">Polyvalent (Maintenance / Multi-risques) ➔ [Type ABEK2P3]</option>
+                </select>
+            </div>
+
+            <div class="row g-2 mb-3">
+                <div class="col-6">
+                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">2. Classe du filtre</label>
+                    <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                        <option value="1">Classe 1 (Faible / Galette)</option>
+                        <option value="2" selected>Classe 2 (Moyenne / Cartouche)</option>
+                        <option value="3">Classe 3 (Haute / Gros volume)</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">3. Pièce faciale</label>
+                    <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                        <option value="demi">Demi-masque (Silicone)</option>
+                        <option value="complet" selected>Masque Complet (Intégral)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-effort">Effort physique : Modéré (30 L/min)</label>
+                <input type="range" id="rng-effort" class="form-range" min="1" max="3" value="2" oninput="updateMaskDiagnostic()">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-humidity">Humidité relative : 50%</label>
+                <input type="range" id="rng-humidity" class="form-range" min="20" max="95" value="50" oninput="updateMaskDiagnostic()">
+            </div>
+
+            <div class="p-2 bg-dark rounded text-center mb-3">
+                <div class="small text-uppercase tracking-widest text-muted mb-1" style="font-size:0.55rem;">Marquage normalisé CE requis</div>
+                <div id="cartridge-sticker" class="py-1 px-2 fw-bold text-white font-monospace" style="font-size: 0.9rem; letter-spacing: 1px;">
+                    MARQUAGE EN COURS...
+                </div>
+                <div id="box-breakthrough" style="display:none;"></div>
+            </div>
+
+            <div class="row g-2 mb-3 text-center">
+                <div class="col-6">
                     <div class="p-2 rounded bg-light border">
                         <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem;">Indice FPN (Étanchéité)</div>
                         <div id="metric-fpn" class="fw-bold text-dark fs-5 mt-1">1000</div>
@@ -693,6 +758,7 @@
             <i class="fa-solid fa-arrow-left me-2"></i>Retour au tableau de bord
         </button>
     </div>
+
 
     <!-- PAGE COMPATIBILITE STOCKAGES -->
     <div id="page-storage" class="app-page">
