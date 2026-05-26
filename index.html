@@ -1,4 +1,3 @@
-xml:RESTEV 85 App:restev_app.html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -593,27 +592,107 @@ xml:RESTEV 85 App:restev_app.html
     </div>
 
     <!-- PAGE COMBO MASQUES & FILTRES -->
-    <div id="page-masques" class="app-page">
+        <div id="page-masques" class="app-page">
         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
             <h5 class="fw-bold m-0 text-dark">
                 <i class="fa-solid fa-head-side-mask me-2 text-danger"></i>Protection Respiratoire
             </h5>
             <span class="badge bg-secondary px-2 py-1 small fw-bold">Norme EN 14387</span>
         </div>
+
         <div class="card-custom mb-3" style="border-left: 5px solid #dc3545;">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-danger m-0">
-                    <i class="fa-solid fa-sliders me-2"></i>Configuration du poste
-                </h6>
-                <button class="btn btn-sm btn-outline-danger px-2 py-1 fw-bold text-uppercase tracking-wider" style="font-size: 0.65rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
+                <h6 class="fw-bold text-danger m-0"><i class="fa-solid fa-sliders me-2"></i>Configuration</h6>
+                <button class="btn btn-sm btn-outline-danger px-2 py-1 fw-bold" style="font-size: 0.65rem; border-radius: 6px;" data-bs-toggle="modal" data-bs-target="#modal-info-masques">
                     <i class="fa-solid fa-clock me-1"></i> Abaques & Seuils
                 </button>
             </div>
+
             <div class="mb-3">
-                <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">1. Nature du contaminant majeur</label>
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">1. Contaminant majeur</label>
                 <select id="epi-mask-pollutant" class="form-select fw-bold" onchange="updateMaskDiagnostic()">
-                    <option value="A">Gaz & Vapeurs Organiques (Solvants, Peintures)  ➔  [Type A]</option>
-                    <option value="B">Gaz Inorganiques (Chlore, Hydrogène sulfuré)  ➔  [Type B]</option> <option value="E">Gaz Acides (Dioxyde de soufre, HCl)  ➔  [Type E]</option> <option value="K">Ammoniac et dérivés aminés  ➔  [Type K]</option> <option value="P">Poussières fines, Silice, Amiante, Plâtre  ➔  [Type P3]</option> <option value="ABEKP">Polyvalent Atelier (Maintenance / Multi-risques)  ➔  [Type ABEK2P3]</option> </select> </div> <div class="row g-2 mb-3"> <div class="col-6"> <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">2. Classe du filtre</label> <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()"> <option value="1">Classe 1 (Galette fine / Faible)</option> <option value="2" selected>Classe 2 (Cartouche / Moyenne)</option> <option value="3">Classe 3 (Gros volume / Haute)</option> </select> </div> <div class="col-6"> <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;">3. Pièce faciale</label> <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()"> <option value="demi">Demi-masque (Joint silicone)</option> <option value="complet" selected>Masque Complet (Intégral)</option> </select> </div> </div> <div class="mb-3"> <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;" id="lbl-effort">Effort physique : Modéré (30 L/min)</label> <input type="range" id="rng-effort" class="form-range" min="1" max="3" value="2" oninput="updateMaskDiagnostic()"> </div> <div class="mb-3"> <label class="form-label small fw-bold text-uppercase tracking-wider text-muted mb-1" style="font-size:0.7rem;" id="lbl-humidity">Humidité relative : 50%</label> <input type="range" id="rng-humidity" class="form-range" min="20" max="95" value="50" oninput="updateMaskDiagnostic()"> </div> <div class="p-3 bg-dark rounded-3 text-center mb-3 position-relative overflow-hidden" style="border: 1px solid #475569;"> <div class="small text-uppercase tracking-widest text-muted mb-2 fw-bold" style="font-size:0.6rem;">Marquage normalisé CE requis</div> <div id="cartridge-sticker" class="py-2 px-3 fw-black rounded text-uppercase tracking-wider font-monospace shadow-sm" style="font-size: 0.95rem; font-weight: 800; letter-spacing: 1px;"> MARQUAGE EN COURS... </div> <div id="box-breakthrough" style="display:none;"></div> </div> <div class="row g-2 mb-3 text-center"> <div class="col-6"> <div class="p-2 rounded bg-light border"> <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem; letter-spacing: 0.5px;">Indice FPN (Étanchéité)</div> <div id="metric-fpn" class="fw-bold text-dark fs-5 mt-1">1000</div> </div> </div> <div class="col-6"> <div class="p-2 rounded bg-light border"> <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem; letter-spacing: 0.5px;">Seuil Max Toxique</div> <div id="metric-ppm" class="fw-bold text-dark fs-5 mt-1">5000 ppm</div> </div> </div> </div> <div class="p-3 rounded-3 border bg-white mb-1 shadow-sm"> <div class="d-flex align-items-center gap-2 mb-1"> <i class="fa-solid fa-user-shield text-primary" style="font-size: 0.85rem;"></i> <span class="small fw-bold text-secondary text-uppercase tracking-wider" style="font-size:0.7rem;">Préconisation technique :</span> </div> <p id="cartridge-advice" class="small text-dark mb-0 fw-medium">-</p> </div> </div> <div class="alert alert-warning small mt-3"> ⚠️ <b>Attention :</b> la durée de vie d’un filtre dépend fortement de l’effort physique, de l’humidité et de la concentration du polluant. En cas de doute : remplacez le filtre immédiatement. </div> <div class="p-3 rounded-3 border-start border-danger border-4 bg-white shadow-sm mb-4 small"> <h6 class="fw-bold text-danger mb-2 d-flex align-items-center"><i class="fa-solid fa-triangle-exclamation me-2"></i>Règles d'or incontournables (HSE)</h6> <ul class="text-muted ps-3 mb-0" style="font-size: 0.82rem; line-height: 1.45;"> <li class="mb-2 text-danger fw-bold"> <i class="fa-solid fa-circle-exclamation me-1"></i> Le piège olfactif : N'attendez JAMAIS de percevoir l'odeur du produit pour remplacer vos filtres. Si l'odeur passe, la barrière est saturée et le produit est inhalé. </li> <li class="mb-2"><b>Étanchéité & Barbe :</b> Le port de la barbe (même de 3 jours) rompt l'étanchéité du joint facial et annule l'efficacité théorique du masque (infiltration directe de l'air pollué).</li> <li><b>Délai de péremption :</b> Sortie de son emballage scellé, une cartouche de gaz s'autodégrade avec l'humidité de l'air. Notez systématiquement la date d'ouverture dessus. **Maximum 6 mois d'utilisation**.</li> </ul> </div> <button class="btn btn-outline-secondary w-100 py-2" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm); font-size:0.85rem; font-weight:700;"> <i class="fa-solid fa-arrow-left me-2"></i>Retour au tableau de bord </button> </div>
+                    <option value="A">Gaz & Vapeurs Organiques (Solvants, Peintures) ➔ [Type A]</option>
+                    <option value="B">Gaz Inorganiques (Chlore, H2S) ➔ [Type B]</option>
+                    <option value="E">Gaz Acides (SO2, HCl) ➔ [Type E]</option>
+                    <option value="K">Ammoniac et dérivés ➔ [Type K]</option>
+                    <option value="P">Poussières, Silice, Amiante ➔ [Type P3]</option>
+                    <option value="ABEKP">Polyvalent (Maintenance / Multi-risques) ➔ [Type ABEK2P3]</option>
+                </select>
+            </div>
+
+            <div class="row g-2 mb-3">
+                <div class="col-6">
+                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">2. Classe du filtre</label>
+                    <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                        <option value="1">Classe 1 (Faible / Galette)</option>
+                        <option value="2" selected>Classe 2 (Moyenne / Cartouche)</option>
+                        <option value="3">Classe 3 (Haute / Gros volume)</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">3. Pièce faciale</label>
+                    <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
+                        <option value="demi">Demi-masque (Silicone)</option>
+                        <option value="complet" selected>Masque Complet (Intégral)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-effort">Effort physique : Modéré (30 L/min)</label>
+                <input type="range" id="rng-effort" class="form-range" min="1" max="3" value="2" oninput="updateMaskDiagnostic()">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-humidity">Humidité relative : 50%</label>
+                <input type="range" id="rng-humidity" class="form-range" min="20" max="95" value="50" oninput="updateMaskDiagnostic()">
+            </div>
+
+            <div class="p-2 bg-dark rounded text-center mb-3">
+                <div class="small text-uppercase tracking-widest text-muted mb-1" style="font-size:0.55rem;">Marquage normalisé CE requis</div>
+                <div id="cartridge-sticker" class="py-1 px-2 fw-bold text-white font-monospace" style="font-size: 0.9rem; letter-spacing: 1px;">
+                    MARQUAGE EN COURS...
+                </div>
+                <div id="box-breakthrough" style="display:none;"></div>
+            </div>
+
+            <div class="row g-2 mb-3 text-center">
+                <div class="col-6">
+                    <div class="p-2 rounded bg-light border">
+                        <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem;">Indice FPN (Étanchéité)</div>
+                        <div id="metric-fpn" class="fw-bold text-dark fs-5 mt-1">1000</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-2 rounded bg-light border">
+                        <div class="text-uppercase text-muted fw-bold" style="font-size:0.6rem;">Seuil Max Toxique</div>
+                        <div id="metric-ppm" class="fw-bold text-dark fs-5 mt-1">5000 ppm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 rounded border bg-white mb-1 shadow-sm">
+                <div class="small fw-bold text-secondary text-uppercase mb-1" style="font-size:0.7rem;">
+                    <i class="fa-solid fa-user-shield text-primary me-1"></i>Préconisation technique :
+                </div>
+                <p id="cartridge-advice" class="small text-dark mb-0 fw-medium">-</p>
+            </div>
+        </div>
+
+        <div class="p-3 rounded border-start border-danger border-4 bg-white shadow-sm mb-4 small">
+            <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-triangle-exclamation me-2"></i>Règles d'or Incontournables</h6>
+            <ul class="text-muted ps-3 mb-0" style="font-size: 0.82rem; line-height: 1.45;">
+                <li class="mb-2 text-danger fw-bold">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i> Piège olfactif : N'attendez JAMAIS de sentir l'odeur pour changer le filtre. Si l'odeur passe, la barrière est saturée.
+                </li>
+                <li class="mb-2"><b>Barbe & Étanchéité :</b> Une barbe (même de 3 jours) rompt le joint facial et annule l'efficacité du masque en laissant passer l'air pollué.</li>
+                <li><b>Péremption des filtres :</b> Ouverte, une cartouche de gaz s'autodégrade avec l'humidité. Notez la date dessus : **Maximum 6 mois d'utilisation**.</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-outline-secondary w-100 py-2" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm); font-size:0.85rem; font-weight:700;">
+            <i class="fa-solid fa-arrow-left me-2"></i>Retour au tableau de bord
+        </button>
+    </div>
 
     <!-- PAGE COMPATIBILITE STOCKAGES -->
     <div id="page-storage" class="app-page">
