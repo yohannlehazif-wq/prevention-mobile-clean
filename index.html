@@ -967,8 +967,325 @@
     <button id="nav-centres" class="nav-item" onclick="nav('page-centres', this)"><i class="fa-solid fa-map-location-dot"></i>CENTRES</button>
 </nav>
 
+  <div id="page-meteo" class="app-page">
+    <div class="card-custom text-white border-0 mb-3" style="background: linear-gradient(135deg, #1e40af, var(--r-blue));">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold mb-1"><i class="fa-solid fa-cloud-sun me-2"></i>Météo & Vigilance SST</h5>
+                <p class="small opacity-75 mb-0">Évaluation dynamique des risques thermiques</p>
+            </div>
+            <i class="fa-solid fa-temperature-half fa-2x opacity-50"></i>
+        </div>
+    </div>
+
+    <div class="card-custom mb-3" id="weather-card" style="border-left: 5px solid #cbd5e1;">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <h6 class="fw-bold text-secondary mb-1" id="geo-status"><i class="fa-solid fa-location-dot me-2 text-danger"></i>Localisation en cours...</h6>
+                <p class="text-muted small mb-0" id="weather-time">Mis à jour en temps réel</p>
+            </div>
+            <button class="btn btn-sm btn-outline-primary border-0" onclick="initWeatherModule()" title="Actualiser la position">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-6 text-center border-end">
+                <div class="display-4 fw-bold text-dark" id="weather-temp">--°C</div>
+                <div class="text-muted small fw-bold" id="weather-desc">Chargement...</div>
+            </div>
+            <div class="col-6 ps-3">
+                <div class="small mb-1"><i class="fa-solid fa-droplet text-info me-2"></i>Humidité : <span id="weather-humidity" class="fw-bold">--</span>%</div>
+                <div class="small mb-1"><i class="fa-solid fa-wind text-secondary me-2"></i>Vent : <span id="weather-wind" class="fw-bold">--</span> km/h</div>
+                <div class="small"><i class="fa-solid fa-cloud text-primary me-2"></i>Couverture : <span id="weather-clouds" class="fw-bold">--</span>%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-custom mb-3 text-center d-none" id="sst-risk-card">
+        <span class="badge-service mb-1" id="sst-risk-badge">Évaluation SST</span>
+        <div class="fw-bold h4 mb-2" id="sst-risk-title">Analyse en cours...</div>
+        <p class="small text-muted mb-0" id="sst-risk-desc"></p>
+    </div>
+
+    <div class="card-custom mb-3" style="border-left: 5px solid var(--r-purple);">
+        <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-scale-balanced me-2" style="color:var(--r-purple)"></i>Directives Obligatoires (Code du Travail)</h6>
+        
+        <div id="directives-container" class="small text-muted">
+            <div class="d-flex align-items-start mb-2">
+                <i class="fa-solid fa-circle-check text-success me-2 mt-1"></i>
+                <p class="mb-0">Mise à disposition d'eau potable fraîche à proximité des postes de travail (minimum 3 litres par jour et par salarié dans le BTP).</p>
+            </div>
+            <div class="d-flex align-items-start mb-2" id="dir-ventilation">
+                <i class="fa-solid fa-circle-check text-success me-2 mt-1" id="icon-ventilation"></i>
+                <p class="mb-0" id="text-ventilation">Utilisation des ventilateurs autorisée si la température ambiante ne dépasse pas 33°C.</p>
+            </div>
+            <div class="d-flex align-items-start">
+                <i class="fa-solid fa-circle-check text-success me-2 mt-1"></i>
+                <p class="mb-0">Aménagement des postes (pauses de récupération, ombrage, vêtement de travail adapté) selon l'évolution thermique constatée.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-custom" style="border-left: 5px solid var(--r-yellow);">
+        <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-triangle-exclamation me-2" style="color:var(--r-yellow)"></i>Abaque de Vigilance RESTEV / CARSAT</h6>
+        
+        <div class="table-responsive">
+            <table class="table table-sm table-borderless small align-middle mb-0">
+                <thead>
+                    <tr class="border-bottom text-muted">
+                        <th>Seuil</th>
+                        <th>Type de Risque</th>
+                        <th>Action Conseil RESTEV</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="row-threshold-5">
+                        <td class="fw-bold text-info">&le; 5 °C</td>
+                        <td><span class="badge bg-info text-white">Grand Froid</span></td>
+                        <td>Locaux chauffés, boissons chaudes, EPI grand froid, limitation du travail isolé.</td>
+                    </tr>
+                    <tr id="row-threshold-normal">
+                        <td class="text-muted">6 à 27 °C</td>
+                        <td><span class="badge bg-secondary text-white">Zone Neutre</span></td>
+                        <td>Surveillance standard des renouvellements d'air et du confort thermique.</td>
+                    </tr>
+                    <tr id="row-threshold-28">
+                        <td class="fw-bold text-warning">&ge; 28 °C</td>
+                        <td><span class="badge bg-warning text-dark">Alerte Extérieur</span></td>
+                        <td>Seuil CARSAT BTP. Hydratation renforcée, report des tâches physiques lourdes.</td>
+                    </tr>
+                    <tr id="row-threshold-30">
+                        <td class="fw-bold text-warning" style="color:#e6a00f !important;">&ge; 30 °C</td>
+                        <td><span class="badge style-warning" style="background-color:#e6a00f; color:white;">Alerte Fixe</span></td>
+                        <td>Seuil Bureaux/Ateliers. Éviter le travail physique aux heures les plus chaudes.</td>
+                    </tr>
+                    <tr id="row-threshold-33">
+                        <td class="fw-bold text-danger">&ge; 33 °C</td>
+                        <td><span class="badge bg-danger text-white">Danger Critique</span></td>
+                        <td>**Danger Grave & Imminent**. Interdiction formelle des ventilateurs. Droit de retrait possible.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
-const SUPABASE_URL = 'https://nklarbzamffhiwasxoph.supabase.co'; 
+/**
+ * Module Météo & Vigilance SST - RESTEV 85
+ * Utilise l'API Open-Meteo (Gratuite, Temps Réel, Sans Clé d'API)
+ */
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Si la page météo est la page active par défaut ou lors de l'appel par la navigation
+    if(document.getElementById('page-meteo').classList.contains('active-page')) {
+        initWeatherModule();
+    }
+});
+
+// Surcharger la fonction nav d'origine pour intercepter l'ouverture du module météo
+const originalNav = window.nav;
+window.nav = function(pageId, element) {
+    if (typeof originalNav === "function") {
+        originalNav(pageId, element);
+    } else {
+        // Fallback si la fonction d'origine n'est pas globale
+        document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active-page'));
+        const targetPage = document.getElementById(pageId);
+        if(targetPage) targetPage.classList.add('active-page');
+    }
+    
+    if(pageId === 'page-meteo') {
+        initWeatherModule();
+    }
+};
+
+function initWeatherModule() {
+    const geoStatus = document.getElementById('geo-status');
+    
+    if (!navigator.geolocation) {
+        geoStatus.innerHTML = "<i class='fa-solid fa-circle-xmark text-danger me-2'></i>Géolocalisation non supportée";
+        fallbackToLaRocheSurYon();
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            fetchWeatherData(lat, lon, "Position Géolocalisée");
+        },
+        (error) => {
+            console.warn("Erreur de géolocalisation, repli sur La Roche-sur-Yon : ", error.message);
+            fallbackToLaRocheSurYon();
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+    );
+}
+
+function fallbackToLaRocheSurYon() {
+    // Coordonnées par défaut du centre RESTEV La Roche-sur-Yon
+    const latDefault = 46.6705;
+    const lonDefault = -1.4265;
+    fetchWeatherData(latDefault, lonDefault, "La Roche-sur-Yon (RESTEV 85)");
+}
+
+function fetchWeatherData(lat, lon, locationLabel) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&timezone=auto`;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error("Erreur réseau lors de la récupération météo");
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.current) {
+                updateWeatherUI(data.current, locationLabel);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('geo-status').innerHTML = "<i class='fa-solid fa-triangle-exclamation text-danger me-2'></i>Erreur API Météo";
+        });
+}
+
+function updateWeatherUI(current, locationLabel) {
+    const temp = Math.round(current.temperature_2m);
+    const humidity = current.relative_humidity_2m;
+    const wind = Math.round(current.wind_speed_10m);
+    const clouds = current.cloud_cover;
+    const code = current.weather_code;
+
+    // Mise à jour de la carte météo brute
+    document.getElementById('geo-status').innerHTML = `<i class='fa-solid fa-location-dot text-danger me-2'></i>${locationLabel}`;
+    document.getElementById('weather-temp').textContent = `${temp}°C`;
+    document.getElementById('weather-humidity').textContent = humidity;
+    document.getElementById('weather-wind').textContent = wind;
+    document.getElementById('weather-clouds').textContent = clouds;
+    document.getElementById('weather-desc').textContent = getWeatherDescription(code);
+    
+    // Formater l'heure actuelle de mise à jour
+    const now = new Date();
+    document.getElementById('weather-time').textContent = `Mis à jour à ${now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}`;
+
+    // Traitement algorithmique SST des seuils thermiques INRS / CARSAT
+    processSSTVigilance(temp);
+}
+
+function processSSTVigilance(temp) {
+    const wCard = document.getElementById('weather-card');
+    const sstCard = document.getElementById('sst-risk-card');
+    const sstBadge = document.getElementById('sst-risk-badge');
+    const sstTitle = document.getElementById('sst-risk-title');
+    const sstDesc = document.getElementById('sst-risk-desc');
+    
+    const dirVentilation = document.getElementById('dir-ventilation');
+    const iconVentilation = document.getElementById('icon-ventilation');
+    const textVentilation = document.getElementById('text-ventilation');
+
+    // Réinitialisation des classes d'abaque
+    document.querySelectorAll('[id^="row-threshold-"]').forEach(row => row.style.backgroundColor = "transparent");
+
+    sstCard.classList.remove('d-none');
+    
+    // Algorithme de bascule des classes CSS et règles métiers strictes
+    if (temp <= 5) {
+        // --- CAS GRAND FROID ---
+        wCard.style.borderLeft = "5px solid #06b6d4"; // Cyan
+        sstCard.style.borderLeft = "5px solid #06b6d4";
+        sstCard.className = "card-custom mb-3 text-center bg-info text-white";
+        sstBadge.className = "badge bg-white text-info mb-1";
+        sstTitle.textContent = "ALERTE VIGILANCE GRAND FROID";
+        sstDesc.textContent = "Seuil critique ≤ 5°C atteint. Risques d'hypothermie et de baisse de vigilance. Chauffage des locaux obligatoire et adaptation des EPI d'extérieur.";
+        document.getElementById('row-threshold-5').style.backgroundColor = "rgba(6, 182, 212, 0.15)";
+        
+        // Ventilation normale
+        setVentilationStatus(true);
+
+    } else if (temp >= 33) {
+        // --- CAS DANGER CRITIQUE CANICULE ---
+        wCard.style.borderLeft = "5px solid var(--r-purple)";
+        sstCard.style.borderLeft = "5px solid var(--r-purple)";
+        sstCard.className = "card-custom mb-3 text-center bg-danger text-white fw-bold";
+        sstBadge.className = "badge bg-white text-danger mb-1";
+        sstTitle.innerHTML = "<i class='fa-solid fa-skull-crossbones me-2'></i>DANGER GRAVE & IMMINENT";
+        sstDesc.textContent = "Température extrême ≥ 33°C. Risque majeur de coup de chaleur. Évaluez immédiatement l'arrêt des travaux physiques ou activez le droit de retrait SST.";
+        document.getElementById('row-threshold-33').style.backgroundColor = "rgba(220, 38, 38, 0.2)";
+
+        // RÈGLE INRS STRICTE : INTERDICTION DU VENTILATEUR SEUL
+        setVentilationStatus(false);
+
+    } else if (temp >= 30) {
+        // --- CAS ALERTE POSTE FIXE ---
+        wCard.style.borderLeft = "5px solid #e6a00f";
+        sstCard.style.borderLeft = "5px solid #e6a00f";
+        sstCard.className = "card-custom mb-3 text-center bg-warning text-dark";
+        sstBadge.className = "badge bg-dark text-white mb-1";
+        sstTitle.textContent = "VIGILANCE CHALEUR - POSTES FIXES";
+        sstDesc.textContent = "Température ambiante ≥ 30°C. Seuil d'alerte réglementaire INRS pour les ateliers, usines et bureaux. Aménagez impérativement les temps de pause.";
+        document.getElementById('row-threshold-30').style.backgroundColor = "rgba(230, 160, 15, 0.2)";
+        
+        setVentilationStatus(true);
+
+    } else if (temp >= 28) {
+        // --- CAS ALERTE EXTÉRIEUR / BTP ---
+        wCard.style.borderLeft = "5px solid #f59e0b";
+        sstCard.style.borderLeft = "5px solid #f59e0b";
+        sstCard.className = "card-custom mb-3 text-center style-warning text-dark";
+        sstCard.style.backgroundColor = "#fef3c7";
+        sstBadge.className = "badge bg-warning text-dark mb-1";
+        sstTitle.textContent = "VIGILANCE CHALEUR - BTP & EXTÉRIEUR";
+        sstDesc.textContent = "Seuil CARSAT de 28°C atteint pour les travaux en extérieur. Risque de déshydratation accélérée. Fourniture obligatoire de 3L d'eau fraîche par jour/homme.";
+        document.getElementById('row-threshold-28').style.backgroundColor = "rgba(245, 158, 11, 0.15)";
+        
+        setVentilationStatus(true);
+
+    } else {
+        // --- CAS ZONE CONFORT / NEUTRE ---
+        wCard.style.borderLeft = "5px solid var(--r-teal)";
+        sstCard.className = "card-custom mb-3 text-center bg-white text-dark";
+        sstBadge.className = "badge-service mb-1";
+        sstTitle.className = "fw-bold h4 mb-2 text-success";
+        sstTitle.textContent = "Situation Thermique Normale";
+        sstDesc.textContent = "La température actuelle ne présente aucun risque thermique identifié pour la santé des opérateurs selon les référentiels CARSAT / INRS.";
+        document.getElementById('row-threshold-normal').style.backgroundColor = "rgba(117, 187, 168, 0.15)";
+        
+        setVentilationStatus(true);
+    }
+}
+
+function setVentilationStatus(isAllowed) {
+    const iconVentilation = document.getElementById('icon-ventilation');
+    const textVentilation = document.getElementById('text-ventilation');
+    const dirVentilation = document.getElementById('dir-ventilation');
+
+    if (isAllowed) {
+        iconVentilation.className = "fa-solid fa-circle-check text-success me-2 mt-1";
+        textVentilation.innerHTML = "Utilisation des ventilateurs autorisée si la température ambiante ne dépasse pas 33°C.";
+        dirVentilation.classList.remove('text-danger', 'fw-bold');
+    } else {
+        // Application de l'interdiction stricte de l'INRS
+        iconVentilation.className = "fa-solid fa-circle-xmark text-danger me-2 mt-1";
+        textVentilation.innerHTML = "<strong>INTERDICTION FORMELLE :</strong> Ne pas utiliser de ventilateur individuel. À partir de 33°C, le flux d'air chaud majore le stress thermique cutané (Réf. INRS ED 6425).";
+        dirVentilation.classList.add('text-danger', 'fw-bold');
+    }
+}
+
+function getWeatherDescription(code) {
+    // Classification simplifiée des codes météo WMO
+    if (code === 0) return "Ciel dégagé";
+    if (code >= 1 && code <= 3) return "Peu nuageux";
+    if (code >= 45 && code <= 48) return "Brouillard";
+    if (code >= 51 && code <= 67) return "Pluie faible à modérée";
+    if (code >= 71 && code <= 77) return "Chute de neige";
+    if (code >= 80 && code <= 82) return "Averses de pluie";
+    if (code >= 95 && code <= 99) return "Orageux (Risque SST Foudre)";
+    return "Conditions variables";
+}
+    
+<script>
+  const SUPABASE_URL = 'https://nklarbzamffhiwasxoph.supabase.co'; 
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rbGFyYnphbWZmaGl3YXN4b3BoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzI5MzQsImV4cCI6MjA5MzQwODkzNH0.Tjy3Z9Yf9FOn47yKqlqQNC9Xfmy_tMMLkfa4UUFdf6k'; 
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
