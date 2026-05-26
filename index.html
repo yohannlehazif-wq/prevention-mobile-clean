@@ -620,43 +620,7 @@
                 </select>
             </div>
 
-            <div class="row g-2 mb-3">
-                <div class="col-6">
-                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">2. Classe du filtre</label>
-                    <select id="epi-mask-class" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
-                        <option value="1">Classe 1 (Faible / Galette)</option>
-                        <option value="2" selected>Classe 2 (Moyenne / Cartouche)</option>
-                        <option value="3">Classe 3 (Haute / Gros volume)</option>
-                    </select>
-                </div>
-                <div class="col-6">
-                    <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;">3. Pièce faciale</label>
-                    <select id="epi-mask-device" class="form-select small fw-bold" onchange="updateMaskDiagnostic()">
-                        <option value="demi">Demi-masque (Silicone)</option>
-                        <option value="complet" selected>Masque Complet (Intégral)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-2">
-                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-effort">Effort physique : Modéré (30 L/min)</label>
-                <input type="range" id="rng-effort" class="form-range" min="1" max="3" value="2" oninput="updateMaskDiagnostic()">
-            </div>
-            <div class="mb-3">
-                <label class="form-label small fw-bold text-uppercase text-muted mb-1" style="font-size:0.7rem;" id="lbl-humidity">Humidité relative : 50%</label>
-                <input type="range" id="rng-humidity" class="form-range" min="20" max="95" value="50" oninput="updateMaskDiagnostic()">
-            </div>
-
-            <div class="p-2 bg-dark rounded text-center mb-3">
-                <div class="small text-uppercase tracking-widest text-muted mb-1" style="font-size:0.55rem;">Marquage normalisé CE requis</div>
-                <div id="cartridge-sticker" class="py-1 px-2 fw-bold text-white font-monospace" style="font-size: 0.9rem; letter-spacing: 1px;">
-                    MARQUAGE EN COURS...
-                </div>
-                <div id="box-breakthrough" style="display:none;"></div>
-            </div>
-
-            <div class="row g-2 mb-3 text-center">
-                <div class="col-6">
+            
     <div id="page-masques" class="app-page">
         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
             <h5 class="fw-bold m-0 text-dark">
