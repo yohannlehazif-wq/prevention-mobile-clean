@@ -996,8 +996,6 @@
         </div>
     </div>
 </div>
-    
-
 
 <div id="global-modals-container"></div>
 
@@ -1646,24 +1644,6 @@ function quizAnswer(points) {
     } else {
         showQuizResult();
     }
-    
-}
-function setMeteoRisk(riskType) {
-    const config = {
-        SOLEIL: { color: "#f59e0b", icon: "fa-sun" },
-        FROID: { color: "#0ea5e9", icon: "fa-snowflake" },
-        ORAGE: { color: "#3b82f6", icon: "fa-cloud-bolt" },
-        VENT: { color: "#64748b", icon: "fa-wind" }
-    };
-    
-    const settings = config[riskType];
-    const header = document.querySelector('.app-header');
-    
-    // Mise à jour visuelle du bandeau pour marquer l'alerte
-    header.style.borderBottom = `5px solid ${settings.color}`;
-    
-    // Envoi d'une notification REX (prête pour intégration Supabase)
-    console.log(`Mode sécurité activé : ${riskType}`);
 }
 
 function showQuizResult() {
@@ -1690,6 +1670,25 @@ function showQuizResult() {
     }
 }
 
+// --- LOGIQUE SPÉCIFIQUE MODULE MÉTÉO MODIFIÉE ---
+function initWeatherModule(triggerPopupOnRisk = false) {
+    const geoStatus = document.getElementById('geo-status');
+    if (!navigator.geolocation) {
+        if(geoStatus) geoStatus.innerHTML = "<i class='fa-solid fa-circle-xmark text-danger me-2'></i>Géolocalisation non supportée";
+        fallbackToLaRocheSurYon(triggerPopupOnRisk);
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            fetchWeatherData(position.coords.latitude, position.coords.longitude, "Position Géolocalisée", triggerPopupOnRisk);
+        },
+        (error) => {
+            console.warn("Erreur géo, repli La Roche-sur-Yon : ", error.message);
+            fallbackToLaRocheSurYon(triggerPopupOnRisk);
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+    );
+}
 
 function fallbackToLaRocheSurYon(triggerPopupOnRisk) {
     fetchWeatherData(46.6705, -1.4265, "La Roche-sur-Yon (RESTEV 85)", triggerPopupOnRisk);
@@ -1889,5 +1888,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-
-```
