@@ -482,7 +482,26 @@
         </div>
     </div>
 </div>
+<div id="page-ar-chem" class="app-page">
+    <!-- Flux Vidéo en arrière-plan -->
+    <video id="video-feed" autoplay playsinline muted></video>
+    
+    <!-- Overlay d'information RA -->
+    <div id="ar-overlay">
+        <div id="chem-card" class="card-custom bg-danger text-white border-0 d-none">
+            <h5 id="chem-name">PRODUIT CHIMIQUE</h5>
+            <div id="chem-warning" class="fs-4">⚠️ Port des gants obligatoire</div>
+            <button class="btn btn-light mt-2" onclick="closeAR()">Fermer</button>
+        </div>
+    </div>
+</div>
 
+<style>
+    #video-feed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    #ar-overlay { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    #chem-card { backdrop-filter: blur(10px); background: rgba(220, 38, 38, 0.85); width: 90%; }
+</style>
+    
 <div id="page-gants" class="app-page">
     <h5 class="fw-bold mb-3"><i class="fa-solid fa-hand-dots me-2" style="color:#3b82f6"></i>Sélecteur de Gants Chimiques</h5>
     
@@ -1262,11 +1281,6 @@ function deleteItem(id) {
     }
 }
 
-function searchFDS() {
-    const name = document.getElementById('prod-name').value;
-    if(!name) return alert("Saisissez un nom.");
-    window.open(`https://www.google.com/search?q=FDS+${encodeURIComponent(name)}+filetype:pdf`, '_blank');
-}
 
 function searchINRS() {
     const name = document.getElementById('prod-name').value;
@@ -1322,6 +1336,28 @@ function startScanner() {
         console.error(e);
         stopScanner();
     });
+}
+async function startAR() {
+    const video = document.getElementById('video-feed');
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = stream;
+        
+        // Simulation de la détection d'un bidon après 3 secondes
+        setTimeout(() => {
+            document.getElementById('chem-card').classList.remove('d-none');
+            document.getElementById('chem-name').innerText = "ACIDE CHLORHYDRIQUE";
+        }, 3000);
+        
+    } catch (err) {
+        alert("Erreur accès caméra : " + err);
+    }
+}
+
+function closeAR() {
+    const video = document.getElementById('video-feed');
+    video.srcObject.getTracks().forEach(track => track.stop());
+    nav('page-home');
 }
 
 function stopScanner() {
