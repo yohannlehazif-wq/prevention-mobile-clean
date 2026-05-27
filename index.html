@@ -525,6 +525,30 @@
     
     <button class="btn btn-outline-secondary w-100 mt-2 py-2" onclick="nav('page-home', document.getElementById('nav-home'))" style="border-radius: var(--radius-sm);">Retour à l'accueil</button>
 </div>
+<div id="dashboard" class="app-page">
+    <!-- Zone Météo Dynamique -->
+    <div id="meteo-dynamic-advice" class="card-custom mb-3 bg-light"></div>
+
+    <!-- Bouclier Solaire (ne s'affiche que si temp > 28) -->
+    <div id="shield-container-soleil" class="card-custom mb-3" style="display:none;">
+        <h6 class="text-warning">Activation Bouclier Solaire</h6>
+        <div class="d-flex justify-content-around">
+            <div id="s1" class="shield-off"><i class="fa-solid fa-shirt"></i></div>
+            <div id="s2" class="shield-off"><i class="fa-solid fa-flask-vial"></i></div>
+        </div>
+        <!-- Checkbox ici -->
+    </div>
+
+    <!-- Bouclier Froid (ne s'affiche que si temp < 5) -->
+    <div id="shield-container-froid" class="card-custom mb-3" style="display:none;">
+        <h6 class="text-info">Activation Bouclier Froid</h6>
+        <div class="d-flex justify-content-around">
+            <div id="f1" class="shield-off"><i class="fa-solid fa-mitten"></i></div>
+            <div id="f2" class="shield-off"><i class="fa-solid fa-person-shelter"></i></div>
+        </div>
+        <!-- Checkbox ici -->
+    </div>
+</div>
 
 <div id="page-masques" class="app-page">
     <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
@@ -1513,6 +1537,26 @@ function exportToCSV() {
     link.href = URL.createObjectURL(blob);
     link.download = "mon_inventaire_restev.csv";
     link.click();
+}
+    
+async function adaptToWeather() {
+    // Simulation de récupération météo (Replacez par votre appel API réel)
+    const meteoData = { temp: 32, condition: 'soleil', vent: 15 }; 
+    
+    const alertBox = document.getElementById('meteo-dynamic-advice');
+    let dynamicHTML = "<h5>Conditions actuelles : " + meteoData.temp + "°C</h5>";
+
+    if (meteoData.temp > 28) {
+        dynamicHTML += `<p class="text-danger fw-bold">☀️ Alerte Chaleur : Bouclier UV Prioritaire !</p>`;
+        // Force l'affichage du bouclier solaire
+        document.getElementById('shield-container-soleil').style.display = 'block';
+    } else if (meteoData.temp < 5) {
+        dynamicHTML += `<p class="text-info fw-bold">❄️ Alerte Froid : Bouclier Thermique Prioritaire !</p>`;
+        // Force l'affichage du bouclier froid
+        document.getElementById('shield-container-froid').style.display = 'block';
+    }
+    
+    alertBox.innerHTML = dynamicHTML;
 }
 
 async function generatePDFProof() {
