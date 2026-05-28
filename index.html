@@ -457,6 +457,12 @@
         <div class="col-6" onclick="nav('page-meteo')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #e0f7fa; border-left-color: #00bcd4;"><i class="fa-solid fa-cloud-sun fa-2x mb-2" style="color: #0097a7;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #006064;">MÉTÉO & SST</small></div>
         </div>
+        <div class="col-6" onclick="nav('page-pdp')">
+    <div class="card-custom text-center py-3 mb-0" style="background-color: #fce4ec; border-left-color: #f48fb1;">
+        <i class="fa-solid fa-user-doctor-hair fa-2x mb-2" style="color: #d81b60;"></i><br>
+        <small class="fw-bold" style="font-size:0.75rem; color: #880e4f;">CELLULE PDP</small>
+    </div>
+</div>
         <div class="col-12" onclick="nav('page-fds-guide')">
             <div class="card-custom text-center py-3 mb-0" style="background-color: #eceff1; border-left-color: #cfd8dc;"><i class="fa-solid fa-file-shield fa-2x mb-2" style="color: #546e7a;"></i><br><small class="fw-bold" style="font-size:0.75rem; color: #263238;">GUIDE COMPLET FDS</small></div>
         </div>
@@ -848,7 +854,71 @@
     <h5 class="fw-bold mb-3">Nos Centres de Santé</h5>
     <div id="centres-list"></div>
 </div>
+<div id="page-pdp" class="app-page">
+    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+        <h5 class="fw-bold m-0 text-dark">
+            <i class="fa-solid fa-heart-pulse me-2 text-danger"></i>Maintien en Emploi (PDP)
+        </h5>
+        <span class="badge bg-primary px-2 py-1 small fw-bold">RESTEV 85</span>
+    </div>
 
+    <div class="card-custom mb-3" style="border-left: 5px solid var(--r-blue);">
+        <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-circle-info me-2"></i>La PDP, c'est quoi ?</h6>
+        <p class="small text-dark mb-0">
+            La <strong>Prévention de la Désinsertion Professionnelle (PDP)</strong> a pour objectif d'anticiper tout risque de rupture entre votre salarié et son emploi, lié à son état de santé[cite: 2030].
+        </p>
+    </div>
+
+    <div class="card-custom mb-3" style="border-left: 5px solid var(--r-teal);">
+        <h6 class="fw-bold style-teal mb-2" style="color: var(--r-blue-dark);"><i class="fa-solid fa-arrows-split-up-and-left me-2"></i>Notre Accompagnement</h6>
+        <p class="small text-muted mb-2">Le RESTEV vous propose une démarche structurée pour faciliter le maintien en emploi[cite: 2031]:</p>
+        <ul class="text-muted ps-3 mb-0 small">
+            <li class="mb-2"><strong>Vers son emploi initial :</strong> Avec si besoin la mise en œuvre d'adaptations ou d'aménagements de poste nécessaires.</li>
+            <li class="mb-2"><strong>Vers un autre emploi dans votre entreprise :</strong> En effectuant un travail en amont de réflexion sur ses compétences, les formations possibles et les opportunités réalistes existantes.</li>
+            <li><strong>Vers un autre emploi en dehors :</strong> Identique ou différent, dans une autre entreprise, compatible avec la réalité du marché du travail, l'état de santé et les attentes du salarié.</li>
+        </ul>
+    </div>
+
+    <div class="card-custom mb-3" style="border-left: 5px solid var(--r-purple);">
+        <h6 class="fw-bold mb-2" style="color: var(--r-purple);"><i class="fa-solid fa-triangle-exclamation me-2"></i>Quand nous contacter ?</h6>
+        <p class="small text-muted mb-2">Contactez la cellule PDP si vous faites face à l'une de ces situations :</p>
+        <div class="p-2 rounded bg-light border mb-2 small">
+            ❓ Vous avez un salarié en arrêt de travail depuis plusieurs mois et vous n'avez pas de nouvelles ?
+        </div>
+        <div class="p-2 rounded bg-light border mb-2 small">
+            😟 Votre salarié est en arrêt et vous êtes inquiet sur sa capacité à reprendre son poste ?
+        </div>
+        <div class="p-2 rounded bg-light border small">
+            🤕 Votre salarié est plusieurs fois par an en arrêt de courte durée et exprime des difficultés à son poste ?
+        </div>
+    </div>
+
+    <div class="card-custom mb-3" style="border-left: 5px solid var(--r-yellow);">
+        <h6 class="fw-bold mb-2" style="color: var(--r-yellow);"><i class="fa-solid fa-list-check me-2"></i>Les étapes de la démarche</h6>
+        <div class="small text-muted">
+            <div class="mb-2">
+                <span class="badge bg-dark me-1">1</span> <strong>Premier contact :</strong> Prenez contact avec notre cellule PDP. Elle effectuera un premier point téléphonique avec vous pour caractériser votre besoin.
+            </div>
+            <div class="mb-2">
+                <span class="badge bg-dark me-1">2</span> <strong>Évaluation :</strong> En lien direct avec le médecin du travail, nous vous proposerons un accompagnement adapté (entretien individuel avec le salarié, rendez-vous de liaison en entreprise, ou visite médicale à enclencher).
+            </div>
+            <div>
+                <span class="badge bg-dark me-1">3</span> <strong>Plan d'actions :</strong> La cellule vous accompagne dans la mise en œuvre et le suivi des actions (étude de poste, essai encadré, orientation vers un partenaire de maintien en emploi, etc.).
+            </div>
+        </div>
+    </div>
+
+    <div class="card-custom text-center mb-4" style="border-left: 5px solid #d81b60; background-color: #fffafb;">
+        <h6 class="fw-bold mb-2" style="color: #d81b60;"><i class="fa-solid fa-envelope me-2"></i>Contacter la Cellule PDP</h6>
+        <a href="mailto:gestion.pdp@restev.fr" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: #d81b60; border: none;">
+            <i class="fa-solid fa-paper-plane me-2"></i>gestion.pdp@restev.fr
+        </a>
+    </div>
+
+    <button class="btn btn-outline-secondary w-100 mt-2 py-2" onclick="nav('page-home')" style="border-radius: var(--radius-sm);">
+        Retour à l'accueil
+    </button>
+</div>
 <div id="page-scan" class="app-page">
     <h5 class="fw-bold mb-3">Ajouter un produit</h5>
     <div class="card-custom">
